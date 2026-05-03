@@ -1,0 +1,22 @@
+[
+    {
+        "autor": "desconocido",
+        "numpag": 1001,
+        "titulo": "La Biblia"
+    },
+    {
+        "numpag": 1000,
+        "autor": "Mahoma",
+        "titulo": "El Cor\u00e1n"
+    },
+    {
+        "autor": "A. Paso",
+        "numpag": 80,
+        "titulo": "La Marea 2"
+    },
+    {
+        "numpag": 110,
+        "autor": "Loreto",
+        "titulo": "Loreto 2.0"
+    }
+]

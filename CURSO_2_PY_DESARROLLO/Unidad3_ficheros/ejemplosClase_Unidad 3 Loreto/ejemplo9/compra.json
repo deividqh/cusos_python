@@ -1,0 +1,30 @@
+[
+    {
+        "nombre": "Galletas",
+        "precio": 2.99
+    },
+    {
+        "nombre": "Arroz",
+        "precio": 1.25
+    },
+    {
+        "nombre": "Pan",
+        "precio": 0.5
+    },
+    {
+        "nombre": "Huevos",
+        "precio": 3
+    },
+    {
+        "nombre": "Leche",
+        "precio": 1.5
+    },
+    {
+        "nombre": "Harina",
+        "precio": 2.99
+    },
+    {
+        "nombre": "Cereales",
+        "precio": 3.99
+    }
+]

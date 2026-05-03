@@ -1,0 +1,37 @@
+[
+    {
+        "autor": "KafkaR",
+        "titulo": "La Metamorfosis",
+        "numpag": 400
+    },
+    {
+        "titulo": "El Cor\u00e1n",
+        "autor": "Mahoma",
+        "numpag": 1000
+    },
+    {
+        "titulo": "La Biblia",
+        "autor": "desconocido",
+        "numpag": 1001
+    },
+    {
+        "titulo": "Las Uvas de la Ira",
+        "autor": "Jhon Steinbeck",
+        "numpag": 450
+    },
+    {
+        "numpag": 300,
+        "titulo": "La Nausea",
+        "autor": "Sartre"
+    },
+    {
+        "numpag": 550,
+        "titulo": "el Quijote",
+        "autor": "Cervantes"
+    },
+    {
+        "autor": "YO",
+        "numpag": 5,
+        "titulo": "EL SASTRE"
+    }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "titulo": "el Quijote",
+        "numpag": 550,
+        "autor": "Cervantes"
+    },
+    {
+        "numpag": 1001,
+        "autor": "desconocido",
+        "titulo": "La Biblia"
+    },
+    {
+        "titulo": "La Nausea",
+        "autor": "Sartre",
+        "numpag": 300
+    },
+    {
+        "numpag": 1000,
+        "titulo": "El Cor\u00e1n",
+        "autor": "Mahoma"
+    },
+    {
+        "numpag": 400,
+        "autor": "Kafka",
+        "titulo": "La Metamorfosis"
+    },
+    {
+        "titulo": "Las Uvas de la Ira",
+        "numpag": 450,
+        "autor": "Jhon Steinbeck"
+    }
+]

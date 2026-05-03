@@ -1,0 +1,13 @@
+{
+    "nombre": "Loreto Pele\u00f1in",
+    "ciudad": "Murcia",
+    "hobbies": [
+        "Padel",
+        "Leer",
+        "programar en Python :D"
+    ],
+    "contacto": {
+        "email": "profesor3@avanzaformacion.org",
+        "telefono": "666190181"
+    }
+}

@@ -1,0 +1,5 @@
+Oreo,chocolate
+Maria,original
+Chips Ahoy,Trozos Chocolate
+Lotus,Lotus
+Lidl,SaladitasLidl,Saladitas
