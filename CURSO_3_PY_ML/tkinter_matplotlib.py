@@ -5,6 +5,10 @@ from tkinter import ttk
 import numpy as np
 
 def actualizar_grafico():
+
+    # Nuevo tipo de gráfico seleccionado
+    nuevo_grafico = combo_graficos.get()
+
     # Obtenemos el estilo seleccionado
     new_estilo = combo_estilos.get()
 
@@ -13,20 +17,29 @@ def actualizar_grafico():
     y = np.random.randint(0,10,10)  
     
     with plt.style.context(new_estilo):
-        ax.clear()  # Limpiamos el gráfico anterior
-        # ACTUALIZACIÓN CLAVE: Sincronizar colores de fondo con el estilo seleccionado
-        fig.set_facecolor(plt.rcParams['figure.facecolor'])
-        ax.set_facecolor(plt.rcParams['axes.facecolor'])
 
-        if x[0] < y[0]:        
+        ax.clear()  # Limpiamos el gráfico anterior
+
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ACTUALIZACIÓN CLAVE: Sincronizar colores de fondo con el estilo seleccionado
+        # • El problema es que al usar 'style.context' dentro de la función, Matplotlib cambia los colores
+        #   de los elementos nuevos (líneas, puntos), pero no actualiza automáticamente el color de fondo 
+        #   del objeto 'figure' que ya fue creado al inicio.
+        # • Para solucionarlo, hay que forzar la actualización del color de fondo de la figura (facecolor) 
+        #   dentro del contexto del estilo.
+        fig.set_facecolor( color = plt.rcParams['figure.facecolor'] )
+        ax.set_facecolor( plt.rcParams['axes.facecolor'] )
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        # Criterio de selección del tipo de gráfico a dibujar
+        if nuevo_grafico == "plot":
             ax.plot(x, y)                       # Dibujamos el nuevo gráfico
-        else:
-            ax.scatter(x, y, color='red')
-        pass
+        elif nuevo_grafico == "scatter":
+            ax.scatter(x, y, color='red')       # Dibujamos el nuevo gráfico
+
         # ax.legend()
         # ax.set_title(f"Estilo: {new_estilo}", color=plt.rcParams['text.color'])
     
-    canvas.draw()  # Redibuja el canvas para mostrar el nuevo gráfico
+    # ■ Redibuja el canvas para mostrar el nuevo gráfico
+    canvas.draw()  
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 # Inicializamos la ventana de Tkinter
@@ -67,6 +80,14 @@ combo_estilos = ttk.Combobox(master = frame, values=estilos, state="readonly")
 combo_estilos.current(0) # Por defecto el primero
 combo_estilos.pack(pady=5)
 # ■ ■ ■ ■ ■ ■ 
+
+# ■ ■ ■ ■ ■ ■ ■ Lista de graficos 
+graficos = ["plot", "scatter"]
+# Combobox para seleccionar tipo de gráfico
+tk.Label(frame, text="Selecciona un tipo de gráfico:").pack()
+combo_graficos = ttk.Combobox(master = frame, values=graficos, state="readonly")
+combo_graficos.current(0) # Por defecto el primero
+combo_graficos.pack(pady=5)
 
 # ■■■■ Muestra la ventana de 'Tkinter' con el gráfico cargado y dibujado.
 root.mainloop()
