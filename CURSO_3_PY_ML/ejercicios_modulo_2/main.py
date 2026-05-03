@@ -31,6 +31,19 @@ def ejercicio_01():
     print(f'\n{df_leads.info()}')
 
     print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
+
+    # ■ Se ejecuta despues de cerrar el grafico.
+    print(Fore.GREEN + """
+    ■ DataFrame.describe() ► muestra un resumen estadístico. Solo información en consola. 
+    ■ El gráfico de barras muestra la cantidad de leads generados por cada canal de marketing, lo que permite identificar cuál es el canal más efectivo para generar leads.
+    ■ Otors graficos que podrían ser útiles para analizar la distribución de los leads por canal incluyen:
+        • Gráfico de pastel (pie chart) para mostrar la proporción de leads generados por cada canal.
+        • Gráfico de líneas para visualizar la tendencia de leads a lo largo del tiempo si se tienen datos temporales.
+        • Gráfico de dispersión (scatter plot) para analizar la relación entre el número de leads y otras variables, como el presupuesto de marketing o la tasa de conversión.
+        • Gráfico de caja (boxplot) para identificar la variabilidad y posibles outliers en el número de leads generados por cada canal.
+        • Gráfico de barras apiladas (stacked bar chart) para comparar la contribución de cada canal a lo largo del tiempo o entre diferentes segmentos de clientes.
+        • Gráfico de violín (violin plot) para mostrar la distribución de los leads generados por cada canal, incluyendo la densidad y los outliers.
+    """ + Style.RESET_ALL) 
     
     # ■ Asignacion del estilo del grafico a través de un archivo .mplstyle
     with plt.style.context('./dark.mplstyle'):
@@ -46,19 +59,6 @@ def ejercicio_01():
         plt.ylabel('Grafico usado: histograma(histplot)', fontsize=10)
 
         plt.show()
-
-    # ■ Se ejecuta despues de cerrar el grafico.
-    print(Fore.GREEN + """
-    ■ DataFrame.describe() ► muestra un resumen estadístico. Solo información en consola. 
-    ■ El gráfico de barras muestra la cantidad de leads generados por cada canal de marketing, lo que permite identificar cuál es el canal más efectivo para generar leads.
-    ■ Otors graficos que podrían ser útiles para analizar la distribución de los leads por canal incluyen:
-        • Gráfico de pastel (pie chart) para mostrar la proporción de leads generados por cada canal.
-        • Gráfico de líneas para visualizar la tendencia de leads a lo largo del tiempo si se tienen datos temporales.
-        • Gráfico de dispersión (scatter plot) para analizar la relación entre el número de leads y otras variables, como el presupuesto de marketing o la tasa de conversión.
-        • Gráfico de caja (boxplot) para identificar la variabilidad y posibles outliers en el número de leads generados por cada canal.
-        • Gráfico de barras apiladas (stacked bar chart) para comparar la contribución de cada canal a lo largo del tiempo o entre diferentes segmentos de clientes.
-        • Gráfico de violín (violin plot) para mostrar la distribución de los leads generados por cada canal, incluyendo la densidad y los outliers.
-    """ + Style.RESET_ALL) 
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_02():
@@ -81,17 +81,6 @@ def ejercicio_02():
 
 
     print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
-    # ■ Asignacion del estilo del grafico [ dark_background , bmh , ggplot , fivethirtyeight , seaborn-darkgrid , seaborn-whitegrid , seaborn-poster , seaborn-talk , seaborn-ticks ]
-    ESTILO = 'fivethirtyeight'
-    with plt.style.context(ESTILO):
-        plt.figure(figsize=(9.5, 7))
-        plt.plot(data_frame['dias'], data_frame['visitas'], marker='o')
-        # ■ Textos
-        plt.title('\n■ Estilo Usado: ' + ESTILO + '\n■ Tipo de Grafico:: "plot" \n■ Usado para "Series Temporales" ', fontsize=10,  pad=15)
-        plt.xlabel('Dias Semana', fontsize=10, labelpad=10)
-        plt.ylabel('Visitas Diarias', fontsize=10, labelpad=10)
-
-        plt.show()
 
     print("🛠️...El mayor pico de visitas se observa el día:", data_frame.loc[data_frame['visitas'].idxmax(), 'dias'])
     print(Fore.GREEN + """
@@ -104,6 +93,18 @@ def ejercicio_02():
     Opcion B: Usando 'data'     ► plt.plot('dias', 'visitas', data=data_frame, marker='o')
     Opcion C: Usando 'x' e 'y'  ► plt.plot(x1, y1, x2, y2, x3, y3)
     """ + Style.RESET_ALL)
+    
+    # ■ Asignacion del estilo del grafico [ dark_background , bmh , ggplot , fivethirtyeight , seaborn-darkgrid , seaborn-whitegrid , seaborn-poster , seaborn-talk , seaborn-ticks ]
+    ESTILO = 'fivethirtyeight'
+    with plt.style.context(ESTILO):
+        plt.figure(figsize=(9.5, 7))
+        plt.plot(data_frame['dias'], data_frame['visitas'], marker='o')
+        # ■ Textos
+        plt.title('\n■ Estilo Usado: ' + ESTILO + '\n■ Tipo de Grafico:: "plot" \n■ Usado para "Series Temporales" ', fontsize=10,  pad=15)
+        plt.xlabel('Dias Semana', fontsize=10, labelpad=10)
+        plt.ylabel('Visitas Diarias', fontsize=10, labelpad=10)
+
+        plt.show()
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_03():
@@ -125,6 +126,16 @@ En una línea de producción de piezas metálicas, se mide el grosor de 150 unid
     print(f'Grosor desviacion estandar: {total_piezas.std():.4f}')
 
     # print("\n■ ■ ■ ■ ■ ■ ■  📈 ")
+
+    print(Fore.GREEN + """
+    ■ El 'boxplot' muestra la distribución de las piezas y permite identificar los outliers.
+    ■ Quiero diferenciar el uso de 'numpy' y 'pandas' para describir los datos, y 'matplotlib' y 'seaborn' para visualizarlos
+    ■ Uso 'numpy' para calcular la 'media', el 'minimo', el 'maximo' y la 'desviacion estandar' del grosor de las piezas.
+    ■ Uso 'pandas' para crear un DataFrame y obtener una descripción estadística más completa con df.describe().
+    ■ El 'boxplot' revela que hay piezas con grosor significativamente diferente al óptimo(outliers).
+    ■ otros graficos como el 'histograma' o el 'scatter plot' podrían ser útiles para analizar la distribución de los grosores y detectar patrones adicionales en los datos.
+    """ + Style.RESET_ALL) 
+
     sub_menu={  
         "Sin DataFrame (sobre objeto 'matplotlib' trabajado con 'numpy')": None, 
         "Con DataFrame (sobre objeto 'seaborn' trabajado con 'pandas')": None , 
@@ -146,15 +157,6 @@ En una línea de producción de piezas metálicas, se mide el grosor de 150 unid
                 sns.boxplot(data=df)
                 plt.show()  
         pass
-
-    print(Fore.GREEN + """
-    ■ El 'boxplot' muestra la distribución de las piezas y permite identificar los outliers.
-    ■ Quiero diferenciar el uso de 'numpy' y 'pandas' para describir los datos, y 'matplotlib' y 'seaborn' para visualizarlos
-    ■ Uso 'numpy' para calcular la 'media', el 'minimo', el 'maximo' y la 'desviacion estandar' del grosor de las piezas.
-    ■ Uso 'pandas' para crear un DataFrame y obtener una descripción estadística más completa con df.describe().
-    ■ El 'boxplot' revela que hay piezas con grosor significativamente diferente al óptimo(outliers).
-    ■ otros graficos como el 'histograma' o el 'scatter plot' podrían ser útiles para analizar la distribución de los grosores y detectar patrones adicionales en los datos.
-    """ + Style.RESET_ALL) 
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_04():
@@ -178,7 +180,6 @@ Tienes un dataset con 500,000 registros de temperatura (float64) y estado del se
     new_df = df['temperatura'].astype('float32')
     print()
     new_df.info()
-
     
     print(Fore.GREEN + """
     ■ El uso de memoria se ha reducido al convertir la columna 'temperatura' a float32.
@@ -203,16 +204,18 @@ def ejercicio_05():
     print(df.describe().round(2))
     
     print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
+    
+    print(Fore.GREEN + """ 
+    ■ El scatter plot muestra la relación entre los años de estudio y el salario mensual, donde cada punto representa a un individuo.
+    ■ La línea de tendencia ( regresión ) indica si existe una correlación positiva, negativa o nula entre las variables. En este caso, podríamos observar una tendencia positiva, lo que sugiere que a medida que aumentan los años de estudio, también tiende a aumentar el salario mensual.
+    """+ Style.RESET_ALL ) 
+
     # sns.regplot(x='annos', y='salario', data=df)
     
     with plt.style.context('./test.mplstyle'):
         sns.scatterplot(data=df, x='annos', y='salario', hue='salario')
         plt.show()
-    
-    print(Fore.GREEN + """ 
-    ■ El scatter plot muestra la relación entre los años de estudio y el salario mensual, donde cada punto representa a un individuo.
-    ■ La línea de tendencia (regresión) indica si existe una correlación positiva, negativa o nula entre las variables. En este caso, podríamos observar una tendencia positiva, lo que sugiere que a medida que aumentan los años de estudio, también tiende a aumentar el salario mensual.
-    """+ Style.RESET_ALL ) 
+
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_06():
     txtEjer="""Ejercicio 6. Control de Calidad Alimentaria:
@@ -299,6 +302,16 @@ def ejercicio_07():
 
     print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
 
+    print(Fore.GREEN + """
+■ distribución normal(Campana Gaus) ► np.random.normal( loc = 6, scale = 1.5 , size = 15 )
+    • loc = promedio  ■ scale = desviación estándar  ■ size = cantidad de alumnos/muestras
+■ Sigue la regla de 68-95-99.7:
+    • Aproximadamente el 68% de los datos cae dentro de 1 desviación estándar del promedio ► 6 + 1.5 * 1 = 7.5
+    • el 95% de los datos cae dentro de 2 desviaciones estándar del promedio ► 6 + 1.5 * 2 = 9
+    • el 99.7% de los datos cae dentro de 3 desviaciones estándar del promedio ► 6 + 1.5 * 3 = 10.5 
+■ clip acota entre 0 y 10 las notas ► np.clip(notas_a, 0, 10)
+    """ + Style.RESET_ALL)
+
     # ■ Estilo definido en un diccionario.
     tema_negocios = {
         "axes.facecolor": "#ffffff",
@@ -309,16 +322,6 @@ def ejercicio_07():
 
     sns.kdeplot(data=df, fill=True)
     plt.show()
-
-    print(Fore.GREEN + """
-■ distribución normal(Campana Gaus) ► np.random.normal( loc = 6, scale = 1.5 , size = 15 )
-    • loc = promedio  ■ scale = desviación estándar  ■ size = cantidad de alumnos/muestras
-■ Sigue la regla de 68-95-99.7:
-    • Aproximadamente el 68% de los datos cae dentro de 1 desviación estándar del promedio ► 6 + 1.5 * 1 = 7.5
-    • el 95% de los datos cae dentro de 2 desviaciones estándar del promedio ► 6 + 1.5 * 2 = 9
-    • el 99.7% de los datos cae dentro de 3 desviaciones estándar del promedio ► 6 + 1.5 * 3 = 10.5 
-■ clip acota entre 0 y 10 las notas ► np.clip(notas_a, 0, 10)
-    """ + Style.RESET_ALL)
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_08():
@@ -370,6 +373,15 @@ def ejercicio_08():
 
     # print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
 
+    print(Fore.GREEN + """
+    ■ El mapa de calor muestra la fuerza y dirección de las relaciones entre las variables.
+    ■ Utilizo un 'head-map' para visualizar la correlación entre las variables.
+    ■ En sns.heatmap(data=df.corr(), annot=True, cmap='coolwarm')
+        • df.corr()  ► crea una correlación de los datos con la dimensión 5x5 
+        • annot=True ► muestra los valores de correlación en cada celda del mapa de calor
+        • cmap='coolwarm' ► elige una paleta de colores que va de azul (correlación negativa) a rojo (correlación positiva) pasando por blanco (sin correlación)
+    """ + Style.RESET_ALL)
+
     sub_menu={  
         "Opt. sin equivalencia data_frame.corr():": None, 
         "Opt. con data_frame.corr()": None , 
@@ -377,8 +389,7 @@ def ejercicio_08():
     while (True):
         i = menuDvd.MenuDiccionario(sub_menu, tituloMenu = TITULO_SUB_MENU ,
                                     num_char=60, char_1='', char_2='', char_3='_',
-                                    texto_exit= '◀️  Atrás | - clear'
-                                    )
+                                    texto_exit= '◀️  Atrás | - clear' )
         if i == 0: 
             break  # ❌ PRIMERO LA DE SALIDA                
         if i == 1:
@@ -388,16 +399,6 @@ def ejercicio_08():
             sns.heatmap(data=df.corr(), annot=True, cmap='coolwarm')
         
         plt.show()  
-
-
-    print(Fore.GREEN + """
-    ■ El mapa de calor muestra la fuerza y dirección de las relaciones entre las variables.
-    ■ Utilizo un 'head-map' para visualizar la correlación entre las variables.
-    ■ En sns.heatmap(data=df.corr(), annot=True, cmap='coolwarm')
-        • df.corr()  ► crea una correlación de los datos con la dimensión 5x5 
-        • annot=True ► muestra los valores de correlación en cada celda del mapa de calor
-        • cmap='coolwarm' ► elige una paleta de colores que va de azul (correlación negativa) a rojo (correlación positiva) pasando por blanco (sin correlación)
-    """ + Style.RESET_ALL)
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_09():
@@ -418,8 +419,6 @@ def ejercicio_09():
     print(df.describe().round(2))
     
     print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")    
-    sns.boxplot(data=df, x='precios')
-    plt.show()
 
     print(Fore.GREEN + """
     ■ La 'media' se ve fuertemente influenciada por el valor extremo de la mansión, resultando en un precio promedio de aproximadamente 1.2 millones, lo cual no refleja adecuadamente el valor típico de las casas en esa calle.
@@ -427,6 +426,9 @@ def ejercicio_09():
     ■ Si quiero extraer el valor de la media, tengo que usar numpy.mean(precios) y Si quiero solo información estadística de los precios, puedo usar pandas.describe() con un DataFrame.
     ■ Para 'visualizar la distribución' de los precios, un 'boxplot' es útil para mostrar la presencia de valores atípicos (outliers) como la mansión de 5M, que se destacará claramente en el gráfico.
     """ + Style.RESET_ALL)
+
+    sns.boxplot(data=df, x='precios')
+    plt.show()
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_10():
@@ -451,15 +453,6 @@ Diseña un dashboard con dos paneles:
     print(df_articulos.describe().round(2))
 
     print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-    
-    # Gráfico de barras de ventas por región
-    sns.barplot(data=df_ventas, x='regiones', y='ventas', ax=axes[0])
-    axes[0].set_title('Ventas por Región')
-    
-    # Histograma de la cantidad de artículos comprados por cliente
-    sns.histplot(data=df_articulos, x='cantidad_articulos', bins=10, ax=axes[1])
-    plt.show()
 
     print(Fore.GREEN + """
     ■ fig, axes = plt.subplots(1, 2, figsize=(12, 5)) ► crea una figura con 1 fila y 2 columnas para colocar dos gráficos.
@@ -472,6 +465,15 @@ Diseña un dashboard con dos paneles:
     ■ El gráfico de barras muestra claramente las diferencias en las ventas entre las regiones, mientras que el histograma revela la distribución de la cantidad de artículos comprados por cliente, lo que puede ayudar a identificar patrones de compra y segmentar a los clientes según su comportamiento.
     """ + Style.RESET_ALL)
 
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+    
+    # Gráfico de barras de ventas por región
+    sns.barplot(data=df_ventas, x='regiones', y='ventas', ax=axes[0])
+    axes[0].set_title('Ventas por Región')
+    
+    # Histograma de la cantidad de artículos comprados por cliente
+    sns.histplot(data=df_articulos, x='cantidad_articulos', bins=10, ax=axes[1])
+    plt.show()
     
 def estilos():
     print(Fore.YELLOW + "■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ ■ ■ ■ ■ ■ ■ ■ " + Style.RESET_ALL)

@@ -1,12 +1,11 @@
 figure.figsize: 12, 6
-axes.facecolor: white
 figure.dpi: 100                 # Resolución de la figura
 # ■■■ EJES Y FONDO ---
-axes.facecolor: f0f0f0        # Gris muy claro para el fondo
+axes.facecolor: f0f0f0        # el fondo
 axes.edgecolor: 333333        # Color de los bordes
 axes.grid: True               # Activar cuadrícula por defecto
-grid.color: white             # Cuadrícula blanca sobre fondo gris
-grid.linestyle: '-'         # Líneas sólidas para la cuadrícula (solid | dashed | dotted)
+grid.color: ffffff             # Cuadrícula blanca sobre fondo gris
+grid.linestyle: -         # Líneas sólidas para la cuadrícula (solid | dashed | dotted)
 # ■■■ FUENTES Y TEXTOS ---
 font.family: sans-serif
 font.size: 10.0
@@ -21,7 +20,7 @@ lines.linewidth: 2.5          # Líneas más gruesas
 lines.markersize: 8           # Marcadores más visibles
 # ■■■ PALETA DE COLORES ---
 # Define la secuencia de colores para múltiples series
-axes.prop_cycle: cycler('color', [08fd5, fc4f30, e5ae38, 6d904f])
+axes.prop_cycle: cycler('color', [ '108fd5', 'fc4f30', 'e5ae38', '6d904f'])
 # ■■■ MARCADORES DE DISPERSIÓN ---
 scatter.marker: o             # Forma del punto por defecto (círculo, cuadrado, etc.).
 savefig.bbox: tight            # Si lo pones en tight, Matplotlib ajustará los márgenes automáticamente al guardar, evitando que se corten las etiquetas.
