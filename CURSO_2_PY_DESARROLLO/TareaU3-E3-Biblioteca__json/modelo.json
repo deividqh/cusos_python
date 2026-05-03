@@ -1,8 +1,28 @@
 [
     {
-        "autor": "KafkaR",
-        "titulo": "La Metamorfosis",
-        "numpag": 400
+        "numpag": 300,
+        "autor": "Sartre",
+        "titulo": "La Nausea"
+    },
+    {
+        "titulo": "el Quijote",
+        "autor": "Cervantes",
+        "numpag": 550
+    },
+    {
+        "titulo": "Las Uvas de la Ira",
+        "numpag": 450,
+        "autor": "Jhon Steinbeck"
+    },
+    {
+        "autor": "YO",
+        "titulo": "EL SASTRE",
+        "numpag": 5
+    },
+    {
+        "autor": "desconocido",
+        "titulo": "La Biblia",
+        "numpag": 1001
     },
     {
         "titulo": "El Cor\u00e1n",
@@ -10,28 +30,8 @@
         "numpag": 1000
     },
     {
-        "titulo": "La Biblia",
-        "autor": "desconocido",
-        "numpag": 1001
-    },
-    {
-        "titulo": "Las Uvas de la Ira",
-        "autor": "Jhon Steinbeck",
-        "numpag": 450
-    },
-    {
-        "numpag": 300,
-        "titulo": "La Nausea",
-        "autor": "Sartre"
-    },
-    {
-        "numpag": 550,
-        "titulo": "el Quijote",
-        "autor": "Cervantes"
-    },
-    {
-        "autor": "YO",
-        "numpag": 5,
-        "titulo": "EL SASTRE"
+        "autor": "KafkaR",
+        "titulo": "La Metamorfosis",
+        "numpag": 400
     }
 ]

@@ -26,11 +26,17 @@ class InfApp():
 
 class form_biblioteca(Formulario_Ninja):
     """ 
-    >>> Def: Define un formulario Tkinter con funcion de gestión de una clase Biblioteca y otra Libro.    
+    >>> Def: Define un formulario Tkinter con funcion de gestión de una clase Biblioteca y otra Libro.
+    Hereda de Formulario_Ninja, que a su vez hereda de tk.Tk. 
+    El formulario tiene un diseño con varios frames organizados en filas y columnas, 
+    y contiene widgets como Checkbutton, Button, Label, Entry y Listbox para interactuar con la 
+    biblioteca de libros. 
+    Permite cargar un archivo JSON con datos de libros, mostrar los libros en un Listbox, y 
+    realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre los libros utilizando los Entry 
+    para ingresar los datos. 
+    Además, incluye funciones para validar los datos ingresados, 
+    informar al usuario sobre las acciones realizadas y manejar la selección de elementos en el Listbox.
     """
-    # coorX=0
-    # coorY=0
-    # esExpandido=False
     def __init__(self, 
                 root, 
                 title="Formulario", 
@@ -39,8 +45,10 @@ class form_biblioteca(Formulario_Ninja):
                 posY=None):
 
         # ====== Llamada al PADRE
-        super().__init__(root=root,ancho=ancho, alto=alto, posY=posY)
+        super().__init__(root=root, ancho=ancho, alto=alto, posY=posY)
 
+        """ Familias de objetos para realizar acciones en masa (validar, vaciar, cargar, etc)
+        van a tener sus propios metodos dedicados """
         self.family_txtbx=[]            # los objetos texto que tienen que ser validados en grupo.
         self.family_bttn_crud=[]        # los objetos boton add / del / updt 
         
@@ -48,6 +56,7 @@ class form_biblioteca(Formulario_Ninja):
 
         self.archivo = ''
         """ >>> Nombre de la ruta al archivo que queremos cargar. """
+
         self.biblioteca = Biblioteca()
         """ >>> Instancia de Biblioteca """
 

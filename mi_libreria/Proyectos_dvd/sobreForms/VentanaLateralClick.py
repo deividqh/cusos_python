@@ -52,8 +52,8 @@ root.geometry(f'{formWidth}x{formHeight}+{coorX}+{coorY}')
 root.bind('<Double-1>', toggle_ventana)
 
 # Agrega un widget para mostrar dentro de la ventana (opcional)
-# label = tk.Label(root, text="Haz doble clic para expandir/contraer la ventana")
-# label.pack(pady=100)
+label = tk.Label(root, text="Haz doble clic para expandir/contraer la ventana")
+label.pack(pady=100)
 
 # Inicia el bucle principal
 root.mainloop()

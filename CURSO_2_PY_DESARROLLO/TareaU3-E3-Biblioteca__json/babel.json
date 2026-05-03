@@ -1,13 +1,13 @@
 [
     {
         "titulo": "El Cor\u00e1n",
-        "autor": "Mahoma",
-        "numpag": 1000
+        "numpag": 1000,
+        "autor": "Mahoma"
     },
     {
-        "titulo": "La Marea 2",
-        "autor": "A. Paso",
-        "numpag": 80
+        "numpag": 110,
+        "autor": "Loretos",
+        "titulo": "Loreto 2.0.2"
     },
     {
         "titulo": "La Biblia",
@@ -15,14 +15,13 @@
         "numpag": 1001
     },
     {
-        "titulo": "Loreto 2.0.2",
-        "autor": "Loretos",
-        "numpag": 110
+        "numpag": 80,
+        "autor": "A. Paso",
+        "titulo": "La Marea 2"
     },
     {
-        "titulo": "La Biblias",
+        "numpag": 1,
         "autor": "Desconocidos",
-        "numpag": 1
+        "titulo": "La Biblias"
     }
-    
 ]

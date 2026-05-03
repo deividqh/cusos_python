@@ -1,0 +1,72 @@
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg , NavigationToolbar2Tk
+import tkinter as tk
+from tkinter import ttk
+import numpy as np
+
+def actualizar_grafico():
+    # Obtenemos el estilo seleccionado
+    new_estilo = combo_estilos.get()
+
+    # Actualizamos los datos del gráfico
+    x = np.random.randint(0,10,10)  
+    y = np.random.randint(0,10,10)  
+    
+    with plt.style.context(new_estilo):
+        ax.clear()  # Limpiamos el gráfico anterior
+        # ACTUALIZACIÓN CLAVE: Sincronizar colores de fondo con el estilo seleccionado
+        fig.set_facecolor(plt.rcParams['figure.facecolor'])
+        ax.set_facecolor(plt.rcParams['axes.facecolor'])
+
+        if x[0] < y[0]:        
+            ax.plot(x, y)                       # Dibujamos el nuevo gráfico
+        else:
+            ax.scatter(x, y, color='red')
+        pass
+        # ax.legend()
+        # ax.set_title(f"Estilo: {new_estilo}", color=plt.rcParams['text.color'])
+    
+    canvas.draw()  # Redibuja el canvas para mostrar el nuevo gráfico
+
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+# Inicializamos la ventana de Tkinter
+root = tk.Tk()
+
+# ■■■■ Cachamos las subclases figure y axes para crear el gráfico
+# • 'figure' lo vamos a necesitar para crear el canvas 
+# • 'axes' lo vamos a necesitar para manejar los datos del gráfico y dibujarlo.
+fig , ax = plt.subplots()
+
+frame = tk.Frame(root)
+frame.pack()
+label = tk.Label(frame, text="matplotlib en Tkinter!!")
+label.pack()
+
+# ■■■■ Crea un 'canvas' para mostrar el gráfico en la ventana de 'Tkinter'
+canvas = FigureCanvasTkAgg(figure = fig, master=frame)
+canvas.get_tk_widget().pack()
+
+# ■■■ Agrega la barra de herramientas de navegación
+# toolbar = NavigationToolbar2Tk(canvas, frame) 
+# toolbar.update()
+# toolbar.pack() # Empaquetamos la barra de herramientas para mostrarla en la ventana 
+
+frame.pack() # Empaquetamos el frame para mostrarlo en la ventana
+
+tk.Button(master = frame, text="Actualizar Gráfico", command=actualizar_grafico).pack(pady=15) # Botón para actualizar el gráfico
+
+# ■ ■ ■ ■ ■ ■ ■ Lista de estilos solicitados
+estilos = [
+    "dark_background", "bmh", "ggplot", "fivethirtyeight", 
+    "seaborn-v0_8-darkgrid", "seaborn-v0_8-whitegrid", 
+    "seaborn-v0_8-poster", "seaborn-v0_8-talk", "seaborn-v0_8-ticks"
+]
+# Combobox para seleccionar estilo
+tk.Label(frame, text="Selecciona un estilo:").pack()
+combo_estilos = ttk.Combobox(master = frame, values=estilos, state="readonly")
+combo_estilos.current(0) # Por defecto el primero
+combo_estilos.pack(pady=5)
+# ■ ■ ■ ■ ■ ■ 
+
+# ■■■■ Muestra la ventana de 'Tkinter' con el gráfico cargado y dibujado.
+root.mainloop()
