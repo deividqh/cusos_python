@@ -563,6 +563,124 @@ def extras():
         else:
             pass
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ (Nulos y Relleno)
+# Contexto: Tienes un dataset de sensores industriales donde algunos datos se perdieron por fallos
+# de conexión. No podemos simplemente borrar las filas porque perderíamos información valiosa 
+# de otras columnas.
+def ejercicio_11():
+    print(Fore.YELLOW + "  Ejercicio 11: Tratamiento de Valores Nulos  " + Style.RESET_ALL)
+    txtEjer=""" Contexto: Tienes un dataset de sensores industriales donde algunos datos se perdieron por fallos
+de conexión. No podemos simplemente borrar las filas porque perderíamos información valiosa de otras columnas.
+    1. Crea un DataFrame con valores nulos (NaN) en algunas columnas.
+    2. Identifica dónde están los nulos utilizando df.isnull().
+    3. Rellena los nulos usando df.fillna() con diferentes estrategias (media, mediana, valor constante).
+    """
+    print (f"\n{Fore.LIGHTYELLOW_EX}{txtEjer}{Style.RESET_ALL}")
+    
+    # 1. Creamos datos con "agujeros" (NaN)
+    data = {
+        'sensor_id': [1, 2, 3, 4, 5],
+        'temperatura': [25.5, np.nan, 26.2, np.nan, 24.8],
+        'presion': [1012, 1013, np.nan, 1010, 1015]
+    }
+    df = pd.DataFrame(data)
+    print("\n■■■■■■■■■ DATOS INICIALES (Con Nulos):")
+    print(df)
+    
+    print("\n■■■■■■■■■ DESCRIPCION DE LOS DATOS")
+    print(df.describe().round(2))
+
+    print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
+    # 2. Identificar nulos: df.isnull() devuelve una máscara booleana
+    print("\n¿Dónde hay nulos? (Suma por columna):")
+    print(df.isnull().sum()) 
+
+    # 3. Estrategia de Relleno: df.fillna()
+    # Rellenamos temperatura con la MEDIA y presión con un valor CONSTANTE
+    df['temperatura'] = df['temperatura'].fillna(df['temperatura'].mean())
+    df['presion'] = df['presion'].fillna(1000) # Asumimos 1000 por protocolo
+    
+    print("\n■ Dataset Limpio (Post-fillna):")
+    print(df)
+    
+    print(f"\n{Fore.GREEN}INFO: 'isnull()' es tu detector de mentiras. "
+          f"'fillna()' permite que el modelo no colapse por falta de datos.{Style.RESET_ALL}")
+    pass
+
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ (Encoding y Scaling)
+def ejercicio_12():
+    from sklearn.preprocessing import LabelEncoder, StandardScaler
+    
+    print(Fore.CYAN + "  Ejercicio 12: Encoding y Escalado  " + Style.RESET_ALL)
+    txtEjer=""" Contexto: Los modelos no entienden qué es "Marketing" o "Ventas", solo entienden números. 
+    Además, si comparas "Años de Estudio" (1-20) con "Salario" (1000-5000), el salario dominará 
+    la matemática por pura magnitud. """
+    print (f"\n{Fore.LIGHTYELLOW_EX}{txtEjer}{Style.RESET_ALL}")    
+
+    df = pd.DataFrame({
+        'departamento': ['Ventas', 'IT', 'IT', 'Ventas', 'RRHH'],
+        'experiencia_años': [2, 10, 8, 1, 5],
+        'salario_mensual': [1500, 4500, 3800, 1200, 2500] 
+        })
+    
+    print("\n■■■■■■■■■ DATOS INICIALES")
+    print(df)
+    
+    print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
+    # --- CODIFICACIÓN (Encoding) ---
+    # Convertimos categorías de texto a números (0, 1, 2...)
+    le = LabelEncoder()
+    df['dep_encoded'] = le.fit_transform(df['departamento'])
+    
+    # --- ESCALADO (Scaling) ---
+    # Llevamos los números a una escala común (Media 0, Desviación 1)
+    scaler = StandardScaler()
+    # Escalamos solo las columnas numéricas
+    df[['exp_scaled', 'sal_scaled']] = scaler.fit_transform(df[['experiencia_años', 'salario_mensual']])
+    
+    print("\n■ Dataset Transformado:")
+    print(df[['departamento', 'dep_encoded', 'exp_scaled', 'sal_scaled']])
+    
+    print(f"\n{Fore.GREEN}INFO: StandardScaler evita que las variables con números grandes "
+          f"tengan más peso injustificado en el modelo.{Style.RESET_ALL}")
+
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ (Balance de Clases)
+from sklearn.utils import resample
+def ejercicio_13():
+    print(Fore.YELLOW + " Ejercicio 13: Balance de Clases (Resampling) " + Style.RESET_ALL)
+    txtEjer = """
+Ejercicio 13: El Problema de la Aguja en el Pajar (Balance de Clases)
+Contexto: Imagina que intentas detectar fraudes bancarios. 
+El 99.9% de las transacciones son legales. Si el modelo dice "Todas son legales", 
+tendrá un 99.9% de precisión, ¡pero fallará en su único objetivo!
+    """
+    print (f"\n{Fore.LIGHTYELLOW_EX}{txtEjer}{Style.RESET_ALL}")    
+
+    # Creamos un dataset muy desbalanceado
+    n_legales = 100
+    n_fraudes = 5
+    
+    df_clase_A = pd.DataFrame({'tipo': ['Legal'] * n_legales, 'monto': np.random.randint(10, 100, n_legales)})
+    df_clase_B = pd.DataFrame({'tipo': ['Fraude'] * n_fraudes, 'monto': np.random.randint(500, 1000, n_fraudes)})
+    df_total = pd.concat([df_clase_A, df_clase_B])
+
+    print("\n■■■■■■■■■ DESCRIPCION DE LOS DATOS")
+    print(f"Antes del balanceo:\n{df_total['tipo'].value_counts()}")
+    print(df_total)
+
+    print("\n■ ■ ■ ■ ■ ■ ■  PROCESO ✔️")
+    # ESTRATEGIA: Oversampling (Aumentar la clase minoritaria)
+    df_minority_upsampled = resample(df_clase_B, 
+                                     replace=True,     # Duplicar filas
+                                     n_samples=100,    # Igualar a la clase mayoritaria
+                                     random_state=42)
+    
+    df_balanceado = pd.concat([df_clase_A, df_minority_upsampled])
+    
+    print(f"\nDespués del balanceo (Oversampling):\n{df_balanceado['tipo'].value_counts()}")
+    
+    print(f"\n{Fore.GREEN}INFO: Al balancear, obligamos al modelo a prestar "
+          f"tanta atención al 'Fraude' como a lo 'Legal'.{Style.RESET_ALL}")
 
 # █■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■█
 # █■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■█
@@ -586,6 +704,9 @@ def main():
         "Ej_8. Variables Meteorológicas:": ejercicio_08,
         "Ej_9. Precios Inmobiliarios Sesgados": ejercicio_09,
         "Ej_10. Dashboard de Ventas Regional:": ejercicio_10,
+        "Ej_11. Tratamiento de Valores Nulos": ejercicio_11,
+        "Ej_12. Encoding y Escalado": ejercicio_12,
+        "Ej_13. Balance de Clases": ejercicio_13,
         "◘ EXTRAS": extras,
     }
     while (True):
