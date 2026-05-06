@@ -8,6 +8,8 @@ import seaborn as sns
 
 from colorama import Fore, Back, Style, init
 
+
+
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_01():
     txtEjer="""Ejercicio 1. Analisis de Canales de Marketing:
@@ -49,6 +51,8 @@ def ejercicio_01():
         a = sns.histplot(data = df_leads, x='leads')
         # print(type(a)) # <class 'matplotlib.axes._subplots.AxesSubplot'> ► Es un objeto de tipo 'AxesSubplot' que representa el área donde se dibuja el gráfico.
         
+        # sns.countplot(data=df_leads, x='leads')
+    
         # ■ Textos
         plt.title('context with ./dark.mplstyle', fontsize=14, fontweight='bold', pad=15)
         plt.xlabel('Nombre Leads (Categoría)', fontsize=12)
@@ -316,7 +320,7 @@ def ejercicio_07():
     }
     plt.rcParams.update(tema_negocios)
 
-    sns.kdeplot(data=df, fill=True, common_norm=False)
+    sns.kdeplot(data=df, fill=True)
     plt.show()
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
@@ -582,7 +586,7 @@ def main():
         "Ej_8. Variables Meteorológicas:": ejercicio_08,
         "Ej_9. Precios Inmobiliarios Sesgados": ejercicio_09,
         "Ej_10. Dashboard de Ventas Regional:": ejercicio_10,
-        # "◘ EXTRAS": extras,
+        "◘ EXTRAS": extras,
     }
     while (True):
         i = menuDvd.MenuDiccionario(menu, tituloMenu='Ejercicios de Analisis de Datos - Modulo 2', num_char=60)
