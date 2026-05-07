@@ -18,7 +18,6 @@ class Formulario_Ninja():
         """
         self.PADY=100           # Desde la parte inferior de la pantalla al borde inferior de la ventana
         self.esExpandido=False  # Booleano para indicar si la ventana (formulario) está plegada
-        self.descpos=descpos
         # ___________________
         # ==== CACHA EL ROOT
         self.root = root        

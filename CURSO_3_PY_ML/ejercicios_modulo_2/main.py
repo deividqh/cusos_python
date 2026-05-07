@@ -700,14 +700,10 @@ def main():
         "Ej_8. Variables Meteorológicas:": ejercicio_08,
         "Ej_9. Precios Inmobiliarios Sesgados": ejercicio_09,
         "Ej_10. Dashboard de Ventas Regional:": ejercicio_10,
-<<<<<<< HEAD
-        # "◘ EXTRAS": extras,
-=======
         "Ej_11. Tratamiento de Valores Nulos": ejercicio_11,
         "Ej_12. Encoding y Escalado": ejercicio_12,
         "Ej_13. Balance de Clases": ejercicio_13,
         "◘ EXTRAS": extras,
->>>>>>> 4a7222b63f1d35a6bbd44c751bb3e3a7f6908d35
     }
     while (True):
         i = menuDvd.MenuDiccionario(menu, tituloMenu='Ejercicios de Analisis de Datos - Modulo 2', num_char=60)

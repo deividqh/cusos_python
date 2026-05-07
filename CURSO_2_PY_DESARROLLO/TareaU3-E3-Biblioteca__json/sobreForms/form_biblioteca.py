@@ -7,7 +7,7 @@ from functools import partial
 from tkinter import filedialog, messagebox, ttk
 from enum import Enum as SMFR
 # ___________________
-from .formPosMov import Formulario_Ninja
+from .formularioNinja import Formulario_Ninja
 from .dvdColor import ColorCorp
 
 from sobreBiblioteca.libro import Libro
@@ -49,10 +49,11 @@ class form_biblioteca(Formulario_Ninja):
 
         """ Familias de objetos para realizar acciones en masa (validar, vaciar, cargar, etc)
         van a tener sus propios metodos dedicados """
-        self.family_txtbx=[]            # los objetos texto que tienen que ser validados en grupo.
-        self.family_bttn_crud=[]        # los objetos boton add / del / updt 
+        self.family_txtbx = []            # los objetos texto que tienen que ser validados en grupo.
+        self.family_bttn_crud = []        # los objetos boton add / del / updt 
         
         self.memo_inf=InfApp()
+        """ >>>  """
 
         self.archivo = ''
         """ >>> Nombre de la ruta al archivo que queremos cargar. """
