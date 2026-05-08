@@ -38,9 +38,11 @@ config_interactiva = {
 widgets_activos = {}
 
 def actualizar_interfaz_parametros(event=None):
+    # Cacha el algoritmo del comboBox
     algoritmo = combo_algoritmos.get()
     for widget in frame_params_dinamico.winfo_children():
         widget.destroy()
+    
     widgets_activos.clear()
     
     params = config_interactiva.get(algoritmo, {})
@@ -93,8 +95,10 @@ def actualizar_grafico():
             
             if tipo_grafico == "heatmap":
                 sns.heatmap(df.select_dtypes(include=['number']).corr(), annot=True, cmap="coolwarm", ax=ax)
+            
             elif tipo_grafico == "boxplot":
                 sns.boxplot(data=df.melt(id_vars='Species'), x='variable', y='value', hue='Species', ax=ax)
+            
             elif tipo_grafico == "violinplot":
                 sns.violinplot(data=df, x='Species', y='PetalWidthCm', ax=ax)
             

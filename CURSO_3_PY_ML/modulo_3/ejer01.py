@@ -15,13 +15,15 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# 
+import os           #Para Limpiar la terminal con  os.system('cls') 
+import  menuDvd     #Funcion que crea un menu y devuelve un int(opcion)
+
 # ■■■■■■■■■ 1. 🌷 Cargar el dataset ( Finsher - 1930 )
 iris = datasets.load_iris()   
 X, y = iris.data, iris.target
 print(y)
-# ■■■■■■■■■ 📉 Analisis de los datos :::
 
+# ■■■■■■■■■ 📉 Analisis de los datos :::
 # ■ Crear el DataFrame con los nombres de las columnas
 df = pd.DataFrame(data = X, columns = iris.feature_names)
 
@@ -30,22 +32,47 @@ df['species'] = [iris.target_names[i] for i in y]
 print("■ Vista previa del DataFrame:")
 print(df.head())
 
-# ■ 
+# ■■■■■■■■■ MENU 
+menu={  
+    "Grafico pairplot": None, 
+    "Grafico displot": None , 
+}
 sns.set_theme(style="ticks")
-grafico = sns.pairplot(data=df, hue="species", palette="bright" )
-grafico.fig.suptitle("Dispersión de Especies Iris", y=1.02)
 
-plt.show()
+while (True):
+    i = menuDvd.MenuDiccionario(menu, tituloMenu='Modulo 3 Elije el Grafico ', num_char=60)
+    if i == 0: break  #PRIMERO LA DE SALIDA
+    for index , opt in enumerate(menu):
+        if i ==  1:
+            # grafico = sns.pairplot(data=df, hue="species", palette="bright" )
+            grafico = sns.pairplot(data=df, hue="species" )
+            # grafico.fig.suptitle("Dispersión de Especies Iris", y=1.02)
+            plt.show()
+            break
 
-sns.displot(df, x="petal width (cm)", hue="species", kind="kde", fill=True)
-plt.show()
+        elif i == 2:
+            sns.displot(df, x="petal width (cm)", hue="species", kind="kde", fill=True)
+            plt.show()
+            break
+        
+        pass
+# ■■■■■■■■■ SALIDA 
 
+# ■ 
+# sns.set_theme(style="ticks")
+# grafico = sns.pairplot(data=df, hue="species", palette="bright" )
+# grafico = sns.pairplot(data=df, hue=y, palette="bright" )
+# grafico = sns.pairplot(data=df, hue="species" )
+# grafico.fig.suptitle("Dispersión de Especies Iris", y=1.02)
+# plt.show()
 
+# sns.displot(df, x="petal width (cm)", hue="species", kind="kde", fill=True)
+# plt.show()
 
-# ■■■■■■■■■ 2. ✂️ Dividir en entrenamiento (70%) y prueba (30%)
+# ■■■■■■■■■ ✂️ Dividir en entrenamiento (70%) y prueba (30%)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# ■■■■■■■■■ 3. 🧠 Crear el modelo sobre el algoritmo SVC con Kernel Lineal (byDef 'rbf')
+# ■■■■■■■■■ 🧠 Crear el modelo sobre el algoritmo SVC con Kernel Lineal (byDef 'rbf')
 modelo_svm = SVC(kernel='linear', probability=True)
 # modelo_svm = SVC(kernel='rbf', verbose=True)
 # modelo_svm = SVC(kernel='poly', verbose=True)
@@ -65,6 +92,7 @@ print(f"■■■■■ Precisión del modelo: {precision:.2f}")
 # ■■■■■■■■■ 🔮🔮 PREDICCION ... Con los elementos a 'predict', hago una consulta a la bolita magica
 # ■ 🌷 Creo unos elementos (dentro del rango probable) con numpy
 nueva_flor = np.array([[5000, 5800, 5000, 5000], [5.1, 4.5, 2.4, 0.2], [6.1, 3.5, 3.4, 0.2]])
+print(f"■■■■■ Muestras: {nueva_flor}")
 
 # ■ 🔮 Predict ... hago una consulta a la bolita magica
 predicciones_nuevas = modelo_svm.predict(nueva_flor)
