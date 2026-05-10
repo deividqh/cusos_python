@@ -5,7 +5,6 @@ from tkinter import ttk
 import numpy as np
 
 def actualizar_grafico():
-
     # Nuevo tipo de gráfico seleccionado
     nuevo_grafico = combo_graficos.get()
 
@@ -13,13 +12,12 @@ def actualizar_grafico():
     new_estilo = combo_estilos.get()
 
     # Actualizamos los datos del gráfico
+    # np.random.seed(42)
     x = np.random.randint(0,10,10)  
     y = np.random.randint(0,10,10)  
     
     with plt.style.context(new_estilo):
-
         ax.clear()  # Limpiamos el gráfico anterior
-
         # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ACTUALIZACIÓN CLAVE: Sincronizar colores de fondo con el estilo seleccionado
         # • El problema es que al usar 'style.context' dentro de la función, Matplotlib cambia los colores
         #   de los elementos nuevos (líneas, puntos), pero no actualiza automáticamente el color de fondo 
@@ -28,6 +26,7 @@ def actualizar_grafico():
         #   dentro del contexto del estilo.
         fig.set_facecolor( color = plt.rcParams['figure.facecolor'] )
         ax.set_facecolor( plt.rcParams['axes.facecolor'] )
+        
         # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
         # Criterio de selección del tipo de gráfico a dibujar
         if nuevo_grafico == "plot":
@@ -52,7 +51,7 @@ fig , ax = plt.subplots()
 
 frame = tk.Frame(root)
 frame.pack()
-label = tk.Label(frame, text="matplotlib en Tkinter!!")
+label = tk.Label(master=frame, text="matplotlib en Tkinter!!")
 label.pack()
 
 # ■■■■ Crea un 'canvas' para mostrar el gráfico en la ventana de 'Tkinter'
@@ -64,8 +63,6 @@ canvas.get_tk_widget().pack()
 # toolbar.update()
 # toolbar.pack() # Empaquetamos la barra de herramientas para mostrarla en la ventana 
 
-frame.pack() # Empaquetamos el frame para mostrarlo en la ventana
-
 tk.Button(master = frame, text="Actualizar Gráfico", command=actualizar_grafico).pack(pady=15) # Botón para actualizar el gráfico
 
 # ■ ■ ■ ■ ■ ■ ■ Lista de estilos solicitados
@@ -74,19 +71,22 @@ estilos = [
     "seaborn-v0_8-darkgrid", "seaborn-v0_8-whitegrid", 
     "seaborn-v0_8-poster", "seaborn-v0_8-talk", "seaborn-v0_8-ticks"
 ]
-# Combobox para seleccionar estilo
+
+# ■ Combobox para seleccionar estilo
 tk.Label(frame, text="Selecciona un estilo:").pack()
 combo_estilos = ttk.Combobox(master = frame, values=estilos, state="readonly")
 combo_estilos.current(0) # Por defecto el primero
 combo_estilos.pack(pady=5)
 # ■ ■ ■ ■ ■ ■ 
 
-# ■ ■ ■ ■ ■ ■ ■ Lista de graficos 
+# ■ ■ ■ ■ ■ ■ ■ Combobox para seleccionar tipo de gráfico
+# ■ Lista de graficos ... el contenido
 graficos = ["plot", "scatter"]
-# Combobox para seleccionar tipo de gráfico
+# ■ Label Asociado al Combo
 tk.Label(frame, text="Selecciona un tipo de gráfico:").pack()
+# ■ Combobox para seleccionar tipo de gráfico
 combo_graficos = ttk.Combobox(master = frame, values=graficos, state="readonly")
-combo_graficos.current(0) # Por defecto el primero
+combo_graficos.current(0)      # Por defecto el primero
 combo_graficos.pack(pady=5)
 
 # ■■■■ Muestra la ventana de 'Tkinter' con el gráfico cargado y dibujado.

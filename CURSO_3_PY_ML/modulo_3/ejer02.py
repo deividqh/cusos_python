@@ -1,12 +1,18 @@
-""" Ejercicio 2 - Probabilidades con Naive Bayes (Iris)
-Objetivo: Aplicar modelos probabilísticos para entender la pertenencia a clases.
-Enunciado del Reto: En un estudio genético, se requiere no solo clasificar la especie, sino conocer el nivel de
-confianza de la predicción. Implementa el algoritmo Gaussian Naive Bayes sobre el dataset Iris y muestra las
-probabilidades exactas de que una flor con medidas [6.7, 3.1, 4.4, 1.4] pertenezca a cada una de las
+TEXTO = """ Ejercicio 2 - Probabilidades con Naive Bayes (Iris) 🌷🌷🌷🌷  (ALGORITMO)
+
+■ Objetivo: Aplicar modelos probabilísticos para entender la [Pertenencia a Clases].
+
+■ Enunciado del Reto: En un estudio genético, se requiere no solo clasificar la especie, sino conocer el nivel de
+confianza de la predicción. 
+• Implementa el algoritmo Gaussian Naive Bayes sobre el dataset Iris y muestra las
+• probabilidades exactas de que una flor con medidas [6.7, 3.1, 4.4, 1.4] pertenezca a cada una de las
 tres categorías. """
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn import datasets
+from colorama import Fore, Style
+
+print (f"\n{Fore.BLUE}{TEXTO}{Style.RESET_ALL}")    
 
 # Carga de datos
 iris = datasets.load_iris()
@@ -16,7 +22,9 @@ print("•••••••••••• dataset Iris Cargado OK")
 # Inicializar y entrenar el clasificador Naive Bayes
 gnb = GaussianNB()
 print("•••••••••••• Algoritmo GaussianNB Cargado OK")
+
 gnb.fit(X, y)
+print(f'\t• Parametros GaussianNB:  {gnb.get_params(deep=True)}')
 print("•••••••••••• Entrenamiento/fit Cargado OK")
 
 # Definir la muestra a evaluar

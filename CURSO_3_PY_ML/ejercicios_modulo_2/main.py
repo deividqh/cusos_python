@@ -1,12 +1,12 @@
 import os           #Para Limpiar la terminal con  os.system('cls') 
 import  menuDvd     #Funcion que crea un menu y devuelve un int(opcion)
+from colorama import Fore, Back, Style, init
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from colorama import Fore, Back, Style, init
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 def ejercicio_01():
@@ -690,16 +690,16 @@ def main():
     # ■ al inicio del programa para establecer un estilo global.
     # plt.style.use('./test.mplstyle')
     menu={  
-        "Ej_1. Analisis de Canales de Marketing:": ejercicio_01, 
-        "Ej_2. Tráfico Web Semanal:": ejercicio_02 , 
-        "Ej_3. Calidad en Manufactura:": ejercicio_03,
-        "Ej_4. Optimización de Dataset": ejercicio_04,
-        "Ej_5. Educación vs Salario": ejercicio_05,
-        "Ej_6. Control de Calidad Alimentaria": ejercicio_06,
-        "Ej_7. Rendimiento de Exámenes": ejercicio_07,
-        "Ej_8. Variables Meteorológicas:": ejercicio_08,
-        "Ej_9. Precios Inmobiliarios Sesgados": ejercicio_09,
-        "Ej_10. Dashboard de Ventas Regional:": ejercicio_10,
+        "Ej_1. Analisis de Canales de Marketing ■ GRAF: histplot ■ estilos desde archivo": ejercicio_01, 
+        "Ej_2. Tráfico Web Semanal ■ GRAF: plot ■ estilo 'context' ": ejercicio_02 , 
+        "Ej_3. Calidad en Manufactura ■ GRAF: boxplot (outliers)": ejercicio_03,
+        "Ej_4. Optimización de Dataset ■ astype ": ejercicio_04,
+        "Ej_5. Educación vs Salario ■ GRAF: scatterplot ■ Compara Categorias": ejercicio_05,
+        "Ej_6. Control de Calidad Alimentaria ■ IQR ■ outliers": ejercicio_06,
+        "Ej_7. Rendimiento de Exámenes. ■ GRAF: Kde (comparacion notas)": ejercicio_07,
+        "Ej_8. Variables Meteorológicas ■ GRAF: heatmap ■ ": ejercicio_08,
+        "Ej_9. Precios Inmobiliarios Sesgados ■ GRAF: boxplot ■ outliers": ejercicio_09,
+        "Ej_10. Dashboard de Ventas Regional: GRAF: barplot(Barras) - histplot(HIstograma)": ejercicio_10,
         "Ej_11. Tratamiento de Valores Nulos": ejercicio_11,
         "Ej_12. Encoding y Escalado": ejercicio_12,
         "Ej_13. Balance de Clases": ejercicio_13,

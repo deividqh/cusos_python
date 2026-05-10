@@ -1,13 +1,8 @@
 [
     {
-        "titulo": "El Cor\u00e1n",
-        "numpag": 1000,
-        "autor": "Mahoma"
-    },
-    {
-        "numpag": 110,
+        "titulo": "Loreto 2.0.2",
         "autor": "Loretos",
-        "titulo": "Loreto 2.0.2"
+        "numpag": 110
     },
     {
         "titulo": "La Biblia",
@@ -15,13 +10,23 @@
         "numpag": 1001
     },
     {
-        "numpag": 80,
-        "autor": "A. Paso",
-        "titulo": "La Marea 2"
+        "titulo": "La Biblias",
+        "autor": "Desconocidos",
+        "numpag": 1
     },
     {
-        "numpag": 1,
-        "autor": "Desconocidos",
-        "titulo": "La Biblias"
+        "titulo": "La Marea 2",
+        "autor": "A. Paso",
+        "numpag": 80
+    },
+    {
+        "titulo": "El Cor\u00e1n",
+        "autor": "Mahoma",
+        "numpag": 1000
+    },
+    {
+        "titulo": "Where We Where Kings",
+        "autor": "Klasius Kley",
+        "numpag": 1000
     }
 ]
