@@ -24,7 +24,6 @@ print("•••••••••••• train y entrenamiento Load Ok")
 # 2. Configuración del modelo SVC
 # Usamos parámetros por defecto para observar el rendimiento base
 clf = SVC()
-print(f'\t• Parametros :  {clf.get_params(deep=True)}')
 
 print("•••••••••••• algoritmo SVC Cargado OK")
 clf.fit(X_train, y_train)

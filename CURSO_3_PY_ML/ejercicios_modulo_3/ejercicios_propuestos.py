@@ -66,7 +66,7 @@ def get_d_datos(dataset_name='iris', test_porciento=None):
     print(f"\n■■■■■■■■■ DATOS INICIALES\n{df.head()}")
     # ■ Retorno
     return datos_retorno
-    
+    # return X, y, X_train, X_test, y_train, y_test, df, target_names, feature_names
     
 
 def ejercicio_01():
@@ -184,34 +184,74 @@ def ejercicio_03():
 
 def ejercicio_04():
     ENUNCIADO = """ 4. LDA como Preprocesamiento para otros Modelos: En lugar de usar LDA solo para visualizar
-    (Ejercicio 4), utilízalo como un paso de reducción de dimensiones a 2 componentes. Posteriormente,
-    entrena un modelo de K-Nearest Neighbors (KNN) sobre esas componentes y compara su precisión
+    (Ejercicio 4), utilízalo como un paso de reducción de dimensiones a 2 componentes. 
+    Posteriormente, entrena un modelo de K-Nearest Neighbors (KNN) sobre esas componentes y compara su precisión
     con un modelo KNN entrenado con las variables originales. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
+
+    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+    from sklearn.neighbors import KNeighborsClassifier as KNN
 
     dd = get_d_datos('iris', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
+    # ■ Reducción a 2 dimensiones usando LDA
+    lda = LinearDiscriminantAnalysis(n_components=2)
+    X_lda = lda.fit( X = dd['X'], y = dd['y'] ).transform(X = dd['X'])
+    vecinos = KNN(n_neighbors=2)
+    modelos_K = {'x_original': dd['X'], 'x_modificado': X_lda}
+    for key, X in modelos_K.items():
+        modelo_fit = vecinos.fit(X=X, y=dd['y'])
+        precision = modelo_fit.score(X=X, y=dd['y'])
+        print(f'Precision modelo {key} = {precision:.2f}')
 
 def ejercicio_05():
-    ENUNCIADO = """ 5. Impacto del MinMaxScaler vs StandardScaler: El Ejercicio 5 demuestra el impacto del escalado.
+    ENUNCIADO = """ 5. Impacto del MinMaxScaler vs StandardScaler: 
+    El Ejercicio 5 demuestra el impacto del escalado.
     Repite el experimento utilizando MinMaxScaler (que escala los datos al rango [0, 1]) en lugar de
     StandardScaler. ¿Existe una diferencia notable en el rendimiento de la SVM? Justifica tu respuesta. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.preprocessing import MinMaxScaler
 
     dd = get_d_datos('cancer', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
+
+    st_scaler = StandardScaler()
+    X_train_st = st_scaler.fit_transform( X = dd['X_train'] )
+    X_test_st = st_scaler.transform( X = dd['X_test'] )
+
+    mm_scaler = MinMaxScaler()
+    X_train_mm = mm_scaler.fit_transform(dd['X_train'])
+    X_test_mm = mm_scaler.transform(dd['X_test'])
+
+    modelo_fit_st = SVC().fit(X_test_st, dd['y_train'])
+    modelo_fit_mm = SVC().fit(X_test_mm, dd['y_train'])
+
+    score_st = modelo_fit_st.score(X_test_st, dd['y_test'])
+    score_mm = modelo_fit_st.score(X_test_mm, dd['y_test'])
+
+    print(f'Precision Escalado Standar = {score_st}')
+    print(f'Precision Escalado Min-Max = {score_mm}')
+
 
 def ejercicio_06():
-    ENUNCIADO = """ 6. Validación Cruzada Estratificada: Modifica el Ejercicio 6 para implementar StratifiedKFold con 10
-    carpetas (folds). Compara la desviación estándar de los resultados frente a la validación cruzada simple
-    y argumenta por qué esta técnica es más robusta en datasets de salud. """
+    ENUNCIADO = """ 6. Validación Cruzada Estratificada: 
+    Modifica el Ejercicio 6 para implementar StratifiedKFold con 10 carpetas (folds). 
+    - Compara la desviación estándar de los resultados frente a la validación cruzada simple y
+    - Argumenta por qué esta técnica es más robusta en datasets de salud. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
+
+    from sklearn.model_selection import StratifiedKFold, KFold
 
     dd = get_d_datos('cancer', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
+
+    # Configuramos 3 Folds
+    skf = StratifiedKFold(n_splits=10)
+
 
 def ejercicio_07():
     ENUNCIADO = """ 7. Ajuste del Umbral de Decisión: En el Ejercicio 7, habilita la opción probability=True en el modelo

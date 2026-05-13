@@ -16,8 +16,8 @@ print (f"\n{Fore.BLUE}{TEXTO}{Style.RESET_ALL}")
 cancer = load_breast_cancer()
 # Definimos los modelos a comparar
 modelos = {
-"SVM Lineal": SVC(kernel='linear'),
-"SVM RBF (No lineal)": SVC(kernel='rbf')
+    "SVM Lineal": SVC(kernel='linear'),
+    "SVM RBF (No lineal)": SVC(kernel='rbf')
 }
 print("Resultados de Validación Cruzada (CV=5):")
 for nombre, modelo in modelos.items():

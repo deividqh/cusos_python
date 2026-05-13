@@ -29,6 +29,7 @@ param_grid = {
 # Crear y ejecutar la búsqueda
 grid = GridSearchCV(SVC(), param_grid, refit=True, verbose=0, cv=5)
 grid.fit(X_scaled, data.target)
+
 print(f'PARAMETROS DEL MODELO: {grid.get_params(deep=True)}')
 
 print(f"Mejores parámetros encontrados: {grid.best_params_}")

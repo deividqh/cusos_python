@@ -62,13 +62,27 @@ def descripcion_dataset(data_view):
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
 # ESCALADO DE DATOS
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
-from sklearn.preprocessing import StandardScaler
-svm_raw = SVC().fit(X_train, y_train)
-# 1. Modelo sin escalado
-score_raw = svm_raw.score(X_test, y_test)
-# 2. Modelo con escalado
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+def escalado(modelo_fit):
+    from sklearn.preprocessing import StandardScaler
+    
+    # 1. Modelo sin escalado
+    score_raw = modelo_fit.score(X_test, y_test)
+    # 2. Modelo con escalado
 
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+# ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+def splitter(X, y):
+    from sklearn.model_selection import train_test_split
+
+    # 70% train - 30% resto
+    X_train, X_R, y_train, y_R = train_test_split(X, y, test_size=0.3, random_state=42)
+    
+    # del 30% ,  50% test - 50% pruebas
+    X_test, X_pruebas, y_test, y_pruebas = train_test_split(X_R, y_R, test_size=0.5, random_state=4)
+
+    # Retorno 
+    return X_train, X_test, X_pruebas, y_train, y_test, y_pruebas
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
