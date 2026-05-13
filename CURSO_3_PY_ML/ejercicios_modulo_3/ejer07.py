@@ -13,26 +13,27 @@ from sklearn.svm import SVC
 import matplotlib.pyplot as plt
 from colorama import Fore, Style
 
-print (f"\n{Fore.BLUE}{TEXTO}{Style.RESET_ALL}")    
+def ejercicio07():
+    print (f"\n{Fore.BLUE}{TEXTO}{Style.RESET_ALL}")    
 
-data = load_breast_cancer()
+    data = load_breast_cancer()
 
-# Split de datos
-X_train, X_test, y_train, y_test = train_test_split(data.data, data.target,
-test_size=0.3, random_state=0)
+    # Split de datos
+    X_train, X_test, y_train, y_test = train_test_split(data.data, data.target,
+    test_size=0.3, random_state=0)
 
-# Entrenar modelo (usamos kernel lineal por su estabilidad en este dataset)
-clf = SVC(kernel='linear').fit(X_train, y_train)
-print(f'PARAMETROS DEL MODELO: {clf.get_params(deep=True)}')
+    # Entrenar modelo (usamos kernel lineal por su estabilidad en este dataset)
+    clf = SVC(kernel='linear').fit(X_train, y_train)
+    print(f'PARAMETROS DEL MODELO: {clf.get_params(deep=True)}')
 
-y_pred = clf.predict(X_test)
+    y_pred = clf.predict(X_test)
 
-# Generar la matriz de confusion
-cm = confusion_matrix(y_test, y_pred)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=data.target_names)
-disp.plot(cmap='Reds')
-plt.title("Matriz de Confusión: Diagnóstico Oncológico")
-plt.show()
+    # Generar la matriz de confusion
+    cm = confusion_matrix(y_test, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=data.target_names)
+    disp.plot(cmap='Reds')
+    plt.title("Matriz de Confusión: Diagnóstico Oncológico")
+    plt.show()
 
-print(""" Justificación: El alumno evalúa la utilidad real del modelo mediante el análisis detallado de la matriz,
-reconociendo la diferencia entre precisión y seguridad. """)
+    print(""" Justificación: El alumno evalúa la utilidad real del modelo mediante el análisis detallado de la matriz,
+    reconociendo la diferencia entre precisión y seguridad. """)

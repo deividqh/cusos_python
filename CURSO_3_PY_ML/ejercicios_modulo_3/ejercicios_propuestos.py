@@ -13,7 +13,7 @@ from  colorama import Fore, Style
 import os           # Para Limpiar la terminal con  os.system('cls') 
 import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
 
-def get_d_datos(dataset_name='iris', test_porciento=None):
+def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
     """ Cacho los datos del dataset que vayamos a usar y devuelvo un diccionario con todos los datos 
     y el split hecho.
     test_porciento puede ser entre 0 y 1 para el test y asume pocentaje o 30% por ejemplo.
@@ -39,21 +39,21 @@ def get_d_datos(dataset_name='iris', test_porciento=None):
         test_porciento = test_porciento / 100   
     pass
 
-    datos_x = data_load.data
-    datos_y = data_load.target
+    X = data_load.data
+    y = data_load.target
 
     # ■■■■■■■■■ 
     x_train, x_test, y_train, y_test = train_test_split(data_load.data, data_load.target, test_size = test_porciento, random_state = 42)
     
     # Creo un pandas con los nombres de las columnas
-    df = pd.DataFrame(data = datos_x, columns = data_load.feature_names)
+    df = pd.DataFrame(data = X, columns = data_load.feature_names)
     # Y le añado una columna mas con los resultados (0, 1, 2), así preparo el pandas para lo que venga.
     df['resultado'] = data_load.target
     
     # ■ Cargo el diccionario de retorno
     datos_retorno = {
-        'X': datos_x, 
-        'y': datos_y, 
+        'X': X, 
+        'y': y, 
         'X_train': x_train, 
         'y_train': y_train, 
         'X_test': x_test, 
@@ -65,8 +65,10 @@ def get_d_datos(dataset_name='iris', test_porciento=None):
     # ■  imprimo el head del dataset para echar un primer vistazo a los datos en el ejercicio
     print(f"\n■■■■■■■■■ DATOS INICIALES\n{df.head()}")
     # ■ Retorno
-    return datos_retorno
-    # return X, y, X_train, X_test, y_train, y_test, df, target_names, feature_names
+    if b_split == False:
+        return datos_retorno
+    else:
+        return X, y, x_train, x_test, y_train, y_test, df, target_names, feature_names
     
 
 def ejercicio_01():
@@ -98,7 +100,7 @@ def ejercicio_01():
     print('En cuanto al kernel no podemos sacar ningún dato concluyente con respecto a la precisión')
     sns.pairplot(data=dd['df'], hue='resultado')
     plt.show()
-    print('En cuanto a la distribución de los datos se puede ver en el grafico que setosa(0) está bien diferenciada de las otras dos que mantienen un conjunto bien claro pero comparten un subconjunto de medidas confusas')
+    print(f'{Fore.YELLOW}En cuanto a la distribución de los datos se puede ver en el grafico que setosa(0) está bien diferenciada de las otras dos que mantienen un conjunto bien claro pero comparten un subconjunto de medidas confusas{Style.RESET_ALL}')
 
 def ejercicio_02():
     ENUNCIADO = """ 2. Análisis Probabilístico Comparativo: 
@@ -138,7 +140,7 @@ def ejercicio_02():
     proba_muestras = modelo.predict_proba(X=tres_muestras)
     print(f'Probabilidad de las muestras\n{proba_muestras.round(4)*100}')
 
-
+    print(f'{Fore.YELLOW}Me cuesta la Interpretación de los gráficos aun, mas allá de sacar datos, para interpretarlos hay que saber abordarlos, estudiarlos{Style.RESET_ALL}')
 
 def ejercicio_03():
     ENUNCIADO = """ 3. Simulación de Desbalanceo de Clases: En el dataset de Cáncer de Mama (Ejercicio 3), 
@@ -181,6 +183,18 @@ def ejercicio_03():
     plt.title("Matriz de Confusión: Diagnóstico Oncológico")
     plt.show()
 
+    print(f'{Fore.YELLOW}Me cuesta la Interpretación de los gráficos aun, mas allá de sacar datos, para interpretarlos hay que saber abordarlos, estudiarlos{Style.RESET_ALL}')
+    print(f"""• Puedo decir que TP/FP/TN/FN:  
+     T y P =  +
+     F y N =  - 
+     • Si los multiplico, habla de la 'Realidad' por ejemplo: TP(+*+) = Realidad Benigno  , FP(-*+) = Realidad Maligno
+     • La 'Prediccion' es la P y la N, luego:{Fore.CYAN}     
+     TP = Realidad: benigno (+,+) ■  Prediccion: (P) benigno
+     FP = Realidad: maligno (-,+) ■  Prediccion: (P) benigno
+     TN = Realidad: maligno (+,-) ■  Prediccion: (N) maligno
+     FN = Realidad: benigno (-,-) ■  Prediccion: (N) maligno     
+    {Style.RESET_ALL}""")
+
 
 def ejercicio_04():
     ENUNCIADO = """ 4. LDA como Preprocesamiento para otros Modelos: En lugar de usar LDA solo para visualizar
@@ -204,6 +218,8 @@ def ejercicio_04():
         modelo_fit = vecinos.fit(X=X, y=dd['y'])
         precision = modelo_fit.score(X=X, y=dd['y'])
         print(f'Precision modelo {key} = {precision:.2f}')
+    
+    print(f'{Fore.YELLOW}Me cuesta la Interpretación de los gráficos aún, mas allá de sacar datos, para interpretarlos hay que saber abordarlos, estudiarlos{Style.RESET_ALL}')
 
 def ejercicio_05():
     ENUNCIADO = """ 5. Impacto del MinMaxScaler vs StandardScaler: 
@@ -217,24 +233,22 @@ def ejercicio_05():
     dd = get_d_datos('cancer', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
+    df=dd['df']
+    
+    d_escalado = {'StandardScaller':StandardScaler(), 'MinMaxScaler':MinMaxScaler()}
+    for key, value in d_escalado.items():
+        escalado = value
+        X_train = escalado.fit_transform(X = dd['X_train'])
+        X_test  = escalado.transform(X = dd['X_test'])
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        algoritmo = SVC()
+        modelo = algoritmo.fit(X = X_train, y = dd['y_train'])
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        precision = modelo.score( X = X_test ,  y = dd['y_test'] )
+        print(f'• Escalado {key} \t• Precision = {precision:.2f}')    
 
-    st_scaler = StandardScaler()
-    X_train_st = st_scaler.fit_transform( X = dd['X_train'] )
-    X_test_st = st_scaler.transform( X = dd['X_test'] )
-
-    mm_scaler = MinMaxScaler()
-    X_train_mm = mm_scaler.fit_transform(dd['X_train'])
-    X_test_mm = mm_scaler.transform(dd['X_test'])
-
-    modelo_fit_st = SVC().fit(X_test_st, dd['y_train'])
-    modelo_fit_mm = SVC().fit(X_test_mm, dd['y_train'])
-
-    score_st = modelo_fit_st.score(X_test_st, dd['y_test'])
-    score_mm = modelo_fit_st.score(X_test_mm, dd['y_test'])
-
-    print(f'Precision Escalado Standar = {score_st}')
-    print(f'Precision Escalado Min-Max = {score_mm}')
-
+    print(f'{Fore.YELLOW}No hay una diferencia notable si ambas precisiones son similares. {Style.RESET_ALL}')
+    
 
 def ejercicio_06():
     ENUNCIADO = """ 6. Validación Cruzada Estratificada: 
@@ -244,30 +258,79 @@ def ejercicio_06():
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
 
     from sklearn.model_selection import StratifiedKFold, KFold
+    from sklearn.model_selection import cross_val_score    
 
-    dd = get_d_datos('cancer', 30)    
+    dd = get_d_datos('cancer')    
     if not dd: return
     print("\n■■■■■■■■■ ")
+    data = dd.data
+    target = dd.target
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■ IA
+    # Definimos los dos métodos de validación 
+    cv_simple = KFold(n_splits=10, shuffle=True, random_state=42)
+    cv_estratificado = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■
+    modelos = { "SVM Lineal": SVC(kernel='linear'), "SVM RBF (No lineal)": SVC(kernel='rbf') }
 
-    # Configuramos 3 Folds
-    skf = StratifiedKFold(n_splits=10)
+    print(f"\n{'MODELO':<20} | {'CV SIMPLE (std)':<20} | {'CV ESTRATIF. (std)':<20}")
+    print("-" * 70)
+    for nombre, modelo in modelos.items():
+        simple = cross_val_score(estimator=modelo, X=data, y=target, cv = cv_simple)
+        estrat = cross_val_score(estimator=modelo, X=data, y=target, cv = cv_estratificado)
+
+        # Imprimimos comparando la desviación estándar (std)
+        print(f"{nombre:<20} | {simple.mean():.3f} (+/- {simple.std():.4f}) | {estrat.mean():.3f} (+/- {estrat.std():.4f})")
+    pass
+    print(f'{Fore.YELLOW}La estratificada me parece mejor porque tiene menos varianza, a pesar de la media.  {Style.RESET_ALL}')
 
 
 def ejercicio_07():
-    ENUNCIADO = """ 7. Ajuste del Umbral de Decisión: En el Ejercicio 7, habilita la opción probability=True en el modelo
-    SVC. Utiliza predict_proba para obtener las probabilidades de cáncer. Define un umbral
-    personalizado: si la probabilidad de "maligno" es mayor a 0.25, clasifícalo como positivo. Observa cómo
-    cambia el Recall y el número de Falsos Negativos. """
+    ENUNCIADO = """ 7. Ajuste del Umbral de Decisión: 
+    En el Ejercicio 7, habilita la opción probability=True en el modelo SVC. 
+    • Utiliza predict_proba para obtener las probabilidades de cáncer. 
+    • Define un umbral personalizado: 
+        • if la probabilidad de "maligno" es mayor a 0.25, clasifícalo como positivo. 
+        • Observa cómo cambia el Recall y el número de Falsos Negativos. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
+    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+    from ejer07 import ejercicio07 as soy_007
 
     dd = get_d_datos('cancer', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
+    algoritmo = SVC(kernel='linear', probability=True)
+    modelo = algoritmo.fit(dd['X_train'], dd['y_train'])
+    
+    predict = modelo.predict(dd['X_test'])
+    proba   = modelo.predict_proba(dd['X_test'])
+    
+    # Todas las filas , la columna de maligno (pandas)
+    probabilidad_maligno = proba[ : , 1 ]
+    # Y el por qué python me gusta
+    filtrado_25 = [1 if p > 0.25 else 0 for p in probabilidad_maligno]
+    pass
+    kung_fu = confusion_matrix(y_true = dd['y_test'], y_pred = filtrado_25)
+    matrix_UI = ConfusionMatrixDisplay(confusion_matrix = kung_fu, display_labels = dd['target_names'])
+    # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ MENU PARA PODER COMPARAR LOS DOS RESULTADOS
+    sub_menu = {"Matriz de Confusión ejercicio 7": None, "Matriz de Confusión Con Umbral al 25%":None}
+    while (True):
+        i = menuDvd.MenuDiccionario(sub_menu, tituloMenu = "ELIGE GRAFICO PARA COMPARAR" ,
+                                    num_char=60, char_1='', char_2='', char_3='_',
+                                    texto_exit= '◀️  Atrás | - clear' )
+        if i == 0: 
+            break  # ❌ PRIMERO LA DE SALIDA                
+        elif i == 1:
+            soy_007()
+        elif i == 2:
+            matrix_UI.plot(cmap='Reds')
+            plt.show()
+    # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 
 def ejercicio_08():
-    ENUNCIADO = """ 8. Naive Bayes y Supuestos de Independencia: Investiga el impacto de la correlación entre variables en
-    Naive Bayes. Crea un nuevo dataset sintético basado en Iris donde dos variables sean copias exactas
-    una de la otra. Compara el rendimiento de Naive Bayes frente a LDA en este dataset "redundante". """
+    ENUNCIADO = """ 8. Naive Bayes y Supuestos de Independencia: 
+    • Investiga el impacto de la correlación entre variables en Naive Bayes. 
+    • Crea un nuevo dataset sintético basado en Iris donde dos variables sean copias exactas una de la otra. 
+    • Compara el rendimiento de Naive Bayes frente a LDA en este dataset "redundante". """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
 
     dd = get_d_datos('iris', 30)    
@@ -275,21 +338,49 @@ def ejercicio_08():
     print("\n■■■■■■■■■ ")
 
 def ejercicio_09():
-    ENUNCIADO = """ 9. Optimización por Búsqueda Aleatoria (RandomizedSearch): Sustituye GridSearchCV del Ejercicio 9
-    por RandomizedSearchCV. Define una distribución continua para el parámetro C (por ejemplo, usando
-    scipy.stats.expon) y realiza 20 iteraciones. Compara la eficiencia temporal frente a la búsqueda por
-    rejilla. """
+    ENUNCIADO = """ 9. Optimización por Búsqueda Aleatoria (RandomizedSearch): 
+    Sustituye GridSearchCV del Ejercicio 9 por RandomizedSearchCV. 
+    Define una distribución continua para el parámetro C (por ejemplo, usando scipy.stats.expon) y 
+    realiza 20 iteraciones. 
+    Compara la eficiencia temporal frente a la búsqueda por rejilla. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
+    
+    from sklearn.model_selection import RandomizedSearchCV
+    from sklearn.preprocessing import StandardScaler
 
-    dd = get_d_datos('cancer', 30)    
-    if not dd: return
+    cancer = get_d_datos('cancer')    
+    if not cancer: return
     print("\n■■■■■■■■■ ")
 
+    X_escalado = StandardScaler().fit_transform(cancer.data)    
+    parametros = {
+        'C': [0.1, 1, 10, 100],
+        'gamma': [1, 0.1, 0.01, 0.001],
+        'kernel': ['rbf']
+    }
+    # Crear y ejecutar la búsqueda
+    algoritmo = RandomizedSearchCV(
+        estimator = SVC(),    # el Modelo.
+        param_distributions = parametros, # ¡Cambiado de param_grid!
+        n_iter = 20,         # Muy importante: ¿cuántas combinaciones probar?
+        refit = True,        # Re-entrena el mejor modelo al final
+        verbose = 0,         # Silencioso (puedes subirlo a 2 para ver progreso)
+        cv = 5,              # Validación cruzada
+        n_jobs = -1,         # (Opcional) Usa toda la CPU para ir más rápido
+        random_state = 42    # (Opcional) Para que el azar sea reproducible
+    )
+    algoritmo.fit(X=X_escalado, y=cancer.target)
+
+    print(f"Mejores parámetros encontrados: {algoritmo.best_params_}")
+    print(f"Mejor precisión obtenida: {algoritmo.best_score_:.4f}")
+
+
 def ejercicio_10():
-    ENUNCIADO = """ 10. Persistencia y Despliegue del Pipeline: Completa el Ejercicio 10 utilizando la librería joblib para
-    guardar el pipeline entrenado en un archivo llamado modelo_iris_final.pkl. Escribe un pequeño
-    script independiente que cargue este archivo y realice predicciones sobre 5 nuevas muestras
-    inventadas por ti, simulando un entorno de producción. """
+    ENUNCIADO = """ 10. Persistencia y Despliegue del Pipeline: 
+    • Completa el Ejercicio 10 utilizando la librería joblib para guardar el pipeline entrenado 
+    en un archivo llamado modelo_iris_final.pkl. 
+    • Escribe un pequeño script independiente que cargue este archivo y realice predicciones sobre 5 
+    nuevas muestras inventadas por ti, simulando un entorno de producción. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
 
     dd = get_d_datos('iris', 30)    
