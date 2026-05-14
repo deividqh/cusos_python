@@ -1,17 +1,13 @@
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-
-
-
 import numpy as np
 import pandas as pd
-
 import seaborn as sns
 import matplotlib.pyplot as plt
-
 from  colorama import Fore, Style
 import os           # Para Limpiar la terminal con  os.system('cls') 
 import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
+from sklearn import datasets
 
 def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
     """ Cacho los datos del dataset que vayamos a usar y devuelvo un diccionario con todos los datos 
@@ -19,7 +15,6 @@ def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
     test_porciento puede ser entre 0 y 1 para el test y asume pocentaje o 30% por ejemplo.
     si test_porciento = None, devuelve el dataset.
     """
-    from sklearn import datasets
     # ■■■■■■■■■ Cargo el dataset
     dataset_name = dataset_name.strip().lower()    
     if dataset_name == 'iris':
@@ -336,6 +331,7 @@ def ejercicio_08():
     dd = get_d_datos('iris', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
+    print(f'{Fore.YELLOW}NO ENTIENDO EL ENUNCIADO DEL EJERCICIO  {Style.RESET_ALL}')
 
 def ejercicio_09():
     ENUNCIADO = """ 9. Optimización por Búsqueda Aleatoria (RandomizedSearch): 
@@ -386,7 +382,8 @@ def ejercicio_10():
     dd = get_d_datos('iris', 30)    
     if not dd: return
     print("\n■■■■■■■■■ ")
-
+    
+    print(f'{Fore.YELLOW}NO ENTIENDO EL ENUNCIADO DEL EJERCICIO  {Style.RESET_ALL}')
 
 # █■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■█
 # █■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■█
