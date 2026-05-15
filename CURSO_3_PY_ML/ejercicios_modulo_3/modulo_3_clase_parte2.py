@@ -1,5 +1,7 @@
 import menuDvd
 from colorama import Fore, Style
+from modulos.datos import get_d_datos
+
 
 def ejercicio_01():
     ENUNCIADO = """ Ejercicio 1 - PCA: Reducción de Dimensionalidad
@@ -95,6 +97,9 @@ precisión media obtenida """
     from sklearn import datasets
     # Datos
     iris = datasets.load_iris()
+    (X, y, X_train, X_test, y_train, y_test, df, target_names, feature_names) = get_d_datos('iris', 30, True)    
+    print("\n■■■■■■■■■ ")
+
     # Bosque Aleatorio con 100 estimadores
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
     
@@ -165,6 +170,7 @@ importancia de las características del dataset Iris."""
     from sklearn.ensemble import RandomForestClassifier
     from sklearn import datasets
     import matplotlib.pyplot as plt
+    
     iris = datasets.load_iris()
     rf = RandomForestClassifier(n_estimators=50, random_state=42).fit(iris.data,
     iris.target)

@@ -166,7 +166,7 @@ def ejercicio_04():
     # if not dd: return
     print("\n■■■■■■■■■ ")
     
-    lista_k = []            # para k
+    lista_k = []    # para k(nuemro de vecinos)
     lista_p = []    # para_las precisiones
     # compilado = {'k':i, 'p':precision}
     for i in range(1, 21):
@@ -180,11 +180,14 @@ def ejercicio_04():
         lista_p.append(precision)
     pass
     # 2. Graficamos los resultados
-    plt.plot(X = lista_k, y = lista_p, marker='o' )
+    plt.plot( lista_k,  lista_p, marker='o' )
     plt.xlabel('Valor de K (n_neighbors)')
     plt.ylabel('Precisión (Score)')
     plt.xticks(range(1, 21))
     plt.show()
+
+    print(f"{Fore.YELLOW}NO ENTIENDO POR QUÉ SALE ESTE RESULTADO{Style.RESET_ALL}")
+    
 
 def ejercicio_05():
     ENUNCIADO = """ Actividad 5 - Poda de Árboles (Pruning): 
@@ -192,15 +195,28 @@ def ejercicio_05():
     • Luego, aplica restricciones de min_samples_leaf y max_depth para simplificarlo y 
     • explica cómo esto ayuda a la generalización. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
+    
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.model_selection import cross_val_score
+    
+    # Datos
+    (X, y, X_train, X_test, y_train, y_test, df, target_names, feature_names) = get_d_datos('cancer', 30, True)    
+    print("\n■■■■■■■■■ ")
 
-
+    # Bosque Aleatorio con 100 estimadores
+    rf = RandomForestClassifier(n_estimators=50, random_state=42)
+    
+    # Evaluación mediante validación cruzada
+    scores = cross_val_score(rf, X, y, cv=5)
+    print(f"Precisión por cada fold: {scores}")
+    print(f"Precisión media del Bosque Aleatorio: {scores.mean():.4f}")
+        
 
 def ejercicio_06():
     ENUNCIADO = """  Actividad 6 - Estabilidad del Bosque: Compara un único Árbol de Decisión frente a un Random Forest
 de 500 árboles. Evalúa ambos modelos 10 veces con diferentes particiones de datos (seeds) y analiza
 cuál de los dos presenta una varianza menor en sus resultados """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
-
 
 
 def ejercicio_07():
