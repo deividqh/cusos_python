@@ -8,62 +8,63 @@ from  colorama import Fore, Style
 import os           # Para Limpiar la terminal con  os.system('cls') 
 import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
 from sklearn import datasets
+from modulos.datos import get_d_datos
 
-def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
-    """ Cacho los datos del dataset que vayamos a usar y devuelvo un diccionario con todos los datos 
-    y el split hecho.
-    test_porciento puede ser entre 0 y 1 para el test y asume pocentaje o 30% por ejemplo.
-    si test_porciento = None, devuelve el dataset.
-    """
-    # ■■■■■■■■■ Cargo el dataset
-    dataset_name = dataset_name.strip().lower()    
-    if dataset_name == 'iris':
-        data_load = datasets.load_iris()   
-    elif dataset_name == 'cancer':
-        data_load = datasets.load_breast_cancer()
-    else:
-        return None
-    # ■■■■■■■■■ Si no me das la proporción de test, te doy el dataset.
-    if test_porciento == None and dataset_name:
-        return data_load
+# def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
+#     """ Cacho los datos del dataset que vayamos a usar y devuelvo un diccionario con todos los datos 
+#     y el split hecho.
+#     test_porciento puede ser entre 0 y 1 para el test y asume pocentaje o 30% por ejemplo.
+#     si test_porciento = None, devuelve el dataset.
+#     """
+#     # ■■■■■■■■■ Cargo el dataset
+#     dataset_name = dataset_name.strip().lower()    
+#     if dataset_name == 'iris':
+#         data_load = datasets.load_iris()   
+#     elif dataset_name == 'cancer':
+#         data_load = datasets.load_breast_cancer()
+#     else:
+#         return None
+#     # ■■■■■■■■■ Si no me das la proporción de test, te doy el dataset.
+#     if test_porciento == None and dataset_name:
+#         return data_load
     
-    # ■■■■■■■■■ Me vale lo que quieras: 0.7 o 70%
-    if test_porciento > 0 and test_porciento <= 1:
-        pass
-    else:
-        test_porciento = test_porciento / 100   
-    pass
+#     # ■■■■■■■■■ Me vale lo que quieras: 0.7 o 70%
+#     if test_porciento > 0 and test_porciento <= 1:
+#         pass
+#     else:
+#         test_porciento = test_porciento / 100   
+#     pass
 
-    X = data_load.data
-    y = data_load.target
+#     X = data_load.data
+#     y = data_load.target
 
-    # ■■■■■■■■■ 
-    x_train, x_test, y_train, y_test = train_test_split(data_load.data, data_load.target, test_size = test_porciento, random_state = 42)
+#     # ■■■■■■■■■ 
+#     x_train, x_test, y_train, y_test = train_test_split(data_load.data, data_load.target, test_size = test_porciento, random_state = 42)
     
-    # Creo un pandas con los nombres de las columnas
-    df = pd.DataFrame(data = X, columns = data_load.feature_names)
-    # Y le añado una columna mas con los resultados (0, 1, 2), así preparo el pandas para lo que venga.
-    df['resultado'] = data_load.target
+#     # Creo un pandas con los nombres de las columnas
+#     df = pd.DataFrame(data = X, columns = data_load.feature_names)
+#     # Y le añado una columna mas con los resultados (0, 1, 2), así preparo el pandas para lo que venga.
+#     df['resultado'] = data_load.target
     
-    # ■ Cargo el diccionario de retorno
-    datos_retorno = {
-        'X': X, 
-        'y': y, 
-        'X_train': x_train, 
-        'y_train': y_train, 
-        'X_test': x_test, 
-        'y_test': y_test,
-        'df': df, 
-        'target_names': data_load.target_names,
-        'feature_names': data_load.feature_names,
-    }
-    # ■  imprimo el head del dataset para echar un primer vistazo a los datos en el ejercicio
-    print(f"\n■■■■■■■■■ DATOS INICIALES\n{df.head()}")
-    # ■ Retorno
-    if b_split == False:
-        return datos_retorno
-    else:
-        return X, y, x_train, x_test, y_train, y_test, df, target_names, feature_names
+#     # ■ Cargo el diccionario de retorno
+#     datos_retorno = {
+#         'X': X, 
+#         'y': y, 
+#         'X_train': x_train, 
+#         'y_train': y_train, 
+#         'X_test': x_test, 
+#         'y_test': y_test,
+#         'df': df, 
+#         'target_names': data_load.target_names,
+#         'feature_names': data_load.feature_names,
+#     }
+#     # ■  imprimo el head del dataset para echar un primer vistazo a los datos en el ejercicio
+#     print(f"\n■■■■■■■■■ DATOS INICIALES\n{df.head()}")
+#     # ■ Retorno
+#     if b_split == False:
+#         return datos_retorno
+#     else:
+#         return X, y, x_train, x_test, y_train, y_test, df, target_names, feature_names
     
 
 def ejercicio_01():
@@ -207,14 +208,14 @@ def ejercicio_04():
     # ■ Reducción a 2 dimensiones usando LDA
     lda = LinearDiscriminantAnalysis(n_components=2)
     X_lda = lda.fit( X = dd['X'], y = dd['y'] ).transform(X = dd['X'])
-    vecinos = KNN(n_neighbors=2)
+    algoritmo = KNN(n_neighbors=2)
     modelos_K = {'x_original': dd['X'], 'x_modificado': X_lda}
     for key, X in modelos_K.items():
-        modelo_fit = vecinos.fit(X=X, y=dd['y'])
-        precision = modelo_fit.score(X=X, y=dd['y'])
+        modelo = algoritmo.fit(X=X, y=dd['y'])
+        precision = modelo.score(X=X, y=dd['y'])
         print(f'Precision modelo {key} = {precision:.2f}')
     
-    print(f'{Fore.YELLOW}Me cuesta la Interpretación de los gráficos aún, mas allá de sacar datos, para interpretarlos hay que saber abordarlos, estudiarlos{Style.RESET_ALL}')
+    print(f'{Fore.YELLOW}Me cuesta la Interpretación  aún, mas allá de sacar datos, para interpretarlos hay que saber abordarlos, estudiarlos{Style.RESET_ALL}')
 
 def ejercicio_05():
     ENUNCIADO = """ 5. Impacto del MinMaxScaler vs StandardScaler: 
@@ -288,7 +289,7 @@ def ejercicio_07():
         • Observa cómo cambia el Recall y el número de Falsos Negativos. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
     from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-    from ejer07 import ejercicio07 as soy_007
+    from modulo_3_clase_parte1 import ejercicio_07 as ejerciciosiete
 
     dd = get_d_datos('cancer', 30)    
     if not dd: return
@@ -315,7 +316,7 @@ def ejercicio_07():
         if i == 0: 
             break  # ❌ PRIMERO LA DE SALIDA                
         elif i == 1:
-            soy_007()
+            ejerciciosiete()
         elif i == 2:
             matrix_UI.plot(cmap='Reds')
             plt.show()
@@ -420,5 +421,5 @@ def main():
 # ██████■■■■██████████████████ █ █ █ █ █ █ ██████████████████■■■■██████
 # ██████■■■■██████████████████ █ █ █ █ █ █ ██████████████████■■■■██████
 if __name__ == "__main__":
-    print("Ejercicios de Analisis de Datos - Modulo 2")
+    print("Ejercicios de  Modulo 3 - Algoritmos - Metricas Parte 1")
     main()

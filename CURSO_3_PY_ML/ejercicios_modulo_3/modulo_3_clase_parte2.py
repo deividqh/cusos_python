@@ -291,5 +291,5 @@ def main():
 # ██████■■■■██████████████████ █ █ █ █ █ █ ██████████████████■■■■██████
 # ██████■■■■██████████████████ █ █ █ █ █ █ ██████████████████■■■■██████
 if __name__ == "__main__":
-    print("Ejercicios de Analisis de Datos - Modulo 2")
+    print("Ejercicios de Clase Modulo 3 Parte 2")
     main()

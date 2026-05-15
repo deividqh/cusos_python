@@ -34,10 +34,13 @@ def get_matriz_confusion(X_test, y_test, target_names):
 #   • Es un "atajo". No necesitas predecir nada primero; el modelo lo hace internamente, compara y te da la nota. 
 #   • Es ideal para un chequeo rápido.
 def get_score(X_train, y_train, X_test, y_test):
-    modelo   = SVC().fit(X_train_scaled, y_train)
-    mod_score = modelo.score(X_test_scaled, y_test)
+
+    modelo   = SVC().fit(X_train, y_train)
+    mod_score = modelo.score(X_test, y_test)
     print(f"Score/Precisión: {mod_score:.4f}")
     return mod_score.round(4)
+""" La métrica precision_score responde a la pregunta: 
+"De todos los casos que el modelo clasificó como positivos, ¿cuántas fueron correctas ?". """
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ■ accuracy_score :  EXACTITUD
@@ -50,7 +53,7 @@ def get_accuracy_score(modelo, X_test, y_test):
     from sklearn.metrics import accuracy_score
 
     y_predict = modelo.predict(X_test)
-    exactitud = accuracy_score(y_test, y_predict)
+    exactitud = accuracy_score(y_true = y_test, y_pred = y_predict)
     print(f"\n██•██ Exactitud/accuracy_score en el diagnóstico médico: {exactitud*100:.2f}% \n")
     # ■ NOTA:: Para usar accuracy_score, primero tienes que haber ejecutado predict() (no predict_proba), ya que esta función espera etiquetas (0, 1, 2...), no probabilidades (0.85, 0.15...).
     return exactitud.round(4)
@@ -70,18 +73,4 @@ def get_recall(modelo, X_test, y_test):
     print(f"Recall del modelo SVM: {recall:.2f}")
     return recall.round(2)
 
-# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-# ■ Precisión (Precision) ■ 
-# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-#   • Mide cuántos de los que el modelo marcó como "Positivos" eran realmente correctos.
-#   • FORMULA: TP / TP + FP
-#   • Es especialmente útil cuando el coste de un falso positivo es alto (por ejemplo, clasificar un correo legítimo como spam).
-def get_precision(modelo, X_test, y_test):
-    y_predict = modelo.predict(X_test)
-    # Esta métrica indica qué porcentaje de predicciones positivas fueron correctas.
-    precision = precision_score(y_test, y_predict)
-    print(f"Precisión del modelo SVM: {precision:.2f}")
-    return precision.round(2)
 
-""" La métrica precision_score responde a la pregunta: 
-"De todos los casos que el modelo clasificó como positivos, ¿cuántas fueron correctas ?". """

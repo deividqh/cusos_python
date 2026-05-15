@@ -13,13 +13,19 @@ import pandas as pd
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # ESTADISTICA DESCRIPTIVA 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-def estadisticas(np):
+def estadisticas_basicas(np, redondeo=None):
     print("\n■■■■■■■■■ Estadisticas Sobre objeto Numpy")
     print(f'Piezas totales: {len(np)}')
     print(f'Grosor medio: {np.mean():.4f}')
     print(f'Grosor minimo: {np.min():.4f}')
     print(f'Grosor maximo: {np.max():.4f}')
     print(f'Grosor desviacion estandar: {np.std():.4f}')
+
+    if redondeo and isinstance(redondeo, int) and redondeo > 0:
+        r = redondeo
+        return len(np).round(r), np.mean().round(r).round(r), np.min().round(r), np.max().round(r), np.std().round(r)
+    else:
+        return len(np), np.mean(), np.min(), np.max(), np.std()
 
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -140,5 +146,7 @@ def escalado_standar_scaler(X_train, X_test):
     escalado = StandardScaler()
     X_train_scaled = escalado.fit_transform(X_train)
     X_test_scaled = escalado.transform(X_test)
+
+    return X_train_scaled, X_test_scaled
 
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
