@@ -93,28 +93,32 @@ class Familia:
 # ==========================================
 # TEST OPERATIVO
 # ==========================================
-if __name__ == "__main__":
-    root = tk.Tk()
+# if __name__ == "__main__":
+#     root = tk.Tk()
 
-    Frame1 = tk.Frame(root, background='#111111')
-    Frame1.pack()
-    F = Familia()
+#     Frame1 = tk.Frame(root, background='#111111')
+#     Frame1.pack()
+#     F = Familia()
 
-    btn_add = tk.Button(Frame1, text="Añadir")
-    btn_add.pack()
-    btn_del = tk.Button(Frame1, text="Borrar")
-    btn_del.pack()
-    txt_nom = tk.Entry(root)
-    txt_nom.pack(padx=10, pady=10)
-    txt_nom.insert(0, "Juan")
+#     btn_add = tk.Button(Frame1, text="Añadir")
+#     btn_add.pack()
+#     btn_del = tk.Button(Frame1, text="Borrar")
+#     btn_del.pack()
+#     txt_nom = tk.Entry(root)
+#     txt_nom.pack(padx=10, pady=10)
+#     txt_nom.insert(0, "Juan")
 
-    # Registro
-    F.family('botones_control', [ btn_add , btn_del ])
-    F.family('entradas', [txt_nom])
+#     # Registro
+#     F.family('botones_control', [ btn_add , btn_del ])
+#     F.family('entradas', [txt_nom])
 
-    # --- PRUEBAS DE LLAMADA DIRECTA ---
-    F('botones_control')        # Esto funciona gracias a __call__
-    F()                         # Muestra el resumen
 
-    # root.withdraw() # Cerramos la ventana de test
-    root.mainloop() # Cerramos la ventana de test
+#     F.familiares('botones_control')[0].config(bg="lightgray")
+
+
+#     # --- PRUEBAS DE LLAMADA DIRECTA ---
+#     F('botones_control')        # Esto funciona gracias a __call__
+#     F()                         # Muestra el resumen
+
+#     # root.withdraw() # Cerramos la ventana de test
+#     root.mainloop() # Cerramos la ventana de test

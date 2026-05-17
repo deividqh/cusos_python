@@ -46,7 +46,7 @@ def ejercicio_01():
     # ■ Asignacion del estilo del grafico a través de un archivo .mplstyle
     with plt.style.context('./dark.mplstyle'):
         # Creo el Grafico
-        a = sns.histplot(data = df_leads, x='leads')
+        a = sns.histplot(data = df_leads,  x='leads')
         # print(type(a)) # <class 'matplotlib.axes._subplots.AxesSubplot'> ► Es un objeto de tipo 'AxesSubplot' que representa el área donde se dibuja el gráfico.
         
         # ■ Textos

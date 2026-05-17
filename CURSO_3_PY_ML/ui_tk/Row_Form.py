@@ -92,37 +92,38 @@ class Nivel_2:
 # ==========================================
 # EJEMPLO DE USO (Transformación de tu código)
 # ==========================================
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
-    root = tk.Tk()
+#     root = tk.Tk()
 
-    # ■ Creamos la estructura
-    alt_config = [6, 6,  6 , 6,  6, 6]
-    L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
+#     # ■ Creamos la estructura
+#     alt_config = [6, 6,  6 , 6,  6, 6]
+#     L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
 
-    # ■ Creamos widgets y los asigno a una fila del frame L2
-    lbl_nom = tk.Label(L2.to_row(1), text='Nombre: ')
-    txt_nom = tk.Entry(L2.to_row(1))    
-    lbl_ape = tk.Label(L2.to_row(2), text='Apellido: ')
-    txt_ape = tk.Entry(L2.to_row(2))    
-    btn_add = tk.Button(L2.to_row(3), text="Añadir")
-    btn_del = tk.Button(L2.to_row(3), text="Borrar")
-    btn_upt = tk.Button(L2.to_row(3), text="Actualiza")
+#     # ■ Creamos widgets y los asigno a una fila del frame L2
+#     lbl_nom = tk.Label(L2.to_row(1), text='Nombre: ')
+#     txt_nom = tk.Entry(L2.to_row(1))    
+#     lbl_ape = tk.Label(L2.to_row(2), text='Apellido: ')
+#     txt_ape = tk.Entry(L2.to_row(2))    
+#     btn_add = tk.Button(L2.to_row(3), text="Añadir")
+#     btn_del = tk.Button(L2.to_row(3), text="Borrar")
+#     btn_upt = tk.Button(L2.to_row(3), text="Actualiza")
     
-    # L2.order([])
-    # ■ Posicionamos
-    # L2.add(lbl_ape, column= 0)
-    # L2.add(txt_ape, column= 1)
-    # L2.add(lbl_nom, column= 4)
-    # L2.add(txt_nom, column= 5)
+#     # L2.order([])
+#     # ■ Posicionamos
+#     # L2.add(lbl_ape, column= 0)
+#     # L2.add(txt_ape, column= 1)
+#     # L2.add(lbl_nom, column= 4)
+#     # L2.add(txt_nom, column= 5)
 
-    # L2.add(btn_add, column= 0)
-    # L2.add(btn_del, column= 1)
-    # L2.add(btn_upt, column= 5)
+#     # L2.add(btn_add, column= 0)
+#     # L2.add(btn_del, column= 1)
+#     # L2.add(btn_upt, column= 5)
     
-    L2.set_row(1, lbl_nom, txt_nom)
-    L2.set_row(2, lbl_ape, txt_ape)
-    L2.set_row(3, btn_add, btn_upt , "_", "_", "_",btn_del)
+#     L2.set_row(1, lbl_nom, txt_nom)
+#     L2.set_row(2, lbl_ape, txt_ape)
+#     L2.set_row(3, btn_add, btn_upt , "_", "_", "_",btn_del)
     
-    L2.get_Frame().config(bg="lightgray")
-    root.mainloop()
+#     L2.get_Frame().config(bg="lightgray")
+    
+#     root.mainloop()
