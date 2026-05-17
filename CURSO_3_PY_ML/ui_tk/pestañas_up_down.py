@@ -72,7 +72,7 @@ def main():
     ventana.title("Pestañas con avance por booleano")
     ventana.geometry("450x300")
 
-    titulos = ["Datos", "Split", "Algoritmo/Modelo", "Metricas"]
+    titulos = ["Datos", "Split", "Algoritmo/Modelo", "Metricas", "Graficas"]
     pestanas = PestanasUpDown(ventana, titulos)
     pestanas.pack(fill="both", expand=True, padx=10, pady=10)
 
