@@ -84,7 +84,7 @@ def ejercicio_01():
 
     # █████████ 👟 Entrenar el Modelo SVC
     fit = modelo_svm.fit( X=X_train, y=y_train)
-    print(f'PARAMETROS DEL MODELO: {modelo_svm.get_params(deep=True)}')
+    # print(f'PARAMETROS DEL MODELO: {modelo_svm.get_params(deep=True)}')
 
     # ■ 🎲 Probabilidad (siempre despues de 'fit')
     # Mientras que predict() te dice "esto es una Setosa", predict_proba() te dice "hay un 90% de probabilidad de que sea Setosa y un 10% de Versicolor"
@@ -148,8 +148,8 @@ def ejercicio_01():
 def ejercicio_02():
     TEXTO = """ Ejercicio 2 - Probabilidades con Naive Bayes (Iris) 🌷🌷🌷🌷  (ALGORITMO)
     ■ Objetivo: Aplicar modelos probabilísticos para entender la [Pertenencia a Clases].
-    ■ Enunciado del Reto: En un estudio genético, se requiere no solo clasificar la especie, sino conocer el nivel de
-    confianza de la predicción. 
+    ■ Enunciado del Reto: En un estudio genético, se requiere no solo clasificar la especie, 
+    sino conocer el nivel de confianza de la predicción. 
     • Implementa el algoritmo Gaussian Naive Bayes sobre el dataset Iris y muestra las
     • probabilidades exactas de que una flor con medidas [6.7, 3.1, 4.4, 1.4] pertenezca a cada una de las
     tres categorías. """
@@ -159,32 +159,20 @@ def ejercicio_02():
     from colorama import Fore, Style
 
     print (f"\n{Fore.BLUE}{TEXTO}{Style.RESET_ALL}")    
-
     # Carga de datos
     iris = datasets.load_iris()
     X, y = iris.data, iris.target
-    print("•••••••••••• dataset Iris Cargado OK")
-
     # Inicializar y entrenar el clasificador Naive Bayes
     gnb = GaussianNB()
-    print("•••••••••••• Algoritmo GaussianNB Cargado OK")
-
     gnb.fit(X, y)
-    print(f'\t• Parametros GaussianNB:  {gnb.get_params(deep=True)}')
-    print("•••••••••••• Entrenamiento/fit Cargado OK")
+    # print(f'\t• Parametros GaussianNB:  {gnb.get_params(deep=True)}')
 
     # Definir la muestra a evaluar
     muestra = [[6.7, 3.1, 4.4, 1.4]]
-    print(f"•••••••••••• Muestra {muestra}")
-
     # Obtener las probabilidades de pertenencia a cada clase
     probabilidades = gnb.predict_proba(muestra)
-    print(f"•••••••••••• predict-proba")
-    
-    print("Probabilidades por especie:")
     for i, nombre in enumerate(iris.target_names):
         print(f"- {nombre.capitalize()}: {probabilidades[0][i]:.4f}") 
-
 
     print ("""\nJustificación: La solución requiere que el alumno utilice predict_proba, demostrando que comprende que
     Naive Bayes se basa en el teorema de Bayes para asignar pesos probabilísticos. 
@@ -467,8 +455,8 @@ def ejercicio_09():
 def ejercicio_10():
     TEXTO = """ Ejercicio 10 - Pipeline Integral de Machine Learning    🌷🌷🌷🌷
     ■ Objetivo: Crear una solución de extremo a extremo (End-to-End) robusta y profesional.
-    ■ Enunciado del Reto: Como consultor experto, debes crear un "Pipeline" que automatice todo el flujo de
-                        trabajo para nuevos datos de investigación floral: 
+    ■ Enunciado del Reto: Como consultor experto, debes crear un "Pipeline" 
+    que automatice todo el flujo de trabajo para nuevos datos de investigación floral: 
     1. Escale los datos, 
     2. Reduzca la dimensionalidad con LDA a 1 componente ,
     3. Clasifique mediante SVM. Este pipeline debe ser capaz de entrenarse y predecir de forma atómica. """
@@ -512,7 +500,7 @@ def ejercicio_10():
 
 def mis_pruebas():
     # from modulos.info_data import ver_data____ as vd
-    import modulos.info_data as I
+    import modulos.eda as eda
     from sklearn.datasets import load_breast_cancer
     from sklearn.datasets import load_iris
     
@@ -530,13 +518,13 @@ def mis_pruebas():
     pass
     iris = load_iris()
     print('■'*30)
-    I.ver_data(iris)
+    eda.ver_data(iris)
     print('■'*30)
-    I.ver_data__(iris)
+    eda.ver_data__(iris)
     print('■'*30)
-    I.ver_data____(iris)    
+    eda.ver_data____(iris)    
     print('■'*30)
-    I.descripcion_dataset(iris)
+    eda.descripcion_dataset(iris)
 
 # █■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■█
 # █■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■█

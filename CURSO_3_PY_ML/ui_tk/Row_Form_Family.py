@@ -30,14 +30,14 @@ class Nivel_2:
         for i, num_cols in enumerate(cols_config):
             # Si el valor es mayor que 0, creamos fila activa
             if num_cols and num_cols > 0:
-                new_fila = tk.Frame(self.level_1)
-                new_fila.pack(fill="x", padx=self.padx, pady=self.pady)
+                frame_fila = tk.Frame(self.level_1)
+                frame_fila.pack(fill="x", padx=self.padx, pady=self.pady)
                 
                 # Configurar las columnas automáticamente
                 for col in range(num_cols):
-                    new_fila.grid_columnconfigure(col, weight=1)
+                    frame_fila.grid_columnconfigure(col, weight=1)
                 
-                self.level_2[i] = new_fila
+                self.level_2[i] = frame_fila
             else:
                 # Si es 0 o None, creamos el separador (espacio vacío) (pady up-down)
                 spacer = tk.Frame(self.level_1)
@@ -60,6 +60,33 @@ class Nivel_2:
         widget.grid(row=0, column=column, **kwargs)
         return widget # Lo devolvemos por si quieres asignarlo en la misma línea
 
+    def set_row(self, row, *items, **kwargs):
+        """
+        Coloca varios widgets en una fila respetando el orden recibido.
+
+        Cada elemento ocupa su posición dentro de la fila. Si se pasa "_"
+        o None, esa posición queda vacía y se mantiene el espacio.
+        """
+        if row not in self.level_2:
+            raise ValueError(f"La fila {row} no existe.")
+
+        added_widgets = []
+
+        for column, item in enumerate(items):
+            if self._is_empty_cell(item):
+                continue
+
+            added_widgets.append(self.add(item, column, **kwargs))
+
+        return added_widgets
+    
+    def _is_empty_cell(self, item):
+        """Indica si una posición de la fila debe quedar vacía."""
+        return item is None or item == "_"
+    
+    def get_Frame(self):
+        return self.level_1 if self.level_1 else None
+
     
 
 # ==========================================
@@ -70,28 +97,30 @@ if __name__ == "__main__":
     root = tk.Tk()
 
     # ■ Creamos la estructura
-    alt_config = [0, 0,  5 , 5,  2, 1]
-    L2 = Nivel_2(root, cols_by_fila=alt_config)
+    alt_config = [6, 6,  6 , 6,  6, 6]
+    L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
 
     # ■ Creamos widgets
     lbl_nom = tk.Label(L2.to_row(2), text='Nombre: ')
-    txt_nom = tk.Entry(L2.to_row(2))
+    txt_nom = tk.Entry(L2.to_row(2))    
     lbl_ape = tk.Label(L2.to_row(2), text='Apellido: ')
-    txt_ape = tk.Entry(L2.to_row(2))
-    
+    txt_ape = tk.Entry(L2.to_row(2))    
     btn_add = tk.Button(L2.to_row(3), text="Añadir")
     btn_del = tk.Button(L2.to_row(3), text="Borrar")
     btn_upt = tk.Button(L2.to_row(3), text="Actualiza")
     
     # L2.order([])
     # ■ Posicionamos
-    L2.add(lbl_ape, 0)
-    L2.add(txt_ape, 1)
-    L2.add(lbl_nom, 3)
-    L2.add(txt_nom, 4)
+    # L2.add(lbl_ape, column= 0)
+    # L2.add(txt_ape, column= 1)
+    # L2.add(lbl_nom, column= 4)
+    # L2.add(txt_nom, column= 5)
+
+    # L2.add(btn_add, column= 0)
+    # L2.add(btn_del, column= 1)
+    # L2.add(btn_upt, column= 5)
     
-    L2.add(btn_add, 0)
-    L2.add(btn_del, 1)
-    L2.add(btn_upt, 4)
-    
+    L2.set_row(2, lbl_ape, txt_ape, "_", '_' ,  lbl_nom, txt_nom)
+    L2.set_row(3, btn_add, btn_upt , "_", "_", "_",btn_del)
+
     root.mainloop()

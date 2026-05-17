@@ -61,3 +61,6 @@ def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
         return datos_retorno
     else:
         return X, y, X_train, X_test, y_train, y_test, df, data_load.target_names, data_load.feature_names
+
+
+

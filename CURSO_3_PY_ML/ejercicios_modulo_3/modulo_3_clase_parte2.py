@@ -96,7 +96,6 @@ precisión media obtenida """
     from sklearn.model_selection import cross_val_score
     from sklearn import datasets
     # Datos
-    iris = datasets.load_iris()
     (X, y, X_train, X_test, y_train, y_test, df, target_names, feature_names) = get_d_datos('iris', 30, True)    
     print("\n■■■■■■■■■ ")
 
@@ -104,7 +103,7 @@ precisión media obtenida """
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
     
     # Evaluación mediante validación cruzada
-    scores = cross_val_score(rf, iris.data, iris.target, cv=5)
+    scores = cross_val_score(rf, X, y, cv=5)
     print(f"Precisión por cada fold: {scores}")
     print(f"Precisión media del Bosque Aleatorio: {scores.mean():.4f}")
 
@@ -113,8 +112,8 @@ def ejercicio_05():
     ENUNCIADO = """ Ejercicio 5 - Redes Neuronales: Perceptrón Multicapa (MLP)
 Objetivo: Aplicar una red neuronal básica para la clasificación de patrones complejos.
 Enunciado del Reto: Como introducción al Deep Learning, implementa una red neuronal tipo MLP con una
-capa oculta de 10 neuronas para clasificar las especies de Iris. Asegúrate de limitar las iteraciones a 1000 para
-controlar el tiempo de entrenamiento.
+capa oculta de 10 neuronas para clasificar las especies de Iris. 
+Asegúrate de limitar las iteraciones a 1000 para controlar el tiempo de entrenamiento.
  """    
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     from sklearn.neural_network import MLPClassifier
@@ -172,8 +171,7 @@ importancia de las características del dataset Iris."""
     import matplotlib.pyplot as plt
     
     iris = datasets.load_iris()
-    rf = RandomForestClassifier(n_estimators=50, random_state=42).fit(iris.data,
-    iris.target)
+    rf = RandomForestClassifier(n_estimators=50, random_state=42).fit(iris.data, iris.target)
     # Obtener importancia
     importancias = rf.feature_importances_
     # Mostrar resultados

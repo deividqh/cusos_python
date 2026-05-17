@@ -109,12 +109,12 @@ if __name__ == "__main__":
     txt_nom.insert(0, "Juan")
 
     # Registro
-    F.family('botones_control', [btn_add, btn_del])
+    F.family('botones_control', [ btn_add , btn_del ])
     F.family('entradas', [txt_nom])
 
     # --- PRUEBAS DE LLAMADA DIRECTA ---
-    F('botones_control')        # Esto ahora funciona gracias a __call__
-    F()                  # Muestra el resumen
+    F('botones_control')        # Esto funciona gracias a __call__
+    F()                         # Muestra el resumen
 
     # root.withdraw() # Cerramos la ventana de test
     root.mainloop() # Cerramos la ventana de test

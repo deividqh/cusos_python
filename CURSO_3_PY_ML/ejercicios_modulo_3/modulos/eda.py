@@ -78,28 +78,28 @@ def outliers_iqr(data_frame, nombre_columna):
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
 # VISUALIZAR dataset Según Viene
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
-def ver_data(data_to_view):
+def ver_data(dataset):
     # 1. Convertir a DataFrame
-    df = pd.DataFrame(data_to_view.data, columns=data_to_view.feature_names)
+    df = pd.DataFrame(dataset.data, columns=dataset.feature_names)
 
     # 2. (Opcional) Añadir la columna de diagnóstico (el 'target')
-    df['target'] = data_to_view.target
+    df['target'] = dataset.target
 
     # 3. Mostrar las primeras 5 filas
     print(f"\n■ Visualización del Head del Dataset ")
     print(df.head())
 
-def ver_data__(data_to_view):
+def ver_data__(dataset):
     # Imprime el nombre de la característica y su valor para la primera fila
-    for nombre, valor in zip(data_to_view.feature_names, data_to_view.data[0]):
+    for nombre, valor in zip(dataset.feature_names, dataset.data[0]):
         print(f"{nombre}: {valor}")
 
-def ver_data____(data_to_view):
+def ver_data____(dataset):
     # Imprimimos los nombres de las columnas (cabecera)
-    print(f"{' | '.join(data_to_view.feature_names[:4])} ")
+    print(f"{' | '.join(dataset.feature_names[:4])} ")
     
     # Recorremos las primeras 7 filas
-    for fila in data_to_view.data[:7]:
+    for fila in dataset.data[:7]:
         # Mostramos solo los primeros 4 valores de cada fila para no saturar la pantalla
         print(fila[:4])
 
@@ -139,9 +139,6 @@ def descripcion_dataset(data_view):
 # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
 def escalado_standar_scaler(X_train, X_test):
     from sklearn.preprocessing import StandardScaler
-
-    algoritmo = SVC()
-    modelo = algoritmo.fit(X_train, y_train)
 
     escalado = StandardScaler()
     X_train_scaled = escalado.fit_transform(X_train)
