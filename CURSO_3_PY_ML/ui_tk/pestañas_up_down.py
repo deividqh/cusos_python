@@ -1,120 +1,83 @@
 import tkinter as tk
 from tkinter import ttk
 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-def verificar_pestana1(*args):
-    # Si borra 'hola' en la 1, se desactiva TODO lo posterior
-    if var_entry1.get() != "hola":
-        btn_pestana1.config(state="disabled")
-        
-        # Limpiar los campos siguientes para romper la cadena
-        var_entry2.set("")
-        var_entry3.set("")
-        
-        # Desactivar en cascada
-        notebook.tab(pestana2, state="disabled")
-        notebook.tab(pestana3, state="disabled")
-        notebook.tab(pestana4, state="disabled")
-    else:
-        # Solo activa el botón; el usuario debe pulsarlo para avanzar a la 2
-        btn_pestana1.config(state="normal")
 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-def ir_a_pestana2():
-    lbl_ref_pestana2.config(text=f"Texto anterior: {var_entry1.get()}")
-    notebook.tab(pestana2, state="normal")
-    notebook.select(pestana2)
+class PestanasUpDown(ttk.Frame):
+    """Notebook que habilita pestañas de forma secuencial.
 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-def verificar_pestana2(*args):
-    if var_entry2.get() == "hola":
-        notebook.tab(pestana3, state="normal")
-        notebook.select(pestana3)
-    else:
-        # Si borra 'hola' en la 2, limpia la 3 y apaga la 3 y la 4
-        var_entry3.set("")
-        notebook.tab(pestana3, state="disabled")
-        notebook.tab(pestana4, state="disabled")
+    Cada pestaña contiene únicamente un Checkbutton. Al marcarlo se habilita y
+    se muestra la pestaña siguiente. Al desmarcarlo se bloquean todas las
+    pestañas posteriores.
+    """
 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-def verificar_pestana3(*args):
-    if var_entry3.get() == "hola":
-        notebook.tab(pestana4, state="normal")
-        notebook.select(pestana4)
-    else:
-        # Si borra 'hola' en la 3, apaga la pestaña 4
-        notebook.tab(pestana4, state="disabled")
+    def __init__(self, contenedor, titulos_pestanas):
+        super().__init__(contenedor)
 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
-# 1. Configuración de la ventana principal
-ventana = tk.Tk()
-ventana.title("Pestañas Dinámicas Bidireccionales")
-ventana.geometry("450x300")
+        if not titulos_pestanas:
+            raise ValueError("Debe indicarse al menos un título de pestaña.")
 
-# 2. Creación del Notebook
-notebook = ttk.Notebook(ventana)
-notebook.pack(fill="both", expand=True, padx=10, pady=10)
+        self.titulos_pestanas = list(titulos_pestanas)
+        self.notebook = ttk.Notebook(self)
+        self.notebook.pack(fill="both", expand=True)
 
-# 3. Creación de los Marcos
-pestana1 = ttk.Frame(notebook)
-pestana2 = ttk.Frame(notebook)
-pestana3 = ttk.Frame(notebook)
-pestana4 = ttk.Frame(notebook)
+        self.pestanas = []
+        self.valores = []
+        self.checkbuttons = []
 
-notebook.add(pestana1, text="Datos")
-notebook.add(pestana2, text="Split")
-notebook.add(pestana3, text="Algoritmo/Modelo")
-notebook.add(pestana4, text="Metricas")
+        self._crear_pestanas()
+        self._bloquear_pestanas_desde(1)
 
-# Bloqueo inicial
-notebook.tab(pestana2, state="disabled")
-notebook.tab(pestana3, state="disabled")
-notebook.tab(pestana4, state="disabled")
+    def _crear_pestanas(self):
+        for indice, titulo in enumerate(self.titulos_pestanas):
+            pestana = ttk.Frame(self.notebook)
+            valor = tk.BooleanVar(value=False)
 
-# ==================== PESTAÑA 1 ====================
-lbl1 = ttk.Label(pestana1, text="Escribe 'hola' para activar el botón:")
-lbl1.pack(pady=10)
+            checkbutton = ttk.Checkbutton(
+                pestana,
+                text="Permitir avanzar a la siguiente pestaña",
+                variable=valor,
+                command=lambda indice=indice: self._actualizar_pestanas(indice),
+            )
+            checkbutton.grid(row=0, column=0, sticky="w", padx=10, pady=10)
 
-var_entry1 = tk.StringVar()
-var_entry1.trace_add("write", verificar_pestana1)
-entry1 = ttk.Entry(pestana1, textvariable=var_entry1)
-entry1.pack(pady=5)
+            self.notebook.add(pestana, text=titulo)
+            self.pestanas.append(pestana)
+            self.valores.append(valor)
+            self.checkbuttons.append(checkbutton)
 
-btn_pestana1 = ttk.Button(pestana1, text="Usar datos", state="disabled", command=ir_a_pestana2)
-btn_pestana1.pack(pady=10)
+    def _actualizar_pestanas(self, indice):
+        if self.valores[indice].get():
+            self._habilitar_siguiente_pestana(indice)
+        else:
+            self._bloquear_pestanas_desde(indice + 1)
 
-# ==================== PESTAÑA 2 ====================
-lbl_ref_pestana2 = ttk.Label(pestana2, text="Texto anterior: ")
-lbl_ref_pestana2.pack(pady=10)
+    def _habilitar_siguiente_pestana(self, indice):
+        siguiente_indice = indice + 1
 
-lbl2_instruccion = ttk.Label(pestana2, text="Escribe 'hola' para avanzar a la Pestaña 3:")
-lbl2_instruccion.pack(pady=5)
+        if siguiente_indice >= len(self.pestanas):
+            return
 
-var_entry2 = tk.StringVar()
-var_entry2.trace_add("write", verificar_pestana2)
-entry2 = ttk.Entry(pestana2, textvariable=var_entry2)
-entry2.pack(pady=5)
+        siguiente_pestana = self.pestanas[siguiente_indice]
+        self.notebook.tab(siguiente_pestana, state="normal")
+        self.notebook.select(siguiente_pestana)
 
-# ==================== PESTAÑA 3 ====================
-lbl_ref1_pestana3 = ttk.Label(pestana3, text="Texto 1: hola")
-lbl_ref1_pestana3.pack(pady=5)
-lbl_ref2_pestana3 = ttk.Label(pestana3, text="Texto 2: hola")
-lbl_ref2_pestana3.pack(pady=5)
+    def _bloquear_pestanas_desde(self, indice_inicial):
+        for indice in range(indice_inicial, len(self.pestanas)):
+            self.valores[indice].set(False)
+            self.notebook.tab(self.pestanas[indice], state="disabled")
 
-lbl3_instruccion = ttk.Label(pestana3, text="Escribe 'hola' para terminar:")
-lbl3_instruccion.pack(pady=5)
 
-var_entry3 = tk.StringVar()
-var_entry3.trace_add("write", verificar_pestana3)
-entry3 = ttk.Entry(pestana3, textvariable=var_entry3)
-entry3.pack(pady=5)
+def main():
+    ventana = tk.Tk()
+    ventana.title("Pestañas con avance por booleano")
+    ventana.geometry("450x300")
 
-# ==================== PESTAÑA 4 ====================
-ttk.Label(pestana4, text="Resumen de datos recolectados:", font=("Arial", 10, "bold")).pack(pady=10)
-ttk.Label(pestana4, text="Contenido Pestaña 1: hola").pack(pady=2)
-ttk.Label(pestana4, text="Contenido Pestaña 2: hola").pack(pady=2)
-ttk.Label(pestana4, text="Contenido Pestaña 3: hola").pack(pady=2)
+    titulos = ["Datos", "Split", "Algoritmo/Modelo", "Metricas"]
+    pestanas = PestanasUpDown(ventana, titulos)
+    pestanas.pack(fill="both", expand=True, padx=10, pady=10)
 
-ventana.mainloop()
+    ventana.mainloop()
+
+
+if __name__ == "__main__":
+    main()
