@@ -32,6 +32,32 @@ config_interactiva = {
     },
     "Gaussian NB": {
         "var_smoothing": {"tipo": "slider", "rango": (0.000000001, 0.0000001), "init": 0.000000001, "paso": 0.000000001}
+    },
+    "K-Nearest Neighbors (KNN)": {
+        "n_neighbors": {"tipo": "slider", "rango": (1, 30), "init": 5, "paso": 1},
+        "weights": {"tipo": "combo", "opciones": ["uniform", "distance"], "init": "uniform"},
+        "metric": {"tipo": "combo", "opciones": ["euclidean", "manhattan", "minkowski"], "init": "minkowski"}
+    },
+    "Decision Tree": {
+        "criterion": {"tipo": "combo", "opciones": ["gini", "entropy", "log_loss"], "init": "gini"},
+        "max_depth": {"tipo": "slider", "rango": (1, 20), "init": None, "paso": 1},
+        "min_samples_split": {"tipo": "slider", "rango": (2, 10), "init": 2, "paso": 1},
+        "ccp_alpha": {"tipo": "slider", "rango": (0.0, 0.1), "init": 0.0, "paso": 0.005} # Basado en ejercicio de Poda (Pruning)
+    },
+    "Multi-Layer Perceptron (MLP)": {
+        "hidden_layer_sizes": {"tipo": "combo", "opciones": ["(10,)", "(50,)", "(100,)", "(50, 50)", "(10, 10, 10)"], "init": "(100,)"},
+        "activation": {"tipo": "combo", "opciones": ["identity", "logistic", "tanh", "relu"], "init": "relu"},
+        "solver": {"tipo": "combo", "opciones": ["lbfgs", "sgd", "adam"], "init": "adam"},
+        "alpha": {"tipo": "slider", "rango": (0.0001, 0.05), "init": 0.0001, "paso": 0.001},
+        "learning_rate": {"tipo": "combo", "opciones": ["constant", "invscaling", "adaptive"], "init": "constant"}
+    },
+    "PCA (Reducción Dim.)": {
+        "n_components": {"tipo": "slider", "rango": (1, 4), "init": 2, "paso": 1},
+        "svd_solver": {"tipo": "combo", "opciones": ["auto", "full", "arpack", "randomized"], "init": "auto"}
+    },
+    "LDA (Analisis Discrim.)": {
+        "solver": {"tipo": "combo", "opciones": ["svd", "lsqr", "eigen"], "init": "svd"},
+        "shrinkage": {"tipo": "slider", "rango": (0.0, 1.0), "init": 0.0, "paso": 0.1} # Solo útil en lsqr y eigen
     }
 }
 
@@ -114,45 +140,58 @@ root = tk.Tk()
 root.title("ML Simulator & EDA Dashboard Pro")
 root.geometry("1200x850")
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 main_frame = ttk.Frame(root, padding="10")
 main_frame.pack(fill=tk.BOTH, expand=True)
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 sidebar = ttk.LabelFrame(main_frame, text=" Configuración ", padding="15")
 sidebar.pack(side=tk.LEFT, fill=tk.Y, padx=(0, 10))
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 ttk.Label(sidebar, text="Algoritmo:").grid(row=0, column=0, sticky="w")
 combo_algoritmos = ttk.Combobox(sidebar, values=list(config_interactiva.keys()), state="readonly")
 combo_algoritmos.current(0)
 combo_algoritmos.grid(row=1, column=0, sticky="ew", pady=(0, 10))
 combo_algoritmos.bind("<<ComboboxSelected>>", actualizar_interfaz_parametros)
 
-ttk.Label(sidebar, text="Gráfico:").grid(row=2, column=0, sticky="w")
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+frame_params_dinamico = ttk.Frame(sidebar)
+frame_params_dinamico.grid(row=2, column=0, sticky="nsew", pady=10)
+
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+ttk.Label(sidebar, text="Gráfico:").grid(row=3, column=0, sticky="w")
+
 combo_graficos = ttk.Combobox(sidebar, values=["pairplot", "heatmap", "boxplot", "violinplot"], state="readonly")
 combo_graficos.current(0)
-combo_graficos.grid(row=3, column=0, sticky="ew", pady=(0, 10))
+combo_graficos.grid(row=4, column=0, sticky="ew", pady=(0, 10))
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 
-ttk.Label(sidebar, text="Estilo:").grid(row=4, column=0, sticky="w")
+ttk.Label(sidebar, text="Estilo:").grid(row=5, column=0, sticky="w")
+
 combo_estilos = ttk.Combobox(sidebar, values=["dark_background", "ggplot", "bmh", "seaborn-v0_8-whitegrid"], state="readonly")
 combo_estilos.current(0)
-combo_estilos.grid(row=5, column=0, sticky="ew", pady=(0, 15))
+combo_estilos.grid(row=6, column=0, sticky="ew", pady=(0, 15))
 
-frame_params_dinamico = ttk.Frame(sidebar)
-frame_params_dinamico.grid(row=6, column=0, sticky="nsew", pady=10)
-
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 btn_update = ttk.Button(sidebar, text="🚀 Actualizar Vista", command=actualizar_grafico)
-btn_update.grid(row=7, column=0, sticky="ew", pady=20)
+btn_update.grid(row=10, column=0, sticky="ew", pady=20)
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 plot_container = ttk.Frame(main_frame)
 plot_container.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 fig = plt.figure(figsize=(8, 7), dpi=100)
 canvas = FigureCanvasTkAgg(fig, master=plot_container)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 toolbar = NavigationToolbar2Tk(canvas, plot_container)
 toolbar.update()
 
+# ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
 actualizar_interfaz_parametros()
-actualizar_grafico()
+# actualizar_grafico()
 
 root.mainloop()
