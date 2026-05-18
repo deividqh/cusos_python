@@ -3,22 +3,25 @@ import tkinter as tk
 class Nivel_2:
     def __init__(self, root, title="Formulario", ancho=300, alto=450, 
                  num_filas=None, cols_by_fila=1, padx=5, pady=5):
+        # ■■■■
         # ... (Atributos de inicialización previos) ...
         self.root = root
-        self.root.title(title)
-        # self.root.geometry(f"{ancho}x{alto}")
-        self.padx = padx
-        self.pady = pady
-        # self.max_rows = num_filas if num_filas else 0
+        self.root.title(title)                      # le pone titulo a la ventana principal ❌ error
+        # self.root.geometry(f"{ancho}x{alto}")     # le pone ANCHO ventana principal ❌ error
+        # ■■■■
+        self.padx = padx                            # ❌
+        self.pady = pady                            # ✔️ Determina el espacio entre filas
+        # ■■■■
+        # self.max_rows = num_filas if num_filas else 0     
         self.max_rows = len(cols_by_fila) if len(cols_by_fila) > 0 else 0
-
+        # ■■■■
         # Estructuras de datos
         self.level_2 = {}      # Diccionario de filas: '0': 
         self.d_family = {}  # Diccionario de familias: { 'nombre': [ widget1, widget2, ... ] }
-        
+        # ■■■■
         self.level_1 = tk.Frame(self.root)
         self.level_1.pack(fill="both", expand=True)
-        
+        # ■■■■
         if num_filas or isinstance(cols_by_fila, list):
             self._build_structure(cols_by_fila)
 
@@ -75,14 +78,15 @@ class Nivel_2:
         for column, item in enumerate(items):
             if self._is_empty_cell(item):
                 continue
-
-            added_widgets.append(self.add(item, column, **kwargs))
+            
+            new_widget = self.add(item, column, **kwargs)
+            added_widgets.append(new_widget)
 
         return added_widgets
     
     def _is_empty_cell(self, item):
         """Indica si una posición de la fila debe quedar vacía."""
-        return item is None or item == "_"
+        return item is None or item == "_" or item == '-' or item == 'x'
     
     def get_Frame(self):
         return self.level_1 if self.level_1 else None

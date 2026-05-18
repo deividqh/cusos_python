@@ -1539,7 +1539,7 @@ class Over_Main(XindeX):
         self.dicc_procesos = {}
 
         # ■ DIRECTAS ... SOBRE ESCRITO DE INDEX PARA INCLUIR '►' (Alt+16, listar procesos) y '■' (Alt+254, parar procesos)
-        self.lst_resp_ACCION = ['<' , '?' , '??' , 'help', '<<<']
+        self.lst_resp_ACCION = ['<' , '?' , '??' , 'help', '<<<', '@']
         # ■ PREFIJO + RESPUESTA ... Se evalua cada uno: 
         self.lst_resp_BEGINERS = ['**', '=>', '=' ]
         # ■ ENVUELTAS... Se evalua la lista como una unidad, (pre y pos)(envoltorio) : 
@@ -1779,6 +1779,11 @@ class Over_Main(XindeX):
             elif respuesta == '<':                                          # ■ REPETIR MENU
                 os.system('cls')              
                 self.F_RANK_Y.imprimir(sp_between = 2, ancho_columna = None )
+
+            elif respuesta == '@':
+                # os.system('cls')              
+                # self.O ✔️
+                self.set_style(b_mode_all = not self.b_mode_all)
 
             else:                                                           # NOT FOUND
                 return False

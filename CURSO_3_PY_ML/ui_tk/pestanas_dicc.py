@@ -23,7 +23,7 @@ class StepByStab(ttk.Frame):
 
         self.pestanas = []
         self._crear_pestanas()
-        self.bloquear_pestanas_desde(1) # Bloquea todo menos la primera al iniciar
+        self.blok_from(1) # Bloquea todo menos la primera al iniciar
 
     def _crear_pestanas(self):
         for titulo in self.titulos:
@@ -51,7 +51,7 @@ class StepByStab(ttk.Frame):
 
         raise ValueError(f"No se encontró la pestaña con el identificador: '{identificador}'")
 
-    def avanzar_a_siguiente(self, identificador_actual):
+    def go_next(self, identificador_actual):
         """Avanza a la siguiente pestaña basándose en cualquier identificador de la actual."""
         pestana_actual = self.get_p(identificador_actual)
         indice_actual = self.pestanas.index(pestana_actual)
@@ -62,7 +62,7 @@ class StepByStab(ttk.Frame):
             self.notebook.tab(siguiente_pestana, state="normal")
             self.notebook.select(siguiente_pestana)
 
-    def bloquear_pestanas_desde(self, indice_inicial):
+    def blok_from(self, indice_inicial):
         """Bloquea todas las pestañas a partir del índice numérico indicado."""
         for indice in range(indice_inicial, len(self.pestanas)):
             self.notebook.tab(self.pestanas[indice], state="disabled")
@@ -111,7 +111,7 @@ class StepByStab(ttk.Frame):
 #     btn_avanzar = ttk.Button(
 #         panel_control,
 #         text="Validar y Avanzar ➡️",
-#         command=lambda: TABs.avanzar_a_siguiente(
+#         command=lambda: TABs.go_next(
 #             TABs.notebook.index("current")
 #         )
 #     )
@@ -121,7 +121,7 @@ class StepByStab(ttk.Frame):
 #     btn_bloquear = ttk.Button(
 #         panel_control,
 #         text="🔒 Bloquear Siguientes",
-#         command=lambda: TABs.bloquear_pestanas_desde(
+#         command=lambda: TABs.blok_from(
 #             TABs.notebook.index("current") + 1
 #         )
 #     )
