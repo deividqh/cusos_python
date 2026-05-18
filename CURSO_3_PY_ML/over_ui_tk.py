@@ -207,13 +207,12 @@ def main_row_form():
     # L2.add(txt_ape, column= 1)
     # L2.add(lbl_nom, column= 4)
     # L2.add(txt_nom, column= 5)
-
     # L2.add(btn_add, column= 0)
     # L2.add(btn_del, column= 1)
     # L2.add(btn_upt, column= 5)
     
-    L2.set_row(1, lbl_nom, txt_nom)
-    L2.set_row(2, lbl_ape, txt_ape)
+    L2.set_row(1, lbl_nom, '_', '_' , txt_nom)
+    L2.set_row(2, lbl_ape,  '_', '_', '_', '_', txt_ape)
     L2.set_row(3, btn_add, btn_upt , "_", "_", "_",btn_del)
     
     L2.get_Frame().config(bg="lightgray")
