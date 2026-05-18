@@ -26,7 +26,7 @@ def main():
                     ("Familia" , main_familia),
                     ("Pestañas" , main_pestanas), 
                     ("Row_Form" , main_row_form), 
-                    ("ESTYLE UI" , None) ] )
+                    ("ESTYLE UI" , cambiar_estilo_marco) ] )
     
     # The_X_Men.addX( titulo='fam', padre='Menu1'   , ipadre='Familia'    , 
     #                 lst_items = [ 
@@ -42,10 +42,10 @@ def main():
     #                 ("main rForms", main_row_form) , 
     #                 ])    
     
-    The_X_Men.addX( titulo='estilos', padre='Menu1' , ipadre='ESTYLE UI', 
-                    lst_items = [ ("Switch Modo Exec", set_style) , 
-                    ("Estilo del Marco" , cambiar_estilo_marco), 
-                    ])    
+    # The_X_Men.addX( titulo='estilos', padre='Menu1' , ipadre='ESTYLE UI', 
+    #                 lst_items = [ ("Switch Modo Exec", set_style) , 
+    #                 ("Estilo del Marco" , cambiar_estilo_marco), 
+    #                 ])    
     
     # ■ ■ ■ ■  LLAMO A MYSTYCA PARA VISUALIZAR EL MENU 
     retorno = The_X_Men.mystyca( titulo='Menu1', head_datapush  = " Indice Curso Python Machine L. " , pad_x=5 )

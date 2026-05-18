@@ -91,52 +91,78 @@ class Nivel_2:
     def get_Frame(self):
         return self.level_1 if self.level_1 else None
 
-    
+    # ==========================================================
+    # NUEVO MÉTODO: drow()
+    # ==========================================================
+    def drow(self, rows_data):
+        """
+        Recibe una lista donde cada elemento representa una fila del layout.
+        
+        Cada elemento puede ser:
+          - list / tuple : Se colocan los widgets en la fila usando set_row().
+                         Las celdas con "x", "_", "-" o None se saltan.
+          - None, "x", "_", '-', [] : Se crea/usará un separador (spacer) 
+                                       en esa posición de fila.
+        
+        Las filas se numeran automáticamente según el índice de la lista.
+        Si una fila no existe, se crea dinámicamente respetando el tipo.
+        """
+        for i, row_data in enumerate(rows_data):
+            # ¿Es una fila con widgets o un separador?
+            is_widget_row = isinstance(row_data, (list, tuple)) and len(row_data) > 0
+            
+            # ── Crear la fila si aún no existe ──
+            if i not in self.level_2:
+                if is_widget_row:
+                    num_cols = len(row_data)
+                    frame_fila = tk.Frame(self.level_1)
+                    frame_fila.pack(fill="x", padx=self.padx, pady=self.pady)
+                    for col in range(num_cols):
+                        frame_fila.grid_columnconfigure(col, weight=1)
+                    self.level_2[i] = frame_fila
+                else:
+                    spacer = tk.Frame(self.level_1)
+                    spacer.pack(fill="x", pady=self.pady * 2)
+                    self.level_2[i] = spacer
+                
+                # Actualizar contador de filas máximas si es necesario
+                if i >= self.max_rows:
+                    self.max_rows = i + 1
+            
+            # ── Posicionar widgets si corresponde ──
+            if is_widget_row:
+                self.set_row(i, *row_data)
+
 
 # ==========================================
-# EJEMPLO DE USO (Transformación de tu código)
+# EJEMPLO DE USO con drow()
 # ==========================================
-# if __name__ == "__main__":
+if __name__ == "__main__":
     
-#     root = tk.Tk()
+    root = tk.Tk()
 
-#     # ■ Creamos la estructura
-#     alt_config = [6, 6,  6 , 6,  6, 6]
-#     L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
+    # ■ Creamos la estructura (6 filas, todas activas con 6 columnas)
+    alt_config = [6, 6, 6, 6, 6, 6]
+    L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
 
-#     # ■ Creamos widgets y los asigno a una fila del frame L2
-#     lbl_nom = tk.Label(L2.to_row(1), text='Nombre: ')
-#     txt_nom = tk.Entry(L2.to_row(1))    
-#     lbl_ape = tk.Label(L2.to_row(2), text='Apellido: ')
-#     txt_ape = tk.Entry(L2.to_row(2))    
-#     btn_add = tk.Button(L2.to_row(3), text="Añadir")
-#     btn_del = tk.Button(L2.to_row(3), text="Borrar")
-#     btn_upt = tk.Button(L2.to_row(3), text="Actualiza")
-    
-#     # L2.order([])
-#     # ■ Posicionamos
-#     # L2.add(lbl_ape, column= 0)
-#     # L2.add(txt_ape, column= 1)
-#     # L2.add(lbl_nom, column= 4)
-#     # L2.add(txt_nom, column= 5)
+    # ■ Creamos widgets pasando como padre la fila correspondiente
+    lbl_nom = tk.Label(L2.to_row(0), text='Nombre: ')
+    txt_nom = tk.Entry(L2.to_row(0))    
+    lbl_ape = tk.Label(L2.to_row(1), text='Apellido: ')
+    txt_ape = tk.Entry(L2.to_row(1))    
+    btn_add = tk.Button(L2.to_row(5), text="Añadir")
+    btn_del = tk.Button(L2.to_row(5), text="Borrar")
+    btn_upt = tk.Button(L2.to_row(5), text="Actualiza")
 
-#     # L2.add(btn_add, column= 0)
-#     # L2.add(btn_del, column= 1)
-#     # L2.add(btn_upt, column= 5)
+    # ■ Introducimos todo de golpe con drow()
+    L2.drow([
+        [lbl_nom, "x", "x", txt_nom],           # fila 0
+        [lbl_ape, "x", "x", txt_ape],                # fila 1
+        None,                                    # fila 2 → separador
+        [],                                      # fila 4 → separador
+        [btn_add, btn_upt, "x", "x",  btn_del]  # fila 5
+    ])
     
-#     L2.set_row(1, lbl_nom, txt_nom)
-#     L2.set_row(2, lbl_ape, txt_ape)
-#     L2.set_row(3, btn_add, btn_upt , "_", "_", "_",btn_del)
+    L2.get_Frame().config(bg="lightgray")
     
-#     L2.get_Frame().config(bg="lightgray")
-    
-#     root.mainloop()
-
-# [
-# [lbl_nom, "x" , "x" , txt_nom], 
-# [lbl_ape, "x", txt_ape],
-# None,
-# "x",
-# [],
-# [btn_add, btn_upt , "x", "x", "x", btn_del],
-# ]
+    root.mainloop()

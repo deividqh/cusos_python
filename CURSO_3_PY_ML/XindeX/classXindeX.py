@@ -2106,6 +2106,7 @@ class Over_Main(XindeX):
 
         {Fore.GREEN}'help'{Fore.RESET}      Muestra la ayuda sobre las Funciones y Parámetros para usar 
                                             la clase XindeX/Over_Main.
+        {Fore.GREEN}@{Fore.RESET}           Switch al modo de ejecución(padres + hijos ó sólo hijos)
         
 
         {Fore.BLUE}██████{Fore.RESET} Clase OVER-MAIN {Fore.BLUE}███████████████████████████{Fore.RESET}

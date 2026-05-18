@@ -4,7 +4,6 @@ from tkinter import ttk
 
 class StepByStab(ttk.Frame):
     """Notebook secuencial configurable mediante un diccionario {clave: titulo}
-
     Permite avanzar y bloquear pestañas tanto por código (claves) como por interfaz (índices).
     """
 
@@ -15,7 +14,7 @@ class StepByStab(ttk.Frame):
             raise ValueError("El diccionario de configuración no puede estar vacío.")
 
         # Separamos las claves y los títulos manteniendo el orden estricto de inserción
-        self.claves = list(configuracion_pestanas.keys())
+        self.claves  = list(configuracion_pestanas.keys())
         self.titulos = list(configuracion_pestanas.values())
         
         self.notebook = ttk.Notebook(self)
