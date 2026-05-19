@@ -16,7 +16,7 @@ class Nivel_2:
         self.max_rows = len(cols_by_fila) if len(cols_by_fila) > 0 else 0
         # ■■■■
         # Estructuras de datos
-        self.level_2 = {}      # Diccionario de filas: '0': 
+        self.level_2 = {}      # Diccionario de filas: '0': FRAME
         self.d_family = {}  # Diccionario de familias: { 'nombre': [ widget1, widget2, ... ] }
         # ■■■■
         self.level_1 = tk.Frame(self.root)
@@ -24,7 +24,7 @@ class Nivel_2:
         # ■■■■
         if num_filas or isinstance(cols_by_fila, list):
             self._build_structure(cols_by_fila)
-
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     def _build_structure(self, cols_config):
         """
         Recorre la lista. El índice 'i' es el número de fila.
@@ -47,9 +47,12 @@ class Nivel_2:
                 spacer.pack(fill="x", pady=self.pady * 2)
                 self.level_2[i] = spacer
 
-    def to_row(self, index):
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    def row(self, index):
+        """ Devuelve el Frame Fila indicado o  """
         return self.level_2.get(index)
 
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     # Añade el widget al nivel_2 de tKinter(hace grid por ti)
     def add(self, widget, column, **kwargs):
         """
@@ -63,6 +66,7 @@ class Nivel_2:
         widget.grid(row=0, column=column, **kwargs)
         return widget # Lo devolvemos por si quieres asignarlo en la misma línea
 
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     def set_row(self, row, *items, **kwargs):
         """
         Coloca varios widgets en una fila respetando el orden recibido.
@@ -84,28 +88,27 @@ class Nivel_2:
 
         return added_widgets
     
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     def _is_empty_cell(self, item):
         """Indica si una posición de la fila debe quedar vacía."""
         return item is None or item == "_" or item == '-' or item == 'x'
     
-    def get_Frame(self):
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    def frame(self):
         return self.level_1 if self.level_1 else None
 
-    # ==========================================================
-    # NUEVO MÉTODO: drow()
-    # ==========================================================
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     def drow(self, rows_data):
         """
-        Recibe una lista donde cada elemento representa una fila del layout.
-        
-        Cada elemento puede ser:
+        ■ Recibe una lista donde cada elemento representa una fila del layout.
+        • Cada elemento puede ser:
           - list / tuple : Se colocan los widgets en la fila usando set_row().
                          Las celdas con "x", "_", "-" o None se saltan.
           - None, "x", "_", '-', [] : Se crea/usará un separador (spacer) 
                                        en esa posición de fila.
-        
-        Las filas se numeran automáticamente según el índice de la lista.
-        Si una fila no existe, se crea dinámicamente respetando el tipo.
+        • Las filas se numeran automáticamente según el índice de la lista.
+        • Si una fila no existe, se crea dinámicamente respetando el tipo.
         """
         for i, row_data in enumerate(rows_data):
             # ¿Es una fila con widgets o un separador?
@@ -140,29 +143,33 @@ class Nivel_2:
 if __name__ == "__main__":
     
     root = tk.Tk()
+    root.geometry("600x180")
 
     # ■ Creamos la estructura (6 filas, todas activas con 6 columnas)
-    alt_config = [6, 6, 6, 6, 6, 6]
+    alt_config = [2, 6, 6, 6, 6, 6]
     L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
 
-    # ■ Creamos widgets pasando como padre la fila correspondiente
-    lbl_nom = tk.Label(L2.to_row(0), text='Nombre: ')
-    txt_nom = tk.Entry(L2.to_row(0))    
-    lbl_ape = tk.Label(L2.to_row(1), text='Apellido: ')
-    txt_ape = tk.Entry(L2.to_row(1))    
-    btn_add = tk.Button(L2.to_row(5), text="Añadir")
-    btn_del = tk.Button(L2.to_row(5), text="Borrar")
-    btn_upt = tk.Button(L2.to_row(5), text="Actualiza")
+    # ■ Creamos widgets donde master es el frame fila. 
+    # De esta manera puedo aglutinar todos los contreles y ver la fila donde caen.
+    lbl_nom = tk.Label(L2.row(0), text='Nombre: ')
+    txt_nom = tk.Entry(L2.row(0))    
+    lbl_ape1 = tk.Label(L2.row(1), text='Apellido 1: ')
+    txt_ape1 = tk.Entry(L2.row(1))    
+    lbl_ape2 = tk.Label(L2.row(1), text='Apellido 2: ')
+    txt_ape2 = tk.Entry(L2.row(1))    
+    btn_add = tk.Button(L2.row(5), text="Añadir")
+    btn_del = tk.Button(L2.row(5), text="Borrar")
+    btn_upt = tk.Button(L2.row(5), text="Actualiza")
 
     # ■ Introducimos todo de golpe con drow()
     L2.drow([
-        [lbl_nom, "x", "x", txt_nom],           # fila 0
-        [lbl_ape, "x", "x", txt_ape],                # fila 1
-        None,                                    # fila 2 → separador
-        [],                                      # fila 4 → separador
-        [btn_add, btn_upt, "x", "x",  btn_del]  # fila 5
+        [lbl_nom    , txt_nom                                           ],   
+        [lbl_ape1   , txt_ape1  , "x", lbl_ape2 , txt_ape2              ],                
+        [],
+        None,                                      
+        [btn_add    , btn_upt   , "x", "x"      , "x"       , btn_del   ]    
     ])
     
-    L2.get_Frame().config(bg="lightgray")
+    # L2.frame().config(bg="lightgray")
     
     root.mainloop()

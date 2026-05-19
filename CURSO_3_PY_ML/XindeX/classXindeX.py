@@ -1539,7 +1539,7 @@ class Over_Main(XindeX):
         self.dicc_procesos = {}
 
         # ■ DIRECTAS ... SOBRE ESCRITO DE INDEX PARA INCLUIR '►' (Alt+16, listar procesos) y '■' (Alt+254, parar procesos)
-        self.lst_resp_ACCION = ['<' , '?' , '??' , 'help', '<<<', '@']
+        self.lst_resp_ACCION = ['<' , '?' , '??' , 'help', '<<<', '#' , '@']
         # ■ PREFIJO + RESPUESTA ... Se evalua cada uno: 
         self.lst_resp_BEGINERS = ['**', '=>', '=' ]
         # ■ ENVUELTAS... Se evalua la lista como una unidad, (pre y pos)(envoltorio) : 
@@ -1758,7 +1758,7 @@ class Over_Main(XindeX):
         # ■■■■ EMPIEZA LA EVALUACION DE LA RESPUESTA ■■■■
         # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
-        # ██████ ACCION DIRECCTA ? , < , <<< ██████
+        # █ █ █ █ █ █ ACCION DIRECCTA ? , < , <<< 
         if (mono_from   is None     and  
             mono_to     is None     and                  
             respuesta   is not None and 
@@ -1780,15 +1780,20 @@ class Over_Main(XindeX):
                 os.system('cls')              
                 self.F_RANK_Y.imprimir(sp_between = 2, ancho_columna = None )
 
-            elif respuesta == '@':
+            elif respuesta == '#':
                 # os.system('cls')              
-                # self.O ✔️
                 self.set_style(b_mode_all = not self.b_mode_all)
+            
+            elif respuesta == '@':
+                sdata = Sdata.get_data(key_dict='S', tipo=str, msg_entrada='Nombre Estilo(franky/default/unicode/doble/vacio/moderno/elegante)', permite_nulo=False)
+                self.F_RANK_Y.style(estilo=sdata['S'])
+                self.F_RANK_Y_DEF.style(estilo=sdata['S'])
+                print(f'::: Estilo Marco cambiado a {sdata["S"]} ::: ')
 
             else:                                                           # NOT FOUND
                 return False
 
-        # ██████ RESPUESTA DE XINDEX ██████
+        # █ █ █ █ █ █ RESPUESTA DE XINDEX 
         elif (mono_from   is None     and 
               mono_to     is None     and               
               respuesta   is not None and   
@@ -1802,14 +1807,14 @@ class Over_Main(XindeX):
             # ██ EJECUTA LA FUNCIONN ██
             lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_FUNCION]() if lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_FUNCION] else None
         
-        # ██████ BEGINNER'S ██████
+        # █ █ █ █ █ █ BEGINNER'S 
         # if (mono_from   is not None and 
         elif (mono_from   is not None and 
               mono_to     is None     and               
               xindex      is not None and 
               mono_from in self.lst_resp_BEGINERS):         
             
-            # ■■■ SUB-MENU RECURSIVO ■■■
+            # ■ ■ ■ ■ ■ ■ ■  SUB-MENU INTERNO RECURSIVO
             if mono_from == '**':                          
                 # ■ SOLO PARA PADRES  
                 if self.b_mode_all == False and lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_ITEM] in lst_hijos:
@@ -1829,10 +1834,8 @@ class Over_Main(XindeX):
                 # ■ LLAMO A LA FUNCION RECURSIVA begin_asterisco CON EL MENU_DVD SELECCIONADO EN LA RESUPUESTA.
                 self.begin_asterisco(titulo_menu = titulo_menu)
             
-            # ■■■ INDEPENDIENTE - LANZA UN PROCESO INDEPENDIENTE (TKINTER pejem.) ■■■
+            # ■ ■ ■ ■ ■ ■ ■ INDEPENDIENTE - LANZA UN PROCESO INDEPENDIENTE (TKINTER pejem.) ■■■
             elif mono_from == '=>':                         
-                # print('EXEC INDEPENDIENTE')
-
                 # ■■■■ SOLO PARA HIJOS ■■■■
                 if self.b_mode_all == False and lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_ITEM] in lst_padres:
                     return
@@ -1841,7 +1844,7 @@ class Over_Main(XindeX):
                 if funcion is None: return
                 self.lanzar_proceso(proceso = funcion,  demonio=False)
             
-            # ██████  LIKE  ██████
+            # ■ ■ ■ ■ ■ ■  LIKE  
             elif mono_from == '=':  
 
                 if not self.matriz_impresion_xindex: return None      
@@ -1859,11 +1862,16 @@ class Over_Main(XindeX):
                 pass
                 self.F_RANK_Y_DEF.imprimir(sp_between = 2, ancho_columna = None , fila_from=desde, fila_to=hasta)                       
             
+            # ■ ■ ■ ■ ■ ■ ESTYLE @moderno
+            elif mono_from == '@':  
+
+                pass
+
             # ■■■ NOT FOUND ■■■ 
             else:                                        
                 print(f'{mono_from}- NOT FOUND :(')                     
 
-        # ██████ FROM - TO ██████
+        # █ █ █ █ █ █ FROM - TO 
         elif (  mono_from   is not None and
                 mono_to     is not None and               
                 respuesta   == Over_Main.FROM_TO and 
@@ -1878,7 +1886,7 @@ class Over_Main(XindeX):
                 print(f'ERR: {e}') 
                 return None
         
-        # ██████ PACK's ██████
+        # █ █ █ █ █ █ PACK's 
         elif  ( mono_from   is not None and 
                 mono_to     is not None and             
                 xindex      is not None and 
@@ -1899,7 +1907,7 @@ class Over_Main(XindeX):
             else:                                           # PACK NOT FOUND
                 print('PACK NOT FOUND :(')                
         
-        # ██████ PROCESO'S ██████
+        # █ █ █ █ █ █ PROCESO'S 
         # if (mono_from   is not None and 
         elif (mono_from   is not None and 
               mono_to     is None     and               
@@ -2076,7 +2084,7 @@ class Over_Main(XindeX):
         """
         if color is None:
             # Devuelve el texto coloreado en azul.
-            return f"{Fore.BLUE}{texto}{Style.RESET_ALL}"
+            return f"{Fore.LIGHTCYAN_EX}{texto}{Style.RESET_ALL}"
         else:
             return f"{color}{texto}{Style.RESET_ALL}"
 
@@ -2086,148 +2094,93 @@ class Over_Main(XindeX):
     
     @staticmethod
     def ayuda_xindex():
+        xindex = ['<<<', '<' , '?', '??', 'help']
+        overmain = ['**P', '<< index >>' , '=>' , '=' , '2-5']
         """  
         ■ SALIDA: 
         """
-        print(print(Sdata.big_text(texto=f'Ayuda XindeX - Acciones', color=Fore.YELLOW)))
-        texto = f"""        
-        
-        {Fore.BLUE}██████{Fore.RESET} Clase XINDEX {Fore.BLUE}██████████████████████████████{Fore.RESET}
+        print(Sdata.big_text(texto=f'Ayuda   X i n d e X', color=Fore.CYAN))
+        ENE = '\n'
+        txt = ENE
+        txt += ENE + f'■ ■ ■ ■ ■ ■ ■ ■ Clase XindeX'
+        txt += ENE + f'{Fore.GREEN}<<<{Fore.RESET}\t SALIR'
+        txt += ENE + f'{Fore.GREEN}?{Fore.RESET}\t Muestra el MENU de DEFINICION(la Funcion que se Ejecuta en cada Item) '
+        txt += ENE + f'\t También muestra el modo de ejecución (En el Head):'
+        txt += ENE + f'\t{' '*3}• Todos se ejecutan  (Exec All)'
+        txt += ENE + f'\t{' '*3}• Solo se ejecutan los hijos (Mode Directory)'
+        txt += ENE + f'{Fore.GREEN}<{Fore.RESET}\t Limpia la terminal e imprime el Indice'
+        txt += ENE + f'{Fore.GREEN}??{Fore.RESET}\t Muestra la ayuda de las Acciones sobre el Indice(éste menu)'
+        txt += ENE + f'{Fore.GREEN}help{Fore.RESET}\t Muestra la ayuda sobre los parámetros para la clase XindeX / Over_Main.'
+        txt += ENE + f'\t la clase XindeX/Over_Main.'  
+        txt += ENE + f'{Fore.GREEN}#{Fore.RESET}\t Switch al modo de ejecución(padres + hijos ó sólo hijos)'  
+        txt += ENE + f'\n■ ■ ■ ■ ■ ■ ■ ■ Clase Over-Main'
+        txt += ENE + f'{Fore.GREEN}={Fore.RESET}a.1\t Modo LIKE , Muestra todo lo que empieza por a.1 !!'  
+        txt += ENE + f'\t ATENCION: Muestra el menu filtrado pero admite cualquier entrada al menu. '  
+        txt += ENE + f'{Fore.GREEN}={Fore.RESET}a1\t {Fore.RED}ERROR :::: {Fore.RESET}NO muestra nada  pq hay que Ponerlo en la forma con PTO (a.1)'  
+        txt += ENE + f'1{Fore.GREEN}-{Fore.RESET}5\t Muestra el Menu desde la fila 1 hasta la fila 5 (ambas incluidas)'  
+        txt += ENE + f'{Fore.GREEN}**{Fore.RESET}b\t Modo Sub-Menu . MUESTRA EL MENU SI b ES PADRE (DIRECTORY)'  
+        txt += ENE + f'{Fore.GREEN}**{Fore.RESET}b.1\t MUESTRA EL SUB-MENU b.1  • Se ejecuta SI b.1 es PADRE (DIRECTORY)'  
+        txt += ENE + f'{Fore.GREEN}**{Fore.RESET}a.1\t {Fore.RED}ERROR :::: {Fore.RESET}No está permitido SI  a.1 es HIJO. '  
+        txt += ENE + f'{Fore.GREEN}=>{Fore.RESET}a.1\t LANZA Un PROCESO En Modo INDEPENDIENTE del Proceso PPAL. Si el P'  
+        txt += ENE + f'{Fore.GREEN}=>{Fore.RESET}a\t{Fore.RED}ERROR :::: {Fore.RESET}No Se ejecuta pq [a] es PADRE (DIRECTORY) si b_mode_all=False'  
+        txt += ENE + f'\t Sin embargo si b_mode_all=True, y tiene asignada una funcion, se ejecuta como Background.'  
+        txt += ENE + f'{Fore.GREEN}[{Fore.RESET}a1{Fore.GREEN}]{Fore.RESET}\t LANZA Un PROCESO En {Fore.CYAN}Modo DEPENDIENTE{Fore.RESET} (DEMONIO) DEL PROGRAMA PPAL.'  
+        txt += ENE + f'\t Cuando el PPal Acaba, el demonio acaba abruptamente tb.'  
+        txt += ENE + f'{Fore.GREEN}[{Fore.RESET}a{Fore.GREEN}]{Fore.RESET}\t {Fore.RED}ERROR :::: {Fore.RESET}No Se ejecuta pq [a] es PADRE (DIRECTORY) SI b_mode_all=False. '  
+        txt += ENE + f'\t Sin embargo si b_mode_all=True, y tiene asignada una funcion, se ejecuta como {Fore.CYAN}Demonio{Fore.RESET}.'  
+        txt += ENE + f'{Fore.GREEN}►{Fore.RESET}\t (Alt+16) IMPRIME LA {Fore.CYAN}LISTA DE PROCESOS{Fore.RESET} (con PID)'  
+        txt += ENE + f'{Fore.GREEN}■ 886{Fore.RESET}\t (Alt+254) {Fore.CYAN}Detiene el Proceso{Fore.RESET} ( ■ 886 ) Si Existe'  
 
-        {Fore.GREEN}<<<{Fore.RESET}         SALIR
-        
-        {Fore.GREEN}?{Fore.RESET}           Muestra el MENU de DEFINICION. 
-                                            Muestra la Funcion que se Ejecuta en cada Item del Menu y el 
-                                            Modo de Ejecucion (Exec All or Directory) en el Head
-
-        {Fore.GREEN}<{Fore.RESET}           REPITE el XindeX (menu).
-
-        {Fore.GREEN}??{Fore.RESET}          Muestra la ayuda de las Acciones sobre el Indice(éste menu)
-
-        {Fore.GREEN}'help'{Fore.RESET}      Muestra la ayuda sobre las Funciones y Parámetros para usar 
-                                            la clase XindeX/Over_Main.
-        {Fore.GREEN}@{Fore.RESET}           Switch al modo de ejecución(padres + hijos ó sólo hijos)
-        
-
-        {Fore.BLUE}██████{Fore.RESET} Clase OVER-MAIN {Fore.BLUE}███████████████████████████{Fore.RESET}
-        
-        {Fore.GREEN}={Fore.RESET}a.1        Modo LIKE , Muestra todo lo que empieza por a.1 !!
-                                            Es sóo visual!!. 
-                                            Muestra el menu filtrado pero admite cualquier entrada al menu. 
-        {Fore.GREEN}={Fore.RESET}a1         {Fore.RED}ERROR :::: {Fore.RESET}NO muestra nada  pq hay que Ponerlo en la forma con PTO (a.1)
-        
-        1{Fore.GREEN}-{Fore.RESET}5         Muestra el Menu desde la fila 1 hasta la fila 5 (por-ejemplo)(ambas incluidas)
-                                                     
-        {Fore.GREEN}**{Fore.RESET}b         Modo Sub-Menu . MUESTRA EL MENU SI b ES PADRE (DIRECTORY)
-        {Fore.GREEN}**{Fore.RESET}b.1       MUESTRA EL SUB-MENU b.1  • Se ejecuta SI b.1 es PADRE (DIRECTORY)
-        {Fore.GREEN}**{Fore.RESET}a.1       {Fore.RED}ERROR :::: {Fore.RESET}No está permitido SI  a.1 es HIJO. 
-        
-        {Fore.GREEN}=>{Fore.RESET}a.1       LANZA Un PROCESO En Modo INDEPENDIENTE del Proceso PPAL. Si el P
-        {Fore.GREEN}=>{Fore.RESET}a         {Fore.RED}ERROR :::: {Fore.RESET}No Se ejecuta pq 'a' es PADRE (DIRECTORY) si b_mode_all=False
-                                            Sin embargo si b_mode_all=True, y tiene asignada una funcion, 
-                                            se ejecuta como Background.
-        
-        {Fore.GREEN}[{Fore.RESET}a1{Fore.GREEN}]{Fore.RESET}          LANZA Un PROCESO En {Fore.CYAN}Modo DEPENDIENTE{Fore.RESET} (DEMONIO) DEL PROGRAMA PPAL. Cuando el PPal Acaba, el demonio acaba abruptamente tb.
-        {Fore.GREEN}[{Fore.RESET}a{Fore.GREEN}]{Fore.RESET}         {Fore.RED}ERROR :::: {Fore.RESET}No Se ejecuta pq 'a' es PADRE (DIRECTORY) SI b_mode_all=False. 
-                        Sin embargo si b_mode_all=True, y tiene asignada una funcion, se ejecuta como {Fore.CYAN}Demonio{Fore.RESET}.
-
-          
-        {Fore.GREEN}►{Fore.RESET}             (Alt+16) {Fore.CYAN}IMPRIME LA LISTA DE PROCESOS CON EL NÚMERO DE PROCESO EN CASO DE QUE SE QUIERA PARAR.
-
-        {Fore.GREEN}■ {Fore.YELLOW}8860{Fore.RESET}         (Alt+254) {Fore.CYAN}STOP DE LA EJECUCIÓN DEL PROCESO 8860 por-ejemplo
-        """
-        # ■■ IMPRIMO LOS TEXTOS CON COLOR
-        print(texto)
+        print(f'{txt}')
     
     # DESCRIPCION DE LOS PARAMETROS
     @staticmethod
     def ayuda_funciones():        
-        xindex = ['<<<', '<' , '?', '??', 'help']
-        overmain = ['**P', '<< index >>' , '=>' , '=' , '2-5']
 
-        print(print(Sdata.big_text(texto=f'Ayuda Funciones XindeX', color=Fore.YELLOW)))
-
-        texto = f"""
-        {Fore.BLUE}███{Style.RESET_ALL} Imports Usados {Fore.BLUE}███{Style.RESET_ALL}
-        from {Fore.YELLOW}classXindeX{Style.RESET_ALL} import {Fore.YELLOW}XindeX{Style.RESET_ALL}
-            • Salir del Menu: ({Fore.GREEN}<<<{Fore.RESET})  
-            • Repite Menu: ({Fore.GREEN}<{Style.RESET_ALL})  
-            • Muestra Actions: ({Fore.GREEN}?{Style.RESET_ALL}) 
-            • Ayuda Actions: ({Fore.GREEN}??{Style.RESET_ALL})   
-            • Ayuda Funciones: ({Fore.GREEN}'help'{Style.RESET_ALL}) 
-            
-        from {Fore.YELLOW}classXindeX{Style.RESET_ALL} import {Fore.YELLOW}Over_Main{Style.RESET_ALL}  
-            • Begin By: {Fore.GREEN}**{Fore.RESET} 
-            • Lanza en modo Demonio: {Fore.GREEN}<< >>{Fore.RESET} 
-            • Lanza en modo BackGround: {Fore.GREEN}=>{Fore.RESET} 
-            • Modo Like: {Fore.GREEN}={Fore.RESET}  
-            • Desde - Hasta:  {Fore.GREEN}1-5{Fore.RESET}
-            
-        from {Fore.YELLOW}Sdata{Style.RESET_ALL} import {Fore.YELLOW}Sdata{Style.RESET_ALL}                 
-            ■ AYUDA PARA EL OVER-MAIN PARA PEDIR DATOS SEGUROS AL USUARIO Y ESTABLECER LAS LETRAS GRANDES 
-                Y EN COLOR.
+        print(Sdata.big_text(texto=f'Ayuda Funciones XindeX', color=Fore.CYAN))
+        ENE = '\n'
+        txt = ''
+        txt += ENE + f'{Fore.BLUE}■ ■ ■ ■ ■ {Style.RESET_ALL} Imports Usados '  
+        txt += ENE + f'from {Fore.YELLOW}classXindeX{Style.RESET_ALL} import {Fore.YELLOW}XindeX{Style.RESET_ALL}'  
+        txt += ENE + f'from {Fore.YELLOW}classXindeX{Style.RESET_ALL} import {Fore.YELLOW}Over_Main{Style.RESET_ALL}'  
+        txt += ENE + f'from {Fore.YELLOW}Sdata{Style.RESET_ALL} import {Fore.YELLOW}Sdata{Style.RESET_ALL}'
         
-        {Fore.CYAN}■■■■■■■■■■■■■{Fore.RESET} PARAMETROS {Fore.YELLOW}Over_Main
-        {Fore.CYAN}■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■{Fore.RESET} 
+        txt += ENE + f'\n{Fore.CYAN}■■■■■■■■■■■■■{Fore.RESET} PARAMETROS Over_Main'  
+        txt += ENE + f'The_X_Men = {Fore.YELLOW}Over_Main{Fore.RESET}({Fore.GREEN}tipo_index{Fore.RESET} = a,{Fore.GREEN}b_mode_all{Fore.RESET} = True, {Fore.GREEN}b_loop{Fore.RESET} = True )'  
+        txt += ENE
+        txt += ENE + f'[{Fore.GREEN}tipo_index{Fore.RESET}] (str) ► Tipo de XindeX a crear, puede ser:'  
+        txt += ENE + f'\t • Numerico(byDef): 1'  
+        txt += ENE + f'\t • Alfabetico Min: a'  
+        txt += ENE + f'\t • Alfabetico May: A'  
+        txt += ENE + f'\t • Mixto May: A1, 1A'  
+        txt += ENE + f'\t • Mixto Min: a1, 1a'  
+        txt += ENE + f'[{Fore.GREEN}b_mode_all{Fore.RESET}] (bool)'  
+        txt += ENE + f'\t • True: (byDef) Solo se ejecutan (o solo es opcion valida) los subMenus Finales (no padres). '  
+        txt += ENE + f'\t • False: Se ejecuta (solo los que son opcion valida) todo lo que no sea None en func.'  
+        txt += ENE + f'[{Fore.GREEN}b_loop{Fore.RESET}] (bool)        '  
+        txt += ENE + f'\t • True: (byDef) Ejecuta Items del XindeX y solo sale por {Fore.GREEN}<<<{Fore.RESET}'  
+        txt += ENE + f'\t • False: Solo ejecutamos una vez y retorna respuesta'  
         
-        The_X_Men = {Fore.YELLOW}Over_Main{Fore.RESET}({Fore.GREEN}tipo_index{Fore.RESET} = 'a',{Fore.GREEN}b_mode_all{Fore.RESET} = True, {Fore.GREEN}b_loop{Fore.RESET} = True )
-
-               [{Fore.GREEN}tipo_index{Fore.RESET}] (str) 
-                ► Tipo de XindeX a crear, puede ser:    
-                Numerico(byDef) ► '1'
-                Alfabetico Min  ► 'a'
-                Alfabetico May  ► 'A'
-                Mixto           ► 'A1', '1A'    ► Mixto Mayusculas 
-                                ► 'a1', '1a'    ► Mixto Minusculas
-
-                [{Fore.GREEN}b_mode_all{Fore.RESET}] (bool)    
-                True  ► (byDef) Solo se ejecutan (o solo es opcion valida) los subMenus Finales (no padres). 
-                False ► Se ejecuta (solo los que son opcion valida) todo lo que no sea None en func.
-
-               [{Fore.GREEN}b_loop{Fore.RESET}] (bool)        
-                True  ► (byDef) Ejecuta Items del XindeX y solo sale por {Fore.GREEN}<<<{Fore.RESET}  
-                False ► Solo ejecutamos una vez y retorna respuesta 
-
-        {Fore.CYAN}■■■■■■■■■■■■■{Fore.RESET} PARAMETROS {Fore.YELLOW}AddX
-        {Fore.CYAN}■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■{Fore.RESET}
-
-        The_X_Men.{Fore.YELLOW}addX{Fore.RESET}( {Fore.GREEN}titulo{Fore.RESET} = 'sub-Xindex', 
-            {Fore.GREEN}padre{Fore.RESET} = 'Menu1', 
-            {Fore.GREEN}ipadre{Fore.RESET} = 'Info XindeX', 
-            {Fore.GREEN}lst_items{Fore.RESET} = [ ('item_1', func_1), ('item_n', func_n) ])
-
-            {Fore.GREEN}titulo{Fore.RESET}(str) 
-            • Nombre e identificador Principal del menu.
-
-            {Fore.GREEN}padre{Fore.RESET}(str)  
-            • Nombre del menu padre genetico donde se añade el menu.
-            • Tb puede ser None en caso de un menu sin padre o Principal.
+        txt += ENE + f'\n{Fore.CYAN}■■■■■■■■■■■■■{Fore.RESET} PARAMETROS AddX'  
+        txt += ENE + f'The_X_Men.{Fore.YELLOW}addX{Fore.RESET}( {Fore.GREEN}titulo{Fore.RESET} = sub-Xindex, {Fore.GREEN}padre{Fore.RESET} = Menu1, {Fore.GREEN}ipadre{Fore.RESET} = Info XindeX, {Fore.GREEN}lst_items{Fore.RESET} = [ (item_1, func_1), (item_n, func_n) ])'  
+        txt += ENE
+        txt += ENE + f'{Fore.GREEN}titulo{Fore.RESET}(str)::: Nombre e identificador Principal del menu.'  
+        txt += ENE + f'{Fore.GREEN}padre{Fore.RESET}(str)::: Indice en el padre donde se añade el nuevo menu.'  
+        txt += ENE + f'\t • Puede ser una posicion (entero) o el nombre del menu(str).'  
+        txt += ENE + f'\t • Tb puede ser None en caso de un menu sin padre o Principal.'  
+        txt += ENE + f'{Fore.GREEN}lst_items{Fore.RESET}(list[tuple]):::  Par nombre del item - funcion asociada.'  
         
-            {Fore.GREEN}ipadre{Fore.RESET}(str/int) 
-            • Indice en el padre donde se añade el nuevo menu. 
-            • Puede ser una posicion (entero) o el nombre del menu(str). 
-            • Tb puede ser None en caso de un menu sin padre o Principal.
-        
-            {Fore.GREEN}lst_items{Fore.RESET}(list[tuple]) 
-            • Par nombre del item - funcion asociada.
+        txt += ENE + f'\n{Fore.CYAN}■■■■■■■■■■■■■{Fore.RESET} PARAMETROS Mystyca'  
+        txt += ENE + f'retorno = The_X_Men.{Fore.YELLOW}mystyca{Fore.RESET}( {Fore.GREEN}titulo{Fore.RESET} = Menu1, {Fore.GREEN}head_datapush{Fore.RESET} = XINDEX - OVER-MAIN,{Fore.GREEN}pad_x{Fore.RESET} = 50 )'  
+        txt += ENE
+        txt += ENE + f'[{Fore.GREEN}titulo{Fore.RESET}](str)'
+        txt += ENE + f'\t • nombre / Id del Menu Añadido( con addX ) y Configurado (con padre e ipadre). '
+        txt += ENE + f'\t • Tb puede ser None en caso de un menu sin padre o Principal.'        
+        txt += ENE + f'[{Fore.GREEN}head_datapush{Fore.RESET}](str)'  
+        txt += ENE + f'\t • Texto cabecera del Menu' 
+        txt += ENE + f'\t • Si None, no lleva cabecera'
+        txt += ENE + f'[{Fore.GREEN}pad_x{Fore.RESET}](int)::: Espacio entre el final del caracter más a la derecha y el marco derecho del XindeX'
+        txt += ENE + f''  
 
-        {Fore.CYAN}■■■■■■■■■■■■■{Fore.RESET} PARAMETROS {Fore.YELLOW}Mystyca
-        {Fore.CYAN}■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■{Fore.RESET}
-        retorno = The_X_Men.{Fore.YELLOW}mystyca{Fore.RESET}( {Fore.GREEN}titulo{Fore.RESET} = 'Menu1', 
-            {Fore.GREEN}head_datapush{Fore.RESET} = 'XINDEX - OVER-MAIN', 
-            {Fore.GREEN}pad_x{Fore.RESET} = 50 )
-
-            [{Fore.GREEN}titulo{Fore.RESET}](str)         
-            • nombre / Id del Menu Añadido( con addX ) y Configurado (con padre e ipadre). 
-            • Tb puede ser None en caso de un menu sin padre o Principal.        
-        
-            [{Fore.GREEN}head_datapush{Fore.RESET}](str)  
-            • Texto cabecera del Menu 
-            • Si None, no lleva cabecera
-        
-            [{Fore.GREEN}pad_x{Fore.RESET}](int)          
-            • Espacio entre el final del caracter más a la derecha y el marco derecho del XindeX
-    """
-        # ■■ IMPRIMO LOS TEXTOS CON COLOR
-        print(texto)
+        print(txt)
 

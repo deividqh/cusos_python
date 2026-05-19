@@ -47,7 +47,7 @@ class Nivel_2:
                 spacer.pack(fill="x", pady=self.pady * 2)
                 self.level_2[i] = spacer
 
-    def to_row(self, index):
+    def row(self, index):
         return self.level_2.get(index)
 
     # Añade el widget al nivel_2 de tKinter(hace grid por ti)
@@ -88,7 +88,7 @@ class Nivel_2:
         """Indica si una posición de la fila debe quedar vacía."""
         return item is None or item == "_" or item == '-' or item == 'x'
     
-    def get_Frame(self):
+    def frame(self):
         return self.level_1 if self.level_1 else None
 
     
@@ -105,13 +105,13 @@ class Nivel_2:
 #     L2 = Nivel_2(root, cols_by_fila=alt_config, padx=15, pady=7)
 
 #     # ■ Creamos widgets y los asigno a una fila del frame L2
-#     lbl_nom = tk.Label(L2.to_row(1), text='Nombre: ')
-#     txt_nom = tk.Entry(L2.to_row(1))    
-#     lbl_ape = tk.Label(L2.to_row(2), text='Apellido: ')
-#     txt_ape = tk.Entry(L2.to_row(2))    
-#     btn_add = tk.Button(L2.to_row(3), text="Añadir")
-#     btn_del = tk.Button(L2.to_row(3), text="Borrar")
-#     btn_upt = tk.Button(L2.to_row(3), text="Actualiza")
+#     lbl_nom = tk.Label(L2.row(1), text='Nombre: ')
+#     txt_nom = tk.Entry(L2.row(1))    
+#     lbl_ape = tk.Label(L2.row(2), text='Apellido: ')
+#     txt_ape = tk.Entry(L2.row(2))    
+#     btn_add = tk.Button(L2.row(3), text="Añadir")
+#     btn_del = tk.Button(L2.row(3), text="Borrar")
+#     btn_upt = tk.Button(L2.row(3), text="Actualiza")
     
 #     # L2.order([])
 #     # ■ Posicionamos
@@ -128,15 +128,14 @@ class Nivel_2:
 #     L2.set_row(2, lbl_ape, txt_ape)
 #     L2.set_row(3, btn_add, btn_upt , "_", "_", "_",btn_del)
     
-#     L2.get_Frame().config(bg="lightgray")
+#     L2.frame().config(bg="lightgray")
     
 #     root.mainloop()
 
 # [
-# [lbl_nom, "x" , "x" , txt_nom], 
-# [lbl_ape, "x", txt_ape],
+# [lbl_nom, "+" , "_" , txt_nom], 
+# [lbl_ape, "_", txt_ape],
 # None,
-# "x",
 # [],
-# [btn_add, btn_upt , "x", "x", "x", btn_del],
+# [btn_add, btn_upt , "+", "+", "_", "_" btn_del],
 # ]
