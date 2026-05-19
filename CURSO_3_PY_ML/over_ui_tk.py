@@ -38,7 +38,8 @@ def main():
     # ■ ■ ■ ■ Lo dejo de ejemplo.... ipadre(Familia) = indice de donde cuelga este sub-menu en el padre(Menu1)
     # The_X_Men.addX( titulo='fam', padre='Menu1'   , ipadre='Familia'    , 
     #                 lst_items = [ 
-    #                 ("main familia", main_familia) , 
+    #                 ("familia 1", None) , 
+    #                 ("familia 2", None) , 
     #                 ])    
     
     # ■ ■ ■ ■  LLAMO A MYSTYCA PARA VISUALIZAR EL MENU 
@@ -49,7 +50,7 @@ def main():
 
 # █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 
 # █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 
-# █ █ █ █          FUNCIONES DEFINIDAS EN EL MENU
+# █ █ █ █  FUNCIONES DEFINIDAS EN EL MENU (tambien pueden estar en otro archivo)
 # █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 
 # █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 
 
@@ -289,9 +290,10 @@ def mixto():
 
     import tkinter as tk
     from tkinter import ttk
+
     ventana = tk.Tk()
     ventana.title("Sistema de Pestañas Secuenciales")
-    ventana.geometry("680x350")
+    # ventana.geometry("680x350")
     # Configuración de las pestañas a añadir. key es el nombre corto y value es el Título de la UI.
     configuracion_pestanas = {
         "dat": "Datos",
@@ -323,7 +325,7 @@ def mixto():
     )
     btn_bloquear.pack(side="left", padx=5, expand=True, fill="x")
 
-    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     F1 = Nivel_2(TABS.get_p('dat'), shape="5x6", padx=15, pady=7)    
     # ■ WIDGETS
     lbl_nom  = tk.Label(F1.frame, text='Nombre: ', anchor='w')
@@ -347,12 +349,41 @@ def mixto():
     ]
     # ■■■■■■■■■  DIBUJO
     F1.draw(matrix)
+
     # • • • • • • • • • • • • • • asocia nombre a grupo de widgets.
     F1.family.formar("textos", [txt_nom, txt_ape1, txt_ape2,])
     F1.family.formar("crud", [btn_add, btn_upt, btn_del,])
     # • • • • • • • • • • • • • • Aplica los comandos de los widgets limpiamente en otro archivo.
     btn_del.config(command=lambda: cuitk.limpiar_textos( F1.family.familiares('textos') ))
     btn_add.config(command=lambda: cuitk.mostrar_alerta( "Texto de Alerta de Prueba" ))
+
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    F2 = Nivel_2(TABS.get_p('split'), shape="5x6", padx=15, pady=7)    
+    # ■ WIDGETS
+    split_lbl_01 = ttk.Label(F2.frame, text="■ Proporción del Split (Train/Test)", font=("Arial", 11, "bold"))
+    split_scl_01 = ttk.Scale(F2.frame, from_=0, to=100, orient="horizontal")
+    # ■■■■■■■■■  MATRIZ
+    matrix_F2 = [
+        [] ,
+        [split_lbl_01,  split_scl_01, "+", "+", "+", "+" ],               
+        [],                                             
+    ]
+    F2.draw(matrix = matrix_F2)
+
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    F3 = Nivel_2(TABS.get_p('alg'), shape="5x6", padx=15, pady=7)    
+    # ■ WIDGETS
+    split_lbl_02 = ttk.Label(F3.frame, text="■ Proporción del Split (Train/Test)", font=("Verdana", 10))
+    split_scl_02 = ttk.Scale(F3.frame, from_=0, to=100, orient="horizontal")
+    # ■■■■■■■■■  MATRIZ
+    matrix_F3 = [
+        [] ,
+        [split_lbl_02,  split_scl_02, "_", "_", "_", "_" ],               
+        [],                                             
+    ]
+    F3.draw(matrix = matrix_F3)
+
+
 
     # • • • — — — • • •
     ventana.mainloop()

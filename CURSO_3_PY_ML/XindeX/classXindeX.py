@@ -2099,11 +2099,21 @@ class Over_Main(XindeX):
         """  
         ■ SALIDA: 
         """
+        salida = f'{Fore.GREEN}<<<{Fore.RESET}'
+        definicion = f'{Fore.GREEN}?{Fore.RESET}'
+        repeat = f'{Fore.GREEN}?{Fore.RESET}'
+        info = f'{Fore.GREEN}?{Fore.RESET}'
+        help = f'{Fore.GREEN}?{Fore.RESET}'
+        mode = f'{Fore.GREEN}?{Fore.RESET}'
+        style = f'{Fore.GREEN}?{Fore.RESET}'
+        
+        like = f'{Fore.GREEN}?{Fore.RESET}'
+
         print(Sdata.big_text(texto=f'Ayuda   X i n d e X', color=Fore.CYAN))
         ENE = '\n'
-        txt = ENE
-        txt += ENE + f'■ ■ ■ ■ ■ ■ ■ ■ Clase XindeX'
-        txt += ENE + f'{Fore.GREEN}<<<{Fore.RESET}\t SALIR'
+        txt = ''
+        txt += f'■ ■ ■ ■ ■ ■ ■ ■ Clase XindeX'
+        txt += ENE + f'{salida}\t SALIR'
         txt += ENE + f'{Fore.GREEN}?{Fore.RESET}\t Muestra el MENU de DEFINICION(la Funcion que se Ejecuta en cada Item) '
         txt += ENE + f'\t También muestra el modo de ejecución (En el Head):'
         txt += ENE + f'\t{' '*3}• Todos se ejecutan  (Exec All)'
@@ -2113,6 +2123,7 @@ class Over_Main(XindeX):
         txt += ENE + f'{Fore.GREEN}help{Fore.RESET}\t Muestra la ayuda sobre los parámetros para la clase XindeX / Over_Main.'
         txt += ENE + f'\t la clase XindeX/Over_Main.'  
         txt += ENE + f'{Fore.GREEN}#{Fore.RESET}\t Switch al modo de ejecución(padres + hijos ó sólo hijos)'  
+        txt += ENE + f'{Fore.GREEN}@{Fore.RESET}\t Cambia el estilo del Menu(default/franky/moderno/vacio/...)'  
         txt += ENE + f'\n■ ■ ■ ■ ■ ■ ■ ■ Clase Over-Main'
         txt += ENE + f'{Fore.GREEN}={Fore.RESET}a.1\t Modo LIKE , Muestra todo lo que empieza por a.1 !!'  
         txt += ENE + f'\t ATENCION: Muestra el menu filtrado pero admite cualquier entrada al menu. '  
