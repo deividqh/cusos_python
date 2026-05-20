@@ -1,5 +1,68 @@
 import tkinter as tk
-from tkinter import ttk  # Importa los componentes modernos
+from tkinter import ttk             # Importa los componentes modernos
+from tkinter import filedialog
+import os
+
+class FDialoger:
+    """
+    Widget compuesto: Entry + Button que lanza un FileDialog.
+    Hereda de ttk.Frame para poder insertarse directamente en matrices de draw().
+    """
+    def __init__(self, parent, texto_boton, title="Seleccionar Archivo",
+                 initialdir=None, filetypes=None, entry_width=40):
+        
+        # Variable de control
+        self.var_ruta = tk.StringVar(value="")
+
+        # ■ Widgets sueltos (hijos de 'parent')
+        self.entry = ttk.Entry(parent, textvariable=self.var_ruta, width=entry_width)
+        self.btn = ttk.Button(parent, text=texto_boton, command=self._abrir_dialogo)
+
+        # ■ Configuración del diálogo
+        self._titulo = title
+        self._dir_inicial = initialdir if initialdir else os.path.dirname(os.path.abspath(__file__))
+        self._tipos = filetypes if filetypes else [
+            ("Todos los archivos", "*.*"),
+            ("Archivos JSON", "*.json"),
+            ("Archivos CSV", "*.csv"),
+            ("Archivos de texto", "*.txt")
+        ]
+
+        # ■ Callback opcional tras seleccionar archivo
+        self._on_select = None
+
+    def _abrir_dialogo(self):
+        archivo = filedialog.askopenfilename(
+            parent=self.entry.winfo_toplevel(),   # ← CORREGIDO
+            title=self._titulo,
+            initialdir=self._dir_inicial,
+            filetypes=self._tipos
+        )
+        if archivo:
+            self.var_ruta.set(archivo)
+            self.entry.xview_moveto(1.0)
+        pass
+    def get_ruta(self):
+        """Devuelve la ruta completa seleccionada."""
+        return self.var_ruta.get()
+
+    def set_ruta(self, ruta):
+        """Establece manualmente la ruta en el Entry."""
+        self.var_ruta.set(ruta)
+
+    def get_ruta_abreviada(self, numpartes=2):
+        """Devuelve la ruta acortada: .../ultima_carpeta/archivo."""
+        ruta = self.var_ruta.get()
+        if not ruta:
+            return ""
+        partes = ruta.replace("\\", "/").split("/")
+        if len(partes) <= numpartes:
+            return ruta
+        ultimas = partes[-numpartes:]
+        ruta_corta = os.path.join("...", *ultimas)
+        return ruta_corta
+
+    
 
 class Familia:
     def __init__(self):
@@ -129,8 +192,11 @@ class Nivel_2:
       dibujas el formulario con draw y ahí se define la posición definitiva de los widgets. 
     • Es mas cuadrado que row_fix porque define cada espacio.
     """
-    def __init__(self, contenedor, title="Formulario", ancho=300, alto=450, 
-                 num_filas=None, cols_by_fila=1, padx=5, pady=5, shape=None):
+    def __init__(self,  contenedor, 
+                        shape=None,
+                        title="Formulario", 
+                        ancho=300, alto=450, 
+                        padx=5, pady=5 ):
         self.contenedor = contenedor
         """ contenedor del Frame que vamos a crear. """
         self.padx = padx
@@ -146,9 +212,9 @@ class Nivel_2:
         self.columnas = None   
         """ Numero de columnas del frame """        
         self._draw_map = []    
-        """ Mapa de posiciones tras draw() """
-        
+        """ Mapa de posiciones tras draw() """        
         self.family = Familia()
+        """ Clase familia para hacer agrupaciones de widgets custom """        
         
         # ■ ■  Procesar shape "filasxcolumnas" 
         if shape is not None:
@@ -156,14 +222,16 @@ class Nivel_2:
                 filas_str, cols_str = shape.lower().split('x')
                 self.filas = int(filas_str.strip())
                 self.columnas = int(cols_str.strip())
+                #  [6] * 5 = [6,6,6,6,6] ... lo uso como validación: 
                 cols_by_fila = [self.columnas] * self.filas
             except ValueError:
                 raise ValueError(f"Formato de shape inválido: '{shape}'. Use formato 'filasxcolumnas' (ej: '4x6')")
         pass        
+        # Construye level_1 y level_2
         if self.filas or (isinstance(cols_by_fila, list) and len(cols_by_fila) > 0):
-            self._build_structure(cols_by_fila)
+            self._construye_estructura_levels(cols_by_fila)
 
-    def _build_structure(self, cols_config):
+    def _construye_estructura_levels(self, cols_config):
         """
         Configura level_1 como grid maestro.
         level_2[i] registra metadatos de cada fila.
@@ -196,7 +264,7 @@ class Nivel_2:
 
     def _add(self, widget, column, row=0, **kwargs):
         """
-        posiciona en level_1.
+        ■ posiciona en level_1.
         """
         if 'sticky' not in kwargs:
             kwargs['sticky'] = "we"
@@ -205,7 +273,7 @@ class Nivel_2:
 
     def _set_row(self, row, *items, **kwargs):
         """
-        posiciona widgets en una fila específica de level_1.
+        ■ posiciona widgets en una fila específica de level_1.
         """
         if row not in self.level_2:
             raise ValueError(f"La fila {row} no existe.")
@@ -254,7 +322,7 @@ class Nivel_2:
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
 
     def _skip_row(self, row_data, row_idx):
-        """Decide si una fila del matrix debe saltarse."""
+        """ ■ Decide si una fila del matrix debe saltarse."""
         if row_data is None or (isinstance(row_data, (list, tuple)) and len(row_data) == 0):
             return True
         if not isinstance(row_data, (list, tuple)):
@@ -269,7 +337,7 @@ class Nivel_2:
         return False
 
     def _celda_vacia(self, row_idx, col_idx):
-        """Crea un frame vacío, lo posiciona y registra el tracking."""
+        """ ■ Crea un frame vacío, lo posiciona y registra el tracking."""
         empty_frame = tk.Frame(self.level_1, width=self.padx)
         empty_frame.grid(in_=self.level_1, row=row_idx, column=col_idx, sticky="we")
 
@@ -280,7 +348,7 @@ class Nivel_2:
         return {'type': 'empty', 'widget': empty_frame, 'col': col_idx, 'span': 1}
 
     def _colspan(self, placed):
-        """Extiende el span del último widget real a la izquierda."""
+        """ ■ Extiende el span del último widget real a la izquierda."""
         target = None
         target_pos = None
 
@@ -304,7 +372,7 @@ class Nivel_2:
                     break
 
     def _widget_real(self, item, row_idx, col_idx):
-        """Posiciona un widget real en el grid y registra el tracking."""
+        """ ■ Posiciona un widget real en el grid y registra el tracking."""
         item.grid_forget()
         item.grid(in_=self.level_1, row=row_idx, column=col_idx, sticky="we")
 
@@ -313,6 +381,58 @@ class Nivel_2:
             'widget': item, 'tipo': 'widget', 'span': 1
         })
         return {'type': 'widget', 'widget': item, 'col': col_idx, 'span': 1}
+
+
+    def fdlg(self,  texto_boton="📂 Load File", title="Seleccionar Archivo", 
+                    initialdir=None, filetypes=None, 
+                    entry_width=40, b_split=False):
+        """
+        Crea un FDialoger.
+        - entry_width(int): El tamaño de la caja de texto.
+        - b_split=False (default): empaqueta Entry+Button dentro de un Frame y devuelve el Frame.
+        - b_split=True: devuelve los widgets sueltos (entry, button) para que draw() los coloque
+          en celdas independientes de la matriz.
+        
+        """
+        if b_split:
+            # Modo suelto: los widgets nacen directamente en self.frame
+            fd = FDialoger(
+                parent      = self.frame,
+                texto_boton = texto_boton,
+                title       = title,
+                initialdir  = initialdir,
+                filetypes   = filetypes,
+                entry_width = entry_width,
+            )
+            # Devolvemos los widgets para que el usuario los distribuya en la matriz
+            
+            return fd.entry, fd.btn
+
+        else:
+            contenedor = ttk.Frame(self.frame)
+            fd = FDialoger(
+                parent      = contenedor,
+                texto_boton = texto_boton,
+                title       = title,
+                initialdir  = initialdir,
+                filetypes   = filetypes,
+                entry_width = entry_width,
+            )
+            fd.entry.pack(side="left", fill="x", expand=True, padx=(0, 5))
+            fd.btn.pack(side="left")
+            # Delegación: Lo que ocurre aquí es monkey patching básico: 
+            # le estás pegando métodos al Frame como si fueran susyos.
+            # fdlg_widget.get_ruta = lambda: fd.get_ruta()
+            # ahora se puede usar los metodos de FileDialoger en el Frame contenedor
+            contenedor.get_ruta            = fd.get_ruta
+            contenedor.get_ruta_abreviada  = fd.get_ruta_abreviada
+            contenedor.set_ruta            = fd.set_ruta
+            contenedor.entry               = fd.entry
+            contenedor.btn                 = fd.btn
+            
+            return contenedor
+
+
 
 
 # ██████████████████████████████████████████

@@ -113,25 +113,6 @@ def main_pestanas():
     p_alg = TABS.get_p("alg")
     ttk.Label(p_alg, text="■ Selección de Algoritmo", font=("Arial", 11, "bold")).pack(pady=10)
     
-    # ■ PANEL DE CONTROL GLOBAL ESTI SE TIENE QUE ELIMINAR.
-    # ■ SOLO VALE PARA MANTENER LAS FUNCIONES go_next y blok_from.
-    panel_control = ttk.Frame(ventana)
-    panel_control.pack(fill="x", padx=10, pady=10)
-    
-    # Botón Avanzar: Detecta la pestaña actual dinámicamente y avanza
-    btn_avanzar = ttk.Button(
-        panel_control,
-        text="Validar y Avanzar ➡️",
-        command=lambda: TABS.go_next( TABS.notebook.index("current") )
-    )
-    btn_avanzar.pack(side="left", padx=5, expand=True, fill="x")
-    # Botón Bloquear: Bloquea todo el camino que esté por delante de la pestaña actual
-    btn_bloquear = ttk.Button(
-        panel_control,
-        text="🔒 Bloquear Siguientes",
-        command=lambda: TABS.blok_from( TABS.notebook.index("current") + 1 )
-    )
-    btn_bloquear.pack(side="left", padx=5, expand=True, fill="x")
     ventana.mainloop()
     pass
 
@@ -264,9 +245,9 @@ def main_row_draw():
     F1.family.formar("crud", [btn_add, btn_upt, btn_del,])
 
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ Aplica los comandos de los widgets limpiamente en otro archivo.
-    import comandos_ui_tk as cuitk
-    btn_del.config(command=lambda: cuitk.limpiar_textos( F1.family.familiares('textos') ))
-    btn_add.config(command=lambda: cuitk.mostrar_alerta( "Texto de Alerta de Prueba" ))
+    import comandos_ui_tk as cmd
+    btn_del.config(command=lambda: cmd.limpiar_textos( F1.family.familiares('textos') ))
+    btn_add.config(command=lambda: cmd.mostrar_alerta( "Texto de Alerta de Prueba" ))
 
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ Ver el mapa generado de 'la familia'.
     print("\n--- MAPA DE DRAW ---")
@@ -288,7 +269,7 @@ def mixto():
     """ Quiero poner una de pestañas y en cada pestaña un Frame al menos de prueba """
     from ui_tk.pestanas_dicc import StepByStab 
     from ui_tk.row_draw import Nivel_2
-    import comandos_ui_tk as cuitk
+    import comandos_ui_tk as cmd
 
     import tkinter as tk
     from tkinter import ttk
@@ -296,39 +277,25 @@ def mixto():
     ventana = tk.Tk()
     ventana.title("Sistema de Pestañas Secuenciales")
     # ventana.geometry("680x350")
+    
+    # ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ ■■■■ 
     # Configuración de las pestañas a añadir. key es el nombre corto y value es el Título de la UI.
     configuracion_pestanas = {
         "dat": "Datos",
         "split": "Split",
         "alg": "Algoritmo/Modelo",
         "met": "Métricas",
-        "graf": "Gráficas"
+        "graf": "Gráficas",
     }
-    TABS = StepByStab(ventana, configuracion_pestanas)
+    TABS = StepByStab(ventana, configuracion_pestanas, b_botones = True)
     TABS.pack(fill="both", expand=True, padx=10, pady=10)
-    
-    # ■ PANEL DE CONTROL GLOBAL ESTI SE TIENE QUE ELIMINAR.
-    # ■ SOLO VALE PARA MANTENER LAS FUNCIONES go_next y blok_from.
-    panel_control = ttk.Frame(ventana)
-    panel_control.pack(fill="x", padx=10, pady=10)
-
-    # Botón Avanzar: Detecta la pestaña actual dinámicamente y avanza
-    btn_avanzar = ttk.Button(
-        panel_control,
-        text="Validar y Avanzar ➡️",
-        command=lambda: TABS.go_next( TABS.notebook.index("current") )
-    )
-    btn_avanzar.pack(side="left", padx=5, expand=True, fill="x")
-    # Botón Bloquear: Bloquea todo el camino que esté por delante de la pestaña actual
-    btn_bloquear = ttk.Button(
-        panel_control,
-        text="🔒 Bloquear Siguientes",
-        command=lambda: TABS.blok_from( TABS.notebook.index("current") + 1 )
-    )
-    btn_bloquear.pack(side="left", padx=5, expand=True, fill="x")
 
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
-    F1 = Nivel_2(TABS.get_p('dat'), shape="5x6", padx=15, pady=7)    
+    # FRAME PARA LA PESTAÑA DATOS
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+
+    F1 = Nivel_2(TABS.get_p('dat'), shape="5x6", padx=15, pady=7)     
+
     # ■ WIDGETS
     lbl_nom  = tk.Label(F1.frame, text='Nombre: ', anchor='w')
     txt_nom  = tk.Entry(F1.frame)    
@@ -341,7 +308,8 @@ def mixto():
     btn_del = tk.Button(F1.frame, text="Borrar")
     scrollbar = tk.Scrollbar(F1.frame, orient=tk.VERTICAL)
     listbox = tk.Listbox(F1.frame, yscrollcommand=scrollbar.set, selectmode=tk.SINGLE)
-    # ■■■■■■■■■  MATRIZ
+
+    # ■  MATRIZ
     matrix = [
         [lbl_nom,  txt_nom, "+", "+", "+", "_"       ],
         [lbl_ape1, txt_ape1, "_", lbl_ape2, txt_ape2 ],   
@@ -349,44 +317,56 @@ def mixto():
         [],                                             
         [btn_add,  btn_upt, "+", "_", btn_del ],   
     ]
-    # ■■■■■■■■■  DIBUJO
+    # ■  DIBUJO
     F1.draw(matrix)
 
-    # • • • • • • • • • • • • • • asocia nombre a grupo de widgets.
+    # • • • family asocia nombre a grupo de widgets.
     F1.family.formar("textos", [txt_nom, txt_ape1, txt_ape2,])
     F1.family.formar("crud", [btn_add, btn_upt, btn_del,])
-    # • • • • • • • • • • • • • • Aplica los comandos de los widgets limpiamente en otro archivo.
-    btn_del.config(command=lambda: cuitk.limpiar_textos( F1.family.familiares('textos') ))
-    btn_add.config(command=lambda: cuitk.mostrar_alerta( "Texto de Alerta de Prueba" ))
 
+    # • • • Aplica los comandos de los widgets limpiamente en otro archivo.
+    btn_del.config(command=lambda: cmd.limpiar_textos( F1.family.familiares('textos') ))
+    btn_add.config(command=lambda: cmd.mostrar_alerta( "Texto de Alerta de Prueba" ))
+
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    # FRAME PARA LA PESTAÑA SPLIT
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     F2 = Nivel_2(TABS.get_p('split'), shape="5x6", padx=15, pady=7)    
     # ■ WIDGETS
-    split_lbl_01 = ttk.Label(F2.frame, text="■ Proporción del Split (Train/Test)", font=("Arial", 11, "bold"))
-    split_scl_01 = ttk.Scale(F2.frame, from_=0, to=100, orient="horizontal")
-    # ■■■■■■■■■  MATRIZ
+    lbl_split_01 = ttk.Label(F2.frame, text="■ Proporción del Split (Train/Test)", font=("Arial", 11, "bold"))
+    scl_split_01 = ttk.Scale(F2.frame, from_=0, to=100, orient="horizontal")
+    estado_checkbox = tk.BooleanVar(value=False)
+    checkbox = ttk.Checkbutton( F2.frame, text="Boton de Check:", variable = estado_checkbox, 
+                                command=lambda: cmd.al_cambiar( estado_checkbox ) )
+    # ■ Para meter un file dialog hay un especial boton+entry en la clase.
+    file_d = F2.fdlg(entry_width=35)
+    """ ■ Conectas la lógica de negocio (desde comandos_ui_tk o directamente aquí) """
+    # ■  MATRIZ
     matrix_F2 = [
-        [] ,
-        [split_lbl_01,  split_scl_01, "+", "+", "+", "+" ],               
-        [],                                             
+        [file_d] ,
+        [checkbox, '+', '+'],                                             
+        [],
+        [],
+        [lbl_split_01, '+', scl_split_01, "+", "+", "+", "+" ],               
     ]
+    # ■  DIBUJO
     F2.draw(matrix = matrix_F2)
 
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
-    F3 = Nivel_2(TABS.get_p('alg'), shape="5x6", padx=15, pady=7)    
-    # ■ WIDGETS
+    # FRAME PARA LA PESTAÑA ALGORITMOS
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    F3 = Nivel_2(TABS.get_p('alg'), shape="6x6", padx=15, pady=7)    
     split_lbl_02 = ttk.Label(F3.frame, text="■ Proporción del Split (Train/Test)", font=("Verdana", 10))
-    split_scl_02 = ttk.Scale(F3.frame, from_=0, to=100, orient="horizontal")
-    btn_load_f = tk.Button(  master=F3.frame, text="Load File", command= cuitk.bttn_loadfile_click )
-    # ■■■■■■■■■  MATRIZ
+    split_scl_02 = ttk.Scale(F3.frame, from_=0, to=100, orient="horizontal")    
+    # ■ otra manera de meter el fileDialog, obteniendo el texto y el botón.
+    texto_fd, boton_fd = F3.fdlg(entry_width=35, b_split=True)
     matrix_F3 = [
-        [btn_load_f] ,
+        [] ,
         [split_lbl_02,  split_scl_02, "_", "_", "_", "_" ],               
-        [],                                             
+        [] ,
+        [boton_fd, texto_fd],                                             
     ]
     F3.draw(matrix = matrix_F3)
-
-
 
     # • • • — — — • • •
     ventana.mainloop()
