@@ -361,7 +361,6 @@ class form_biblioteca(Formulario_Ninja):
             # print(ruta_abrevd)
             self.lbl_archivo.config(text=ruta_abrevd+'//'+nombre_archivo)
             self.informarApp('Load File', 'OK ;)')
-            
         else:
             messagebox.showinfo(title="Load File:", message=f"No se ha cargado ningún archivo ")
             self.informarApp('Load File', 'Failed :(')

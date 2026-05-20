@@ -196,7 +196,7 @@ class Nivel_2:
 
     def _add(self, widget, column, row=0, **kwargs):
         """
-        Legacy: posiciona en level_1.
+        posiciona en level_1.
         """
         if 'sticky' not in kwargs:
             kwargs['sticky'] = "we"
@@ -205,7 +205,7 @@ class Nivel_2:
 
     def _set_row(self, row, *items, **kwargs):
         """
-        Legacy: posiciona widgets en una fila específica de level_1.
+        posiciona widgets en una fila específica de level_1.
         """
         if row not in self.level_2:
             raise ValueError(f"La fila {row} no existe.")

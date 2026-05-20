@@ -7,6 +7,8 @@ from colorama import Fore, Style, init  # ■ COLORAMA PARA COLORES EN TERMINAL.
 import os               # SISTEMA OPERATIVO(PARA LIMPIAR LA TERMINAL)
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 import multiprocessing
+import tkinter as tk
+from tkinter import ttk  # Importa los componentes modernos
 
 # ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 # DEF: CREA UN INDICE MULTINIVEL CON GENETICA QUE EJECUTA LAS FUNCIONES ASOCIADAS A CADA MENU
@@ -159,9 +161,9 @@ def main_row_form():
     root.mainloop()
     pass
 
-def checkbox_estado():
+def checkbox_estado(checkbox):
     # El método .get() obtiene el valor actual (1 si está marcado, 0 si no)
-    if var_chk.get() == 1:
+    if checkbox.get() == 1:
         checkbox.config(text="¡Casilla marcada!")
     else:
         checkbox.config(text="Casilla desmarcada")
@@ -375,9 +377,10 @@ def mixto():
     # ■ WIDGETS
     split_lbl_02 = ttk.Label(F3.frame, text="■ Proporción del Split (Train/Test)", font=("Verdana", 10))
     split_scl_02 = ttk.Scale(F3.frame, from_=0, to=100, orient="horizontal")
+    btn_load_f = tk.Button(  master=F3.frame, text="Load File", command= cuitk.bttn_loadfile_click )
     # ■■■■■■■■■  MATRIZ
     matrix_F3 = [
-        [] ,
+        [btn_load_f] ,
         [split_lbl_02,  split_scl_02, "_", "_", "_", "_" ],               
         [],                                             
     ]
