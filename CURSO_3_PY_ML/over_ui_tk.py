@@ -190,11 +190,11 @@ def main_row_fix():
     # ■ Matriz de dibujo
     # ■■■■■■■■■■■■■■■■■■■■■■ 
     matrix = [
-        [lbl_nom,  txt_nom , '+'  , '+'  , '+'     ],  # Fila 0
+        [lbl_nom,  txt_nom , '+'  , '+'  , '+' ],  # Fila 0
         [lbl_ape1, txt_ape1, "+", lbl_ape2, txt_ape2  , '+'],  # Fila 1
         [combo, '_', slide , '_', checkbox, '_'],                                                    # Fila 2 (vacía)
         [listbox, '+', '+', '+', '+', '+'],                               
-        [btn_add,  btn_upt,  "_", '_',  "_",  btn_del      ],  # Fila 4
+        [btn_add,  btn_upt,  "_", '_',  "_",  btn_del ],  # Fila 4
     ]    
     F1.draw(matrix)  
     # F1.frame().config(bg="lightgray")
@@ -299,9 +299,9 @@ def mixto():
     # ■ WIDGETS
     lbl_nom  = tk.Label(F1.frame, text='Nombre: ', anchor='w')
     txt_nom  = tk.Entry(F1.frame)    
-    lbl_ape1 = tk.Label(F1.frame, text='Apellido1: ')
+    lbl_ape1 = tk.Label(F1.frame, text='Apellido1: ', anchor='w')
     txt_ape1 = tk.Entry(F1.frame)
-    lbl_ape2 = tk.Label(F1.frame, text='Apellido2: ')
+    lbl_ape2 = tk.Label(F1.frame, text='Apellido2: ', anchor='w')
     txt_ape2 = tk.Entry(F1.frame)    
     btn_add = tk.Button(F1.frame, text="Añadir")
     btn_upt = tk.Button(F1.frame, text="Actualiza")
@@ -320,11 +320,12 @@ def mixto():
     # ■  DIBUJO
     F1.draw(matrix)
 
-    # • • • family asocia nombre a grupo de widgets.
+    # ______________________________________
+    # ■ 'family' asocia nombre a grupo de widgets • • • (Opciona pero Recomendado) 
     F1.family.formar("textos", [txt_nom, txt_ape1, txt_ape2,])
     F1.family.formar("crud", [btn_add, btn_upt, btn_del,])
-
-    # • • • Aplica los comandos de los widgets limpiamente en otro archivo.
+    # ______________________________________
+    # ■ Aplica los comandos de los widgets limpiamente en otro archivo(cmd) • • • (Opciona pero Recomendado) 
     btn_del.config(command=lambda: cmd.limpiar_textos( F1.family.familiares('textos') ))
     btn_add.config(command=lambda: cmd.mostrar_alerta( "Texto de Alerta de Prueba" ))
 
@@ -334,19 +335,23 @@ def mixto():
     F2 = Nivel_2(TABS.get_p('split'), shape="5x6", padx=15, pady=7)    
     # ■ WIDGETS
     lbl_split_01 = ttk.Label(F2.frame, text="■ Proporción del Split (Train/Test)", font=("Arial", 11, "bold"))
-    scl_split_01 = ttk.Scale(F2.frame, from_=0, to=100, orient="horizontal")
+    scl_split_01 = ttk.Scale(F2.frame, from_=0, to=10, orient="horizontal")
+    # •
     estado_checkbox = tk.BooleanVar(value=False)
     checkbox = ttk.Checkbutton( F2.frame, text="Boton de Check:", variable = estado_checkbox, 
                                 command=lambda: cmd.al_cambiar( estado_checkbox ) )
-    # ■ Para meter un file dialog hay un especial boton+entry en la clase.
-    file_d = F2.fdlg(entry_width=35)
-    """ ■ Conectas la lógica de negocio (desde comandos_ui_tk o directamente aquí) """
+    # • 
+    l_slide, slide, v_slide = F2.my_slide(texto="■ Split (Train/Test)", 
+                                          desde=0, hasta=10, 
+                                          valor_inicial=3,
+                                          tipo_dato=tk.DoubleVar
+                                          )
     # ■  MATRIZ
     matrix_F2 = [
-        [file_d] ,
+        [] ,
         [checkbox, '+', '+'],                                             
-        [],
-        [],
+        [l_slide, slide, '+', '+', '+', v_slide] ,
+        [ '+', '+', '+', '+', '+', '+'] ,
         [lbl_split_01, '+', scl_split_01, "+", "+", "+", "+" ],               
     ]
     # ■  DIBUJO
@@ -355,18 +360,56 @@ def mixto():
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     # FRAME PARA LA PESTAÑA ALGORITMOS
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
-    F3 = Nivel_2(TABS.get_p('alg'), shape="6x6", padx=15, pady=7)    
-    split_lbl_02 = ttk.Label(F3.frame, text="■ Proporción del Split (Train/Test)", font=("Verdana", 10))
-    split_scl_02 = ttk.Scale(F3.frame, from_=0, to=100, orient="horizontal")    
-    # ■ otra manera de meter el fileDialog, obteniendo el texto y el botón.
-    texto_fd, boton_fd = F3.fdlg(entry_width=35, b_split=True)
+    F3 = Nivel_2(TABS.get_p('alg'), shape="3x4", padx=15, pady=7)    
+    file_d = F3.my_fileDialog(entry_width=35)
+    # •
+    texto_fd, boton_fd = F3.my_fileDialog(entry_width=35, b_split=True)
+
     matrix_F3 = [
-        [] ,
-        [split_lbl_02,  split_scl_02, "_", "_", "_", "_" ],               
-        [] ,
+        [file_d, '+', '+', '+', '+', '_'] ,
         [boton_fd, texto_fd],                                             
+        [] ,
     ]
     F3.draw(matrix = matrix_F3)
+    
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    # FRAME PARA LA PESTAÑA 'METRICAS'
+    # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
+    F4 = Nivel_2(TABS.get_p('met'), shape="6x6", padx=15, pady=7)    
+    # Datos sinteticos para pruebas:
+    # cabeceras_db = ["ID", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Ciudad"]
+    # # ■ A0, B0 es el grid en la UI. 0, 3, 5 ...  son los indices de 'datos_db'
+    # dicc = {'A0': 0, 'B0': 1, 'C0': '_', 'D0': '' ,  
+    #         'A1': 2, 'B1': 3, 'C1': '+', 'D1': '' , 
+    #         'A2': 4, 'B2': 3, 'C2': '+', 'D2': '' , 
+    #        } 
+    datos_db = [
+        (1, "Ana", "García", "López", "555-1234", "Madrid"),
+        (1, "Marcos", "Rojas", "Márquez", "3333-1234", "Vigo"),
+        (1, "María", "Saturno", "Obradoiro", "353-1234", "Murcia"),
+        (2, "Juan", "Pérez", "Gómez", "111-1234", "Las Palmas de Gran Canaria")
+    ]
+
+    cab = ["ID", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Ciudad"]
+    dicc = {'A0': cab[0], 'B0': "Nombre",  'C0': '+',        'D0': '+' ,  
+            'A1': cab[2], 'B1': "+" , 	   'C1': cab[3],     'D1': '+' , 
+            'A2': "_",    'B2': "Ciudad",  'C2': cab[4], 'D2': cab[5] , 
+        } 
+
+    mi_tabla = F4.my_tree(
+        titulo="■ Base de Datos de Clientes", 
+        cabeceras=cab, 
+        datos=datos_db, 
+        d_textos=dicc
+    )
+    mi_super_lista = F4.my_listbox(datos=datos_db, b_botones=True, b_registro=True)
+
+    matrix_F4 = [
+        [] ,
+        [],                                             
+        [mi_tabla, '+', '+', '+', '+', '+'] ,
+    ]
+    F4.draw(matrix = matrix_F4)
 
     # • • • — — — • • •
     ventana.mainloop()

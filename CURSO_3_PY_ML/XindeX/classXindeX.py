@@ -2191,7 +2191,65 @@ class Over_Main(XindeX):
         txt += ENE + f'\t • Texto cabecera del Menu' 
         txt += ENE + f'\t • Si None, no lleva cabecera'
         txt += ENE + f'[{Fore.GREEN}pad_x{Fore.RESET}](int)::: Espacio entre el final del caracter más a la derecha y el marco derecho del XindeX'
-        txt += ENE + f''  
+
+        txt += ENE + f"""{Fore.YELLOW}
+■ CONSEJO: COPIA , PEGA Y ADAPTA EL CODIGO VERDE A TUS NECESIDADES{Fore.RESET}"""
+        
+        txt += ENE + f""" {Fore.GREEN}
+
+# 0 ■ ■ ■ ■ CREO UN ARCHIVO over_main.py y escribo en él el bloque de código siguiente 
+#           para crear un XindeX básico. 
+from XindeX.classXindeX import Over_Main       
+from XindeX.Sdata import Sdata  # ■ (OPCIONAL PERO RECOMENDADO) Para pedir datos Seguros al usuario .
+    
+# 1 ■ ■ ■ ■ CREO LOS MENUS Y SUS FUNCIONES ASOCIADAS 
+Menu1 = The_X_Men.addX(titulo='menu_principal', padre=None , ipadre=None, 
+                lst_items = [ 
+                    ("Tema 1" , func_tema_1) ,
+                    ("Tema 2" , func_tema_2) , 
+                    ("Tema 3" , None) , 
+                    ("Tema 4" , None), 
+                    ("Tema 5" , func_tema_5) , 
+                ])
+
+# 2 ■ ■ ■ ■ Creo un sub-menu dentro del menu_principal desde 'Tema 2'
+The_X_Men.addX( titulo='sub_menu_1', padre='menu_principal' , ipadre='Tema 2' , 
+                lst_items = [ 
+                ("KNN", func_knn) , 
+                ("SVM", func_svm) , 
+                ("StandarSacale", None) , 
+                ])    
+
+# 3 ■ ■ ■ ■  LLAMO A MYSTYCA PARA VISUALIZAR EL MENU 
+retorno = The_X_Men.mystyca( titulo='menu_principal', head_datapush  = " Formularios DVD " , pad_x=5 )
+{Fore.RESET}"""
+        
+        txt += ENE + """ 
+# 4 ■■■■■ RETORNO DE MYSTYCA (Opcional)
+print(f"::: T H E   E N D  en MAIN() ::: '{'retorno if retorno else 'no retorno'} ")
+""" 
+        
+        txt += ENE + f"""{Fore.LIGHTCYAN_EX}
+... y luego tienes que definir las funciones en este mismo archivo o importarlas
+
+• Si quieres usar el indice como motor de ejecución puedes usar un archivo de funciones aparte 
+  ( para tener el código más limpio ).
+• Si es un indice para realizar pruebas sobre clases puedes escribir las funciones en este mismo archivo 
+  ( para mantener el orquestador centralizado en un mismo sitio ).
+POR EJEMPLO: Si quiero usar un archivo de funciones aparte:
+{Fore.RESET}"""
+
+        txt += ENE + f""" {Fore.GREEN} 
+import archivo_funciones as af 
+The_X_Men.addX( titulo='fam', padre='menu_principal'   , ipadre='Tema 2' , 
+                lst_items = [ 
+                ("KNN", af.funcion_knn) , 
+                ("SVM", af.funcion_svm) , 
+                ("StandarSacale", None) , 
+                ])    
+
+{Fore.RESET}"""
+
 
         print(txt)
 
