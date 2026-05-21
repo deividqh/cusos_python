@@ -290,6 +290,32 @@ class Nivel_2:
     def _is_empty_cell(self, item):
         return item is None or item == "_" or item == '-' 
     
+    # def draw(self, matrix):
+    #     """
+    #     • Recibe una matriz de widgets (todos hijos de level_1).
+    #     • La posición en la matriz PREVALECE sobre cualquier grid anterior.
+    #     • Guarda un mapa interno self._draw_map con la situación final.
+    #     """
+    #     self._draw_map = []
+
+    #     for row_idx, row_data in enumerate(matrix):
+    #         if self._skip_row(row_data, row_idx):
+    #             continue
+
+    #         col_idx = 0
+    #         placed = []     # Tracking interno para colspan
+
+    #         for item in row_data:
+    #             if self._is_empty_cell(item):
+    #                 placed.append(self._celda_vacia(row_idx, col_idx))
+    #             elif item == "+":
+    #                 self._colspan(placed)
+    #             else:
+    #                 placed.append(self._widget_real(item, row_idx, col_idx))
+    #             col_idx += 1
+
+    #     return self
+    
     def draw(self, matrix):
         """
         • Recibe una matriz de widgets (todos hijos de level_1).
@@ -297,25 +323,41 @@ class Nivel_2:
         • Guarda un mapa interno self._draw_map con la situación final.
         """
         self._draw_map = []
-
-        for row_idx, row_data in enumerate(matrix):
-            if self._skip_row(row_data, row_idx):
-                continue
-
-            col_idx = 0
-            placed = []     # Tracking interno para colspan
-
-            for item in row_data:
-                if self._is_empty_cell(item):
-                    placed.append(self._celda_vacia(row_idx, col_idx))
-                elif item == "+":
-                    self._colspan(placed)
-                else:
-                    placed.append(self._widget_real(item, row_idx, col_idx))
-                col_idx += 1
-
-        return self
-
+        try:
+            for row_idx, row_data in enumerate(matrix):
+                if self._skip_row(row_data, row_idx):
+                    continue
+                pass
+                col_idx = 0
+                placed = []     # Tracking interno para colspan
+                for item in row_data:
+                    if self._is_empty_cell(item):
+                        placed.append(self._celda_vacia(row_idx, col_idx))
+                    elif item == "+":
+                        self._colspan(placed)
+                    else:
+                        # VALIDACIÓN DE TIPO
+                        # Nota: Cambia 'ClaseBaseWidget' por la clase real de tu framework 
+                        # (ej. tk.Widget, QWidget, o tu propia clase padre).
+                        if not isinstance(item, tk.Widget):
+                            # raise TypeError(
+                            #     f"Tipo de dato inválido en fila {row_idx}, columna {col_idx}. "
+                            #     f"Se esperaba un Widget, pero se recibió: {type(item).__name__} (Valor: {item})"
+                            # )
+                            continue
+                        
+                        placed.append(self._widget_real(item, row_idx, col_idx))
+                    col_idx += 1
+            return self
+        except TypeError as te:
+            # Aquí capturamos el error de tipo que lanzamos arriba (o cualquier otro TypeError)
+            print(f"[Error de Tipo en draw]: {te}")
+            # Puedes decidir si quieres silenciar el error, registrarlo en un log, o relanzarlo:
+            raise 
+        except Exception as e:
+            # Captura de seguridad para cualquier otro error inesperado (ej. matrix no es iterable)
+            print(f"[Error Inesperado en draw]: Ha ocurrido un fallo general: {e}")
+            raise
 
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
     # ■ MÉTODOS MODULARES (KISS)

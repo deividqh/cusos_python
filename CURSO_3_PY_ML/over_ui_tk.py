@@ -287,6 +287,8 @@ def mixto():
         "met": "Métricas",
         "graf": "Gráficas",
     }
+    a=1
+    b=2
     TABS = StepByStab(ventana, configuracion_pestanas, b_botones = True)
     TABS.pack(fill="both", expand=True, padx=10, pady=10)
 
@@ -357,9 +359,13 @@ def mixto():
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     F3 = Nivel_2(TABS.get_p('alg'), shape="6x6", padx=15, pady=7)    
     split_lbl_02 = ttk.Label(F3.frame, text="■ Proporción del Split (Train/Test)", font=("Verdana", 10))
-    split_scl_02 = ttk.Scale(F3.frame, from_=0, to=100, orient="horizontal")    
+    # var_split = tk.DoubleVar(value=5)
+    split_lbl_result = tk.DoubleVar(value=5)
+    split_scl_02 = ttk.Scale(F3.frame, from_=0, to=10, orient="horizontal", variable=split_lbl_result)    
+    split_lbl = ttk.Label(F3.frame, text="■", font=("Verdana", 9))
     # ■ otra manera de meter el fileDialog, obteniendo el texto y el botón.
     texto_fd, boton_fd = F3.fdlg(entry_width=35, b_split=True)
+
     matrix_F3 = [
         [] ,
         [split_lbl_02,  split_scl_02, "_", "_", "_", "_" ],               
@@ -368,6 +374,7 @@ def mixto():
     ]
     F3.draw(matrix = matrix_F3)
 
+    # btn_del.config(command=lambda: cmd.limpiar_textos(  ))
     # • • • — — — • • •
     ventana.mainloop()
     # • • • — — — • • •
