@@ -3,10 +3,11 @@ from tkinter import ttk             # Importa los componentes modernos
 from tkinter import filedialog
 import os
 
-class FDialoger:
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ 
+class My_FileDialog:
     """
     Widget compuesto: Entry + Button que lanza un FileDialog.
-    Hereda de ttk.Frame para poder insertarse directamente en matrices de draw().
+    Tiene dos modos de retorno, split = True / False:
     """
     def __init__(self, parent, texto_boton, title="Seleccionar Archivo",
                  initialdir=None, filetypes=None, entry_width=40):
@@ -27,9 +28,6 @@ class FDialoger:
             ("Archivos CSV", "*.csv"),
             ("Archivos de texto", "*.txt")
         ]
-
-        # ■ Callback opcional tras seleccionar archivo
-        self._on_select = None
 
     def _abrir_dialogo(self):
         archivo = filedialog.askopenfilename(
@@ -62,8 +60,454 @@ class FDialoger:
         ruta_corta = os.path.join("...", *ultimas)
         return ruta_corta
 
-    
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
+class My_Slide:
+    """
+    Widget compuesto: Label + Scale/Slide + Label_Resultado.
+    """
+    def __init__(self, parent, tipo_dato=tk.IntVar, tipo_slide="scale", 
+                 texto_label='', valor_inicial=5, desde=0, hasta=10):
+        
+        self.valor_ini = valor_inicial 
+        self.from_ = desde
+        self.to_ = hasta
+        self.tipo_dato_cls = tipo_dato  # Guardamos la clase para saber cómo formatear luego
 
+        # 1. Instanciamos la variable de Tkinter del tipo solicitado
+        self.valor_objeto = self.tipo_dato_cls(value=valor_inicial)
+
+        # ■ Función interna para formatear el texto según el tipo de variable
+        def _formatear(val):
+            if self.tipo_dato_cls == tk.DoubleVar:
+                return f"{float(val):.2f}"
+            else:
+                return f"{int(float(val))}"
+
+        # 2. Label de título
+        self.lbl_texto = ttk.Label(parent, text=texto_label)
+        
+        # 3. Label de valor (inicializado con la función de formato)
+        self.lbl_valor = ttk.Label(parent, text=_formatear(valor_inicial))
+        
+        # 4. Bifurcación ttk.Scale ("scale") vs tk.Scale ("slide")
+        tipo_slid = tipo_slide.lower().strip()
+        if tipo_slide == 'slide':
+            # Usamos tk.Scale (le quitamos su propio showvalue porque usamos nuestro lbl_valor)
+            self.obj = tk.Scale(
+                parent, from_=desde, to=hasta, 
+                variable=self.valor_objeto, orient=tk.HORIZONTAL,
+                showvalue=False,
+                command=lambda val: self.lbl_valor.config(text=_formatear(val))
+            )
+        elif tipo_slide == 'scale':
+            # Por defecto usamos ttk.Scale ("scale")
+            self.obj = ttk.Scale(
+                parent, from_=desde, to=hasta, 
+                variable=self.valor_objeto, orient=tk.HORIZONTAL,
+                command=lambda val: self.lbl_valor.config(text=_formatear(val))
+            )
+        else:
+            raise ValueError(f"Tipo de slide desconocido: '{tipo_slide}'. Use 'scale' o 'slide'.")
+
+    def get_valor(self):
+        """ Devuelve el valor del slide en su formato correcto. """
+        return self.valor_objeto.get()
+
+    def set_valor(self, valor):
+        """ Pone un valor programáticamente y actualiza el label. """
+        if self.from_ <= valor <= self.to_: 
+            self.valor_objeto.set(valor)
+            if self.tipo_dato_cls == tk.DoubleVar:
+                self.lbl_valor.config(text=f"{float(valor):.2f}")
+            else:
+                self.lbl_valor.config(text=f"{int(float(valor))}")
+
+    def reset(self):
+        """ Pone el Scale en su valor incial. """
+        if self.valor_ini is not None: 
+            self.set_valor(self.valor_ini)
+
+
+
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
+class My_Listbox(ttk.Frame):
+    """
+    Widget compuesto que hereda de Frame. 
+    Contiene un Listbox con Scrollbar y, opcionalmente, controles de navegación y estado.
+    """
+    def __init__(self, parent, datos=None, b_botones=True, b_registro=True, **kwargs):
+        super().__init__(parent, **kwargs)
+        
+        self.b_botones = b_botones
+        self.b_registro = b_registro
+
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        # 1. LISTBOX Y SCROLLBAR (SIEMPRE PRESENTES)
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        self.frm_list = ttk.Frame(self)
+        self.frm_list.pack(fill="both", expand=True)
+        
+        self.scroll = ttk.Scrollbar(self.frm_list, orient="vertical")
+        self.listbox = tk.Listbox(self.frm_list, selectmode=tk.SINGLE, yscrollcommand=self.scroll.set)
+        self.scroll.config(command=self.listbox.yview)
+        
+        self.listbox.pack(side="left", fill="both", expand=True)
+        self.scroll.pack(side="right", fill="y")
+        
+        self.listbox.bind("<<ListboxSelect>>", self._actualizar_status)
+        
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        # 2. CONTROLES INFERIORES (BOTONES Y/O REGISTRO)
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        # Solo creamos la fila de abajo si al menos uno de los controles fue solicitado
+        if self.b_botones or self.b_registro:
+            self.frm_bottom = ttk.Frame(self)
+            self.frm_bottom.pack(fill="x", pady=(2, 0))
+            
+            # ■ 1. Empaquetamos los botones a los extremos si fueron solicitados
+            if self.b_botones:
+                self.btn_first = ttk.Button(self.frm_bottom, text="<<", width=4, command=self._go_first)
+                self.btn_prev  = ttk.Button(self.frm_bottom, text="<",  width=4, command=self._go_prev)
+                self.btn_next  = ttk.Button(self.frm_bottom, text=">",  width=4, command=self._go_next)
+                self.btn_last  = ttk.Button(self.frm_bottom, text=">>", width=4, command=self._go_last)
+                
+                # Izquierda
+                self.btn_first.pack(side="left", padx=(0, 2))
+                self.btn_prev.pack(side="left")
+                # Derecha
+                self.btn_last.pack(side="right")
+                self.btn_next.pack(side="right", padx=(0, 2))
+            
+            # ■ 2. Empaquetamos el centro (Label de estado o Espaciador invisible)
+            if self.b_registro:
+                self.lbl_status = ttk.Label(self.frm_bottom, text="0 de 0", anchor="center")
+                # Al empaquetarlo con expand=True después de los botones, rellena el centro exacto
+                self.lbl_status.pack(side="left", fill="both", expand=True)
+            elif self.b_botones:
+                # Si hay botones pero NO registro, metemos el espaciador para empujar los botones
+                lbl_spacer = ttk.Label(self.frm_bottom, text="")
+                lbl_spacer.pack(side="left", fill="both", expand=True)
+                
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        # CARGA DE DATOS INICIAL
+        # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+        if datos is not None:
+            self.load_data(datos)
+
+    # ■■■■ MÉTODOS PÚBLICOS ■■■■    
+    def load_data(self, datos: list):
+        """ Limpia el listbox, inserta nuevos datos y selecciona el primero. """
+        self.listbox.delete(0, tk.END)
+        for d in datos:
+            self.listbox.insert(tk.END, d)
+        
+        if datos:
+            self._seleccionar_indice(0)
+        else:
+            self._actualizar_status()
+
+    # ■■■■ LÓGICA PRIVADA Y NAVEGACIÓN ■■■■
+    def _actualizar_status(self, event=None):
+        """ Actualiza el label solo si b_registro es True. """
+        if not self.b_registro:
+            return
+            
+        total = self.listbox.size()
+        if total == 0:
+            self.lbl_status.config(text="0 de 0")
+            return
+            
+        seleccion = self.listbox.curselection()
+        actual = (seleccion[0] + 1) if seleccion else 0
+            
+        self.lbl_status.config(text=f"{actual} de {total}")
+
+    def _seleccionar_indice(self, idx):
+        """ Mueve la selección programáticamente y actualiza la vista. """
+        total = self.listbox.size()
+        if total == 0: return
+        
+        if idx < 0: idx = 0
+        if idx >= total: idx = total - 1
+        
+        self.listbox.selection_clear(0, tk.END)
+        self.listbox.selection_set(idx)
+        self.listbox.activate(idx)
+        self.listbox.see(idx) # El scroll persigue al registro
+        
+        self._actualizar_status()
+
+    # ■ Funciones de navegación (Seguras de llamar aunque los botones no existan)
+    def _go_first(self): self._seleccionar_indice(0)
+    def _go_last(self):  self._seleccionar_indice(self.listbox.size() - 1)
+    def _go_prev(self):
+        sel = self.listbox.curselection()
+        if sel: self._seleccionar_indice(sel[0] - 1)
+    def _go_next(self):
+        sel = self.listbox.curselection()
+        if sel: 
+            self._seleccionar_indice(sel[0] + 1)
+        elif self.listbox.size() > 0:
+            self._seleccionar_indice(0)
+
+
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
+class My_Tree(ttk.Frame):
+    """
+    Widget compuesto (Frame).
+    Contiene un Treeview, botones de navegación (opcionales) y un formulario dinámico 
+    autogenerado a partir de d_textos, todo integrado en un único bloque sólido.
+    """
+    def __init__(self, parent, 
+                        titulo="", 
+                        cabeceras=None, 
+                        datos=None, 
+                        b_botones=True, b_registro=True, d_textos=None, 
+                        **kwargs):
+        super().__init__(parent, **kwargs)
+        
+        self.cabeceras = cabeceras if cabeceras else []
+        self.b_botones = b_botones
+        self.b_registro = b_registro
+        self.d_textos = d_textos
+        
+        self.dicc_entries = {}  # Guardará { indice_cabecera: widget_Entry }
+
+        # ==========================================
+        # 1. TÍTULO (OPCIONAL)
+        # ==========================================
+        if titulo:
+            self.lbl_titulo = ttk.Label(self, text=titulo, font=("Arial", 10, "bold"))
+            self.lbl_titulo.pack(side="top", fill="x", pady=(0, 5))
+            
+        # ==========================================
+        # 2. TREEVIEW Y SCROLL
+        # ==========================================
+        self.frm_tree = ttk.Frame(self)
+        self.frm_tree.pack(fill="both", expand=True)
+        
+        self.scroll = ttk.Scrollbar(self.frm_tree, orient="vertical")
+        
+        # CAMBIAR PARA INCLUIR CABECERAS GENERICAS DEPENDIENDO
+        #  DEL NUMERO DE COLUMNAS 
+        # DE LOS DATOS
+        # cols = tuple(self.cabeceras) if self.cabeceras else ("col1",)
+        if not self.cabeceras:
+            self.cabeceras = [f'col{i}' for i in range (0 , len(datos))]
+        cols = tuple(self.cabeceras)     
+
+        
+        self.tree = ttk.Treeview(self.frm_tree, columns=cols, show="headings", yscrollcommand=self.scroll.set)
+        self.scroll.config(command=self.tree.yview)
+        
+        for i, cab in enumerate(self.cabeceras):
+            self.tree.heading(cols[i], text=cab)
+            self.tree.column(cols[i], width=100, anchor="w")
+            
+        self.tree.pack(side="left", fill="both", expand=True)
+        self.scroll.pack(side="right", fill="y")
+        
+        # Sincronización al hacer clic en un registro
+        self.tree.bind("<<TreeviewSelect>>", self._al_seleccionar)
+        
+        # ==========================================
+        # 3. CONTROLES INFERIORES (PUNTERO Y BOTONES)
+        # ==========================================
+        if self.b_botones or self.b_registro:
+            self.frm_bottom = ttk.Frame(self)
+            self.frm_bottom.pack(fill="x", pady=(5, 0))
+            
+            if self.b_botones:
+                self.btn_first = ttk.Button(self.frm_bottom, text="<<", width=4, command=self._go_first)
+                self.btn_prev  = ttk.Button(self.frm_bottom, text="<",  width=4, command=self._go_prev)
+                self.btn_next  = ttk.Button(self.frm_bottom, text=">",  width=4, command=self._go_next)
+                self.btn_last  = ttk.Button(self.frm_bottom, text=">>", width=4, command=self._go_last)
+                
+                self.btn_first.pack(side="left", padx=(0, 2))
+                self.btn_prev.pack(side="left")
+                self.btn_last.pack(side="right")
+                self.btn_next.pack(side="right", padx=(0, 2))
+            
+            if self.b_registro:
+                self.lbl_status = ttk.Label(self.frm_bottom, text="0 de 0", anchor="center")
+                self.lbl_status.pack(side="left", fill="both", expand=True)
+            elif self.b_botones:
+                ttk.Label(self.frm_bottom, text="").pack(side="left", fill="both", expand=True)
+
+        # ==========================================
+        # 4. FORMULARIO INTEGRADO (d_textos)
+        # ==========================================
+        if self.d_textos and self.cabeceras:
+            self.frm_form = ttk.Frame(self)
+            self.frm_form.pack(fill="x", pady=(10, 0))
+            self._construir_formulario()
+
+        # ==========================================
+        # CARGA INICIAL
+        # ==========================================
+        if datos:
+            self.load_data(datos)
+
+    # ■■■■ MÉTODOS PÚBLICOS ■■■■
+
+    def load_data(self, datos: list):
+        """ Limpia e inserta datos. """
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        for d in datos:
+            valores = d if isinstance(d, (list, tuple)) else (d,)
+            self.tree.insert("", tk.END, values=valores)
+        self._actualizar_status()
+
+    def get_textos(self) -> list:
+        """ 
+        Devuelve un array con los valores actuales de los Entry.
+        Garantiza que el orden sea exactamente el visual de tu grid (A0, B0, C0...)
+        """
+        valores = []
+        max_row, max_col = 0, 0
+        for k in self.d_textos.keys():
+            try:
+                c, r = ord(k[0].upper()) - 65, int(k[1:])
+                max_row, max_col = max(max_row, r), max(max_col, c)
+            except: continue
+            
+        for r in range(max_row + 1):
+            for c in range(max_col + 1):
+                key = f"{chr(65+c)}{r}"
+                
+                # ■ Traducimos el texto/numero al índice real
+                val_crudo = self.d_textos.get(key, '_')
+                val = self._resolver_indice(val_crudo)
+                
+                if isinstance(val, int) and val in self.dicc_entries:
+                    valores.append(self.dicc_entries[val].get())
+                    
+        return valores
+
+    # ■■■■ LÓGICA PRIVADA ■■■■
+
+    def _construir_formulario(self):
+        """ Construye internamente el Grid de Labels y Entries según d_textos. """
+        max_row, max_col = 0, 0
+        for k in self.d_textos.keys():
+            try:
+                c, r = ord(k[0].upper()) - 65, int(k[1:])
+                max_row, max_col = max(max_row, r), max(max_col, c)
+            except: continue
+        
+        for c in range((max_col + 1) * 2):
+            self.frm_form.columnconfigure(c, weight=1 if c % 2 != 0 else 0)
+
+        for r in range(max_row + 1):
+            last_entry = None  
+            
+            for c in range(max_col + 1):
+                key = f"{chr(65+c)}{r}"
+                
+                # ■ AQUI ESTÁ LA MAGIA: Traducimos el texto/numero al índice real
+                val_crudo = self.d_textos.get(key, '_')
+                val = self._resolver_indice(val_crudo)
+                
+                col_real = c * 2 
+                
+                if isinstance(val, int) and 0 <= val < len(self.cabeceras):
+                    lbl = ttk.Label(self.frm_form, text=f"{self.cabeceras[val]}:")
+                    lbl.grid(row=r, column=col_real, sticky="e", padx=(5, 2), pady=2)
+                    
+                    ent = ttk.Entry(self.frm_form, state="readonly")
+                    ent.grid(row=r, column=col_real + 1, sticky="we", padx=(0, 5), pady=2)
+                    
+                    self.dicc_entries[val] = ent 
+                    last_entry = ent  
+                    
+                elif val == '+': # Nuestro traductor ya convirtió 'x' a '+'
+                    if last_entry:
+                        span_actual = last_entry.grid_info().get('columnspan', 1)
+                        last_entry.grid_configure(columnspan=span_actual + 2)
+
+    def _al_seleccionar(self, event=None):
+        """ Al clicar un registro, vuelca los datos en los Entries. """
+        self._actualizar_status()
+        
+        seleccion = self.tree.selection()
+        if not seleccion or not self.dicc_entries: return
+        
+        valores = self.tree.item(seleccion[0])['values']
+        
+        for idx, ent in self.dicc_entries.items():
+            if idx < len(valores):
+                ent.config(state="normal")
+                ent.delete(0, tk.END)
+                ent.insert(0, str(valores[idx]))
+                ent.config(state="readonly")
+
+    def _actualizar_status(self):
+        if not self.b_registro: return
+        total = len(self.tree.get_children())
+        if total == 0:
+            self.lbl_status.config(text="0 de 0")
+            return
+        seleccion = self.tree.selection()
+        if seleccion:
+            indice = self.tree.index(seleccion[0]) + 1
+            self.lbl_status.config(text=f"{indice} de {total}")
+        else:
+            self.lbl_status.config(text=f"0 de {total}")
+
+    # (Lógica de _go_first, _go_last, _go_prev, _go_next omitida para no ser redundante, 
+    # usa el mismo motor de índices que My_Listbox pero aplicado a self.tree.get_children())
+    def _seleccionar_indice(self, idx):
+        hijos = self.tree.get_children()
+        if not hijos: return
+        idx = max(0, min(idx, len(hijos) - 1))
+        item_id = hijos[idx]
+        self.tree.selection_set(item_id)
+        self.tree.focus(item_id)
+        self.tree.see(item_id)
+        self._al_seleccionar()
+
+    def _go_first(self): self._seleccionar_indice(0)
+    def _go_last(self): self._seleccionar_indice(len(self.tree.get_children()) - 1)
+    def _go_prev(self):
+        sel = self.tree.selection()
+        if sel: self._seleccionar_indice(self.tree.index(sel[0]) - 1)
+    def _go_next(self):
+        sel = self.tree.selection()
+        if sel: self._seleccionar_indice(self.tree.index(sel[0]) + 1)
+        elif self.tree.get_children(): self._seleccionar_indice(0)
+
+    def _resolver_indice(self, valor):
+        """
+        Convierte el valor del diccionario (int o str) en el índice real de la cabecera.
+        Maneja cadenas vacías, comandos (+, x, _) y perdona errores de tildes o mayúsculas.
+        """
+        if isinstance(valor, int):
+            return valor
+            
+        if isinstance(valor, str):
+            val_str = valor.strip().lower()
+            
+            # 1. Es un comando de maquetación (+, x, _) o cadena vacía (equivalente a _)
+            if val_str in ['+', 'x']:
+                return '+'
+            if val_str in ['_', '']:
+                return '_'
+                
+            # 2. Es un texto: Buscamos en las cabeceras perdonando mayúsculas y tildes
+            import unicodedata
+            def quitar_tildes(s):
+                return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+                
+            val_norm = quitar_tildes(val_str)
+            
+            for i, cab in enumerate(self.cabeceras):
+                if quitar_tildes(str(cab).strip().lower()) == val_norm:
+                    return i
+                    
+        return '_' # Por defecto, si no encuentra nada o es inválido, espacio vacío
+
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
 class Familia:
     def __init__(self):
         self.d_family = {}  # { 'nombre': [widgets] }
@@ -159,9 +603,9 @@ class Familia:
             elif isinstance(w, tk.Listbox):
                 w.delete(0, tk.END)
 
-# ==========================================
-# TEST OPERATIVO FAMILIA
-# ==========================================
+# ██████████████████████████████████████████
+# ██       EJEMPLO DE USO DE FAMILIA      ██
+# ██████████████████████████████████████████
 # if __name__ == "__main__":
 #     root = tk.Tk()
 #     F = Familia()
@@ -184,6 +628,9 @@ class Familia:
 
 #     root.mainloop() # Cerramos la ventana de test
 
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
+# █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
 class Nivel_2:
     """ 
     • Crea un Frame Formulario e inserta los widgets con un dibujo ( draw() )
@@ -425,11 +872,13 @@ class Nivel_2:
         return {'type': 'widget', 'widget': item, 'col': col_idx, 'span': 1}
 
 
-    def fdlg(self,  texto_boton="📂 Load File", title="Seleccionar Archivo", 
+    # ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■  
+    # ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■  
+    def my_fileDialog(self,  texto_boton="📂 Load File", title="Seleccionar Archivo", 
                     initialdir=None, filetypes=None, 
                     entry_width=40, b_split=False):
         """
-        Crea un FDialoger.
+        Crea un My_FileDialog.
         - entry_width(int): El tamaño de la caja de texto.
         - b_split=False (default): empaqueta Entry+Button dentro de un Frame y devuelve el Frame.
         - b_split=True: devuelve los widgets sueltos (entry, button) para que draw() los coloque
@@ -438,7 +887,7 @@ class Nivel_2:
         """
         if b_split:
             # Modo suelto: los widgets nacen directamente en self.frame
-            fd = FDialoger(
+            fd = My_FileDialog(
                 parent      = self.frame,
                 texto_boton = texto_boton,
                 title       = title,
@@ -452,7 +901,7 @@ class Nivel_2:
 
         else:
             contenedor = ttk.Frame(self.frame)
-            fd = FDialoger(
+            fd = My_FileDialog(
                 parent      = contenedor,
                 texto_boton = texto_boton,
                 title       = title,
@@ -473,12 +922,59 @@ class Nivel_2:
             contenedor.btn                 = fd.btn
             
             return contenedor
+    
+    def my_slide(self,  texto= "—■—", 
+                        desde= 0, hasta= 20, valor_inicial= 5, 
+                        tipo_slide= "scale" , tipo_dato= tk.IntVar
+                 ):
+        """
+        Crea un objeto My_Slide(clase interna) con sus widgets asociados ( lbl_texto , slide, lbl_valor).
+         - tipo_slide: 'scale' (ttk.Scale) o 'slide' (tk.Scale). El tipo de control que se usará para el slide. 'scale' es más moderno, 'slide' es más clásico.
+         - tipo_dato: tk.IntVar, tk.DoubleVar o tk.BooleanVar. El tipo de variable de control que se usará para almacenar el valor del slide. Esto afecta el formato del valor mostrado en lbl_valor.
+         - texto: El texto que se mostrará en el label del slide. """                
+        new_slide = My_Slide(
+            parent = self.frame,    # Modo suelto: los widgets nacen directamente en self.frame
+            texto_label= texto,
+            desde=0,
+            hasta=20,
+            tipo_dato=tk.IntVar,
+            tipo_slide='slide',
+            valor_inicial=0                
+        )
+        # Devolvemos los widgets para que el usuario los distribuya en la matriz            
+        return new_slide.lbl_texto, new_slide.obj, new_slide.lbl_valor
 
 
+    def my_listbox(self, datos=None, b_botones=True, b_registro=True):
+        """
+        Instancia y devuelve el componente My_Listbox, el cual ya es un Frame.
+        """
+        # Se lo asignamos directamente al grid (self.frame, que es level_1)
+        nuevo_listbox = My_Listbox(
+            parent=self.frame, 
+            datos=datos, 
+            b_botones=b_botones, 
+            b_registro=b_registro
+        )
+        
+        # Devolvemos el propio objeto, que es un Frame y será procesado perfectamente por draw()
+        return nuevo_listbox
+    
+    def my_tree(self, titulo="",
+                      cabeceras=None, 
+                      datos=None, 
+                      b_botones=True, 
+                      b_registro=True, 
+                      d_textos=None):
+        nuevo_tree = My_Tree( parent=self.frame,
+            titulo=titulo, cabeceras=cabeceras, datos=datos,
+            b_botones=b_botones, b_registro=b_registro, d_textos=d_textos
+        )
+        return nuevo_tree
 
 
 # ██████████████████████████████████████████
-# █████████████ EJEMPLO DE USO █████████████
+# ██       EJEMPLO DE USO DE NIVEL_2      ██
 # ██████████████████████████████████████████
 # if __name__ == "__main__":
 #     root = tk.Tk()
