@@ -316,7 +316,8 @@ def ejercicio_07():
     }
     plt.rcParams.update(tema_negocios)
 
-    sns.kdeplot(data=df, fill=True, common_norm=False)
+    # sns.kdeplot(data=df, fill=True, common_norm=False)
+    sns.kdeplot(data=df, fill=True, common_norm=True)
     plt.show()
 
 # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
@@ -678,6 +679,96 @@ tendrá un 99.9% de precisión, ¡pero fallará en su único objetivo!
     print(f"\n{Fore.GREEN}INFO: Al balancear, obligamos al modelo a prestar "
           f"tanta atención al 'Fraude' como a lo 'Legal'.{Style.RESET_ALL}")
 
+import pandas as pd
+import numpy as np
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline  # <-- Importante añadir esto
+
+def ejercicio_14():
+    tabla = """ 
+    A[Datos Brutos de Entrada] --> B[1. Limpieza de Datos: Detección de Duplicados e IQR]
+    B -► C[2. Imputación: Tratamiento de Valores Nulos]
+    C -► D[3. Codificación de Categorías: One-Hot Encoding]
+    D -► E[4. Escalado: Estandarización de Variables Numéricas]
+    E -► F[Datos Listos para alimentar el Modelo de IA]
+    """
+    enunciado = """ 
+    procesaremos un dataset médico que contiene información sobre pacientes. El
+    dataset incluye variables numéricas (como la Presion_Arterial), variables categóricas (como el Genero) y
+    tiene problemas de valores nulos y outliers que debemos resolver de forma robusta antes de entrenar un
+    modelo que prediga patologías.
+    """
+    print(f'FLUJO DE DATOS: \n{Fore.BLUE}{tabla}{Style.RESET_ALL}')
+    print(f'ENUNCIADO DEL EJERCICIO:\n{Fore.CYAN}{enunciado}{Style.RESET_ALL}')
+    
+    # 1. Creación de un dataset médico bruto con problemas
+    np.random.seed(10)
+    datos_medicos = {
+        'Paciente_ID': [101, 102, 103, 104, 105, 106],
+        'Edad': [45, np.nan, 29, 65, 52, 38], 
+        'Presion_Arterial': [120, 130, 240, 115, np.nan, 125], 
+        'Genero': ['Masculino', 'Femenino', 'Femenino', 'Masculino', np.nan, 'Femenino'] 
+    }
+    df_medico = pd.DataFrame(datos_medicos)
+    print("\n ■ ■ DATASET ORIGINAL BRUTO ■ ■ ")
+    print(df_medico)
+    
+    # 2. Tratamiento de Outliers de Presión Arterial
+    df_medico.loc[df_medico['Presion_Arterial'] > 200, 'Presion_Arterial'] = np.nan
+    print(f'■ OUTLIERS:\n{df_medico}')
+    
+    # 3. Separación de Variables
+    variables_numericas = ['Edad', 'Presion_Arterial']
+    variables_categoricas = ['Genero']
+    
+    # 4. Configuración del Pipeline Automatizado
+    # Creamos sub-pipelines independientes para ejecutar los pasos de forma secuencial
+    pipeline_numerico = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='median')),
+        ('scaler', StandardScaler())
+    ])
+    
+    pipeline_categorico = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='most_frequent')),
+        ('onehot', OneHotEncoder(handle_unknown='ignore', sparse_output=False))
+    ])
+    
+    # Unimos todo en el transformador por columnas utilizando los sub-pipelines
+    preprocesador = ColumnTransformer(transformers=[
+        ('num_trans', pipeline_numerico, variables_numericas),
+        ('cat_trans', pipeline_categorico, variables_categoricas)
+    ], remainder="drop")
+    
+    # 5. Aplicación práctica del Pipeline sobre los datos
+    datos_procesados = preprocesador.fit_transform(df_medico)
+    
+    # Reconstruimos el DataFrame resultante para visualización
+    columnas_numericas_salida = variables_numericas
+    
+    # Accedemos de forma segura al objeto 'onehot' que vive dentro del sub-pipeline 'cat_trans'
+    obj_onehot = preprocesador.named_transformers_['cat_trans'].named_steps['onehot']
+    columnas_categoricas_salida = obj_onehot.get_feature_names_out(variables_categoricas)
+    
+    todas_las_columnas = list(columnas_numericas_salida) + list(columnas_categoricas_salida)
+    df_procesado_final = pd.DataFrame(datos_procesados, columns=todas_las_columnas)
+    
+    print("\n--- DATASET FINAL LIMPIO Y PREPROCESADO ---")
+    print(df_procesado_final)
+
+    conclusion="""
+• Imputación de Nulos: El valor nulo de Edad en el registro 2 se rellenó de forma autónoma con la
+  mediana del resto de pacientes (45.0). El valor erróneo/outlier de Presion_Arterial (240.0) fue
+  filtrado y rellenado estadísticamente con 122.5 (mediana libre de outliers).
+• Codificación One-Hot: La columna de texto Genero desapareció por completo y se transformó en dos
+  columnas binarias: Genero_Femenino y Genero_Masculino.
+• Estandarización y Escalado: Las variables de Edad y Presion_Arterial ahora se encuentran
+  expresadas en una escala centrada en 0 con desviación estándar 1. Ya no hay peligro de que una
+  variable domine erróneamente sobre la otra debido a diferencias de magnitud física.
+ """
+    print(f'CONCLUSION FINAL\n{Fore.MAGENTA}{conclusion}{Style.RESET_ALL}')
+
 # █■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■█
 # █■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■█
 # █■ ■ ■ ■ ■ ■ ■ ■   MENU PRINCIPAL    ■ ■ ■ ■ ■ ■ ■ ■ ■█
@@ -703,6 +794,7 @@ def main():
         "Ej_11. Tratamiento de Valores Nulos": ejercicio_11,
         "Ej_12. Encoding y Escalado": ejercicio_12,
         "Ej_13. Balance de Clases": ejercicio_13,
+        "Ej_14. Pipeline de Pre-Procesamiento": ejercicio_14,
         "◘ EXTRAS": extras,
     }
     while (True):

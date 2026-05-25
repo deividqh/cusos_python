@@ -258,15 +258,12 @@ class My_Tree(ttk.Frame):
     Contiene un Treeview, botones de navegación (opcionales) y un formulario dinámico 
     autogenerado a partir de d_textos, todo integrado en un único bloque sólido.
     """
-    def __init__(self, parent, 
-                        titulo="", 
-                        cabeceras=None, 
-                        datos=None, 
-                        b_botones=True, b_registro=True, d_textos=None, 
-                        **kwargs):
+    def __init__(self, parent, titulo="", cabeceras=None, datos=None, 
+                 b_botones=True, b_registro=True, d_textos=None, **kwargs):
         super().__init__(parent, **kwargs)
         
-        self.cabeceras = cabeceras if cabeceras else []
+        self.cabeceras = list(cabeceras) if cabeceras else []
+        self.datos = datos if datos else []
         self.b_botones = b_botones
         self.b_registro = b_registro
         self.d_textos = d_textos
@@ -287,98 +284,104 @@ class My_Tree(ttk.Frame):
         self.frm_tree.pack(fill="both", expand=True)
         
         self.scroll = ttk.Scrollbar(self.frm_tree, orient="vertical")
-        
-        # CAMBIAR PARA INCLUIR CABECERAS GENERICAS DEPENDIENDO
-        #  DEL NUMERO DE COLUMNAS 
-        # DE LOS DATOS
-        # cols = tuple(self.cabeceras) if self.cabeceras else ("col1",)
-        if not self.cabeceras:
-            self.cabeceras = [f'col{i}' for i in range (0 , len(datos))]
-        cols = tuple(self.cabeceras)     
-
-        
-        self.tree = ttk.Treeview(self.frm_tree, columns=cols, show="headings", yscrollcommand=self.scroll.set)
+        self.tree = ttk.Treeview(self.frm_tree, yscrollcommand=self.scroll.set)
         self.scroll.config(command=self.tree.yview)
         
-        for i, cab in enumerate(self.cabeceras):
-            self.tree.heading(cols[i], text=cab)
-            self.tree.column(cols[i], width=100, anchor="w")
-            
         self.tree.pack(side="left", fill="both", expand=True)
         self.scroll.pack(side="right", fill="y")
         
-        # Sincronización al hacer clic en un registro
         self.tree.bind("<<TreeviewSelect>>", self._al_seleccionar)
         
         # ==========================================
-        # 3. CONTROLES INFERIORES (PUNTERO Y BOTONES)
+        # 3. CONTROLES INFERIORES CENTRADOS
         # ==========================================
         if self.b_botones or self.b_registro:
             self.frm_bottom = ttk.Frame(self)
             self.frm_bottom.pack(fill="x", pady=(5, 0))
             
+            # Sub-frame para mantener todo agrupado y centrado
+            self.frm_center = ttk.Frame(self.frm_bottom)
+            self.frm_center.pack(anchor="center")
+            
             if self.b_botones:
-                self.btn_first = ttk.Button(self.frm_bottom, text="<<", width=4, command=self._go_first)
-                self.btn_prev  = ttk.Button(self.frm_bottom, text="<",  width=4, command=self._go_prev)
-                self.btn_next  = ttk.Button(self.frm_bottom, text=">",  width=4, command=self._go_next)
-                self.btn_last  = ttk.Button(self.frm_bottom, text=">>", width=4, command=self._go_last)
+                self.btn_first = ttk.Button(self.frm_center, text="<<", width=4, command=self._go_first)
+                self.btn_prev  = ttk.Button(self.frm_center, text="<",  width=4, command=self._go_prev)
+                self.btn_next  = ttk.Button(self.frm_center, text=">",  width=4, command=self._go_next)
+                self.btn_last  = ttk.Button(self.frm_center, text=">>", width=4, command=self._go_last)
                 
+                # Empaquetamos los de la izquierda
                 self.btn_first.pack(side="left", padx=(0, 2))
                 self.btn_prev.pack(side="left")
-                self.btn_last.pack(side="right")
-                self.btn_next.pack(side="right", padx=(0, 2))
             
             if self.b_registro:
-                self.lbl_status = ttk.Label(self.frm_bottom, text="0 de 0", anchor="center")
-                self.lbl_status.pack(side="left", fill="both", expand=True)
-            elif self.b_botones:
-                ttk.Label(self.frm_bottom, text="").pack(side="left", fill="both", expand=True)
+                self.lbl_status = ttk.Label(self.frm_center, text="0 de 0", anchor="center")
+                # Solo aplicamos el padx=15 si hay botones empujando a los lados
+                pad_x = 15 if self.b_botones else 0
+                self.lbl_status.pack(side="left", padx=pad_x)
+                
+            if self.b_botones:
+                # Empaquetamos los de la derecha
+                self.btn_next.pack(side="left")
+                self.btn_last.pack(side="left", padx=(2, 0))
 
         # ==========================================
-        # 4. FORMULARIO INTEGRADO (d_textos)
+        # 4. FORMULARIO INTEGRADO (Contenedor)
         # ==========================================
-        if self.d_textos and self.cabeceras:
-            self.frm_form = ttk.Frame(self)
-            self.frm_form.pack(fill="x", pady=(10, 0))
-            self._construir_formulario()
+        self.frm_form = ttk.Frame(self)
+        self.frm_form.pack(fill="x", pady=(10, 0))
 
         # ==========================================
-        # CARGA INICIAL
+        # CONFIGURACIÓN INICIAL DE COLUMNAS Y DATOS
         # ==========================================
-        if datos:
-            self.load_data(datos)
+        self._configurar_columnas()
+        self._construir_formulario()
+        if self.datos:
+            self.load_data(self.datos)
 
     # ■■■■ MÉTODOS PÚBLICOS ■■■■
 
+    def set_feature_names(self, cabeceras):
+        """ Valida y asigna nuevas cabeceras """
+        if not isinstance(cabeceras, (list, tuple)):
+            raise ValueError("Las cabeceras deben ser una lista o tupla.")
+        if not all(isinstance(c, str) for c in cabeceras):
+            raise ValueError("Todos los elementos de las cabeceras deben ser strings.")
+            
+        self.cabeceras = list(cabeceras)
+        self._configurar_columnas()
+        self._construir_formulario()
+
     def load_data(self, datos: list):
         """ Limpia e inserta datos. """
+        self.datos = datos if datos else []
+        self._configurar_columnas()  
+        self._construir_formulario() 
+        
         for item in self.tree.get_children():
             self.tree.delete(item)
-        for d in datos:
+            
+        for d in self.datos:
             valores = d if isinstance(d, (list, tuple)) else (d,)
             self.tree.insert("", tk.END, values=valores)
+            
         self._actualizar_status()
 
     def get_textos(self) -> list:
-        """ 
-        Devuelve un array con los valores actuales de los Entry.
-        Garantiza que el orden sea exactamente el visual de tu grid (A0, B0, C0...)
-        """
+        if self.d_textos is None: return []
+        
+        cab_efectivas = self._obtener_cabeceras_efectivas()
+        d_trabajo = self._obtener_d_trabajo(cab_efectivas)
+
         valores = []
-        max_row, max_col = 0, 0
-        for k in self.d_textos.keys():
-            try:
-                c, r = ord(k[0].upper()) - 65, int(k[1:])
-                max_row, max_col = max(max_row, r), max(max_col, c)
-            except: continue
+        max_row, max_col = self._obtener_dimensiones(d_trabajo)
             
         for r in range(max_row + 1):
             for c in range(max_col + 1):
                 key = f"{chr(65+c)}{r}"
+                if key not in d_trabajo: continue
                 
-                # ■ Traducimos el texto/numero al índice real
-                val_crudo = self.d_textos.get(key, '_')
-                val = self._resolver_indice(val_crudo)
+                val_crudo = d_trabajo.get(key, '_')
+                val = self._resolver_indice(val_crudo, cab_efectivas)
                 
                 if isinstance(val, int) and val in self.dicc_entries:
                     valores.append(self.dicc_entries[val].get())
@@ -389,12 +392,17 @@ class My_Tree(ttk.Frame):
 
     def _construir_formulario(self):
         """ Construye internamente el Grid de Labels y Entries según d_textos. """
-        max_row, max_col = 0, 0
-        for k in self.d_textos.keys():
-            try:
-                c, r = ord(k[0].upper()) - 65, int(k[1:])
-                max_row, max_col = max(max_row, r), max(max_col, c)
-            except: continue
+        if self.d_textos is None: return
+            
+        cab_efectivas = self._obtener_cabeceras_efectivas()
+        if not cab_efectivas: return 
+            
+        for widget in self.frm_form.winfo_children():
+            widget.destroy()
+        self.dicc_entries.clear()
+
+        d_trabajo = self._obtener_d_trabajo(cab_efectivas)
+        max_row, max_col = self._obtener_dimensiones(d_trabajo)
         
         for c in range((max_col + 1) * 2):
             self.frm_form.columnconfigure(c, weight=1 if c % 2 != 0 else 0)
@@ -404,15 +412,15 @@ class My_Tree(ttk.Frame):
             
             for c in range(max_col + 1):
                 key = f"{chr(65+c)}{r}"
+                if key not in d_trabajo: continue
                 
-                # ■ AQUI ESTÁ LA MAGIA: Traducimos el texto/numero al índice real
-                val_crudo = self.d_textos.get(key, '_')
-                val = self._resolver_indice(val_crudo)
+                val_crudo = d_trabajo.get(key, '_')
+                val = self._resolver_indice(val_crudo, cab_efectivas)
                 
                 col_real = c * 2 
                 
-                if isinstance(val, int) and 0 <= val < len(self.cabeceras):
-                    lbl = ttk.Label(self.frm_form, text=f"{self.cabeceras[val]}:")
+                if isinstance(val, int) and 0 <= val < len(cab_efectivas):
+                    lbl = ttk.Label(self.frm_form, text=f"{cab_efectivas[val]}:")
                     lbl.grid(row=r, column=col_real, sticky="e", padx=(5, 2), pady=2)
                     
                     ent = ttk.Entry(self.frm_form, state="readonly")
@@ -421,10 +429,11 @@ class My_Tree(ttk.Frame):
                     self.dicc_entries[val] = ent 
                     last_entry = ent  
                     
-                elif val == '+': # Nuestro traductor ya convirtió 'x' a '+'
+                elif val == '+':
                     if last_entry:
                         span_actual = last_entry.grid_info().get('columnspan', 1)
                         last_entry.grid_configure(columnspan=span_actual + 2)
+
 
     def _al_seleccionar(self, event=None):
         """ Al clicar un registro, vuelca los datos en los Entries. """
@@ -477,35 +486,69 @@ class My_Tree(ttk.Frame):
         if sel: self._seleccionar_indice(self.tree.index(sel[0]) + 1)
         elif self.tree.get_children(): self._seleccionar_indice(0)
 
-    def _resolver_indice(self, valor):
-        """
-        Convierte el valor del diccionario (int o str) en el índice real de la cabecera.
-        Maneja cadenas vacías, comandos (+, x, _) y perdona errores de tildes o mayúsculas.
-        """
-        if isinstance(valor, int):
-            return valor
-            
+
+    # ■■■■ LÓGICA PRIVADA PARA UI ■■■■
+
+    def _resolver_indice(self, valor, cab_efectivas):
+        """ Traduce el valor tolerando mayúsculas y tildes. """
+        if isinstance(valor, int): return valor
         if isinstance(valor, str):
             val_str = valor.strip().lower()
-            
-            # 1. Es un comando de maquetación (+, x, _) o cadena vacía (equivalente a _)
-            if val_str in ['+', 'x']:
-                return '+'
-            if val_str in ['_', '']:
-                return '_'
+            if val_str in ['+', 'x']: return '+'
+            if val_str in ['_', '']: return '_'
                 
-            # 2. Es un texto: Buscamos en las cabeceras perdonando mayúsculas y tildes
             import unicodedata
             def quitar_tildes(s):
                 return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
                 
             val_norm = quitar_tildes(val_str)
-            
-            for i, cab in enumerate(self.cabeceras):
+            for i, cab in enumerate(cab_efectivas):
                 if quitar_tildes(str(cab).strip().lower()) == val_norm:
                     return i
-                    
-        return '_' # Por defecto, si no encuentra nada o es inválido, espacio vacío
+        return '_'
+
+    def _configurar_columnas(self):
+        """ Aplica las reglas visuales a las columnas del TreeView """
+        cols_a_mostrar = self._obtener_cabeceras_efectivas()
+        self.tree.config(columns=tuple(cols_a_mostrar))
+        
+        if not cols_a_mostrar:
+            self.tree.config(show="") 
+        else:
+            self.tree.config(show="headings")
+            for i, cab in enumerate(cols_a_mostrar):
+                self.tree.heading(cols_a_mostrar[i], text=cab)
+                self.tree.column(cols_a_mostrar[i], width=100, anchor="w")
+
+    def _obtener_dimensiones(self, d_trabajo):
+        """ Ignora las claves mal formadas y devuelve dimensiones """
+        max_row, max_col = 0, 0
+        if not d_trabajo: return max_row, max_col
+        
+        for k in d_trabajo.keys():
+            try:
+                c, r = ord(k[0].upper()) - 65, int(k[1:])
+                max_row, max_col = max(max_row, r), max(max_col, c)
+            except: 
+                continue 
+        return max_row, max_col
+    
+    def _obtener_d_trabajo(self, cab_efectivas):
+        """ Genera el d_textos secuencial A0, A1... si el usuario pasó un {} """
+        d_trabajo = self.d_textos.copy() if self.d_textos is not None else None
+        if d_trabajo == {}:
+            d_trabajo = {f"A{i}": i for i in range(len(cab_efectivas))}
+        return d_trabajo
+    
+    def _obtener_cabeceras_efectivas(self):
+        """ Decide si usar las cabeceras dadas o generar 'col0', 'col1'... """
+        if self.cabeceras:
+            return self.cabeceras
+        elif self.datos and len(self.datos) > 0:
+            num_cols = len(self.datos[0]) if isinstance(self.datos[0], (list, tuple)) else 1
+            return [f"col{i}" for i in range(num_cols)]
+        return []
+    
 
 # █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █ ■ █
 class Familia:
@@ -737,32 +780,6 @@ class Nivel_2:
     def _is_empty_cell(self, item):
         return item is None or item == "_" or item == '-' 
     
-    # def draw(self, matrix):
-    #     """
-    #     • Recibe una matriz de widgets (todos hijos de level_1).
-    #     • La posición en la matriz PREVALECE sobre cualquier grid anterior.
-    #     • Guarda un mapa interno self._draw_map con la situación final.
-    #     """
-    #     self._draw_map = []
-
-    #     for row_idx, row_data in enumerate(matrix):
-    #         if self._skip_row(row_data, row_idx):
-    #             continue
-
-    #         col_idx = 0
-    #         placed = []     # Tracking interno para colspan
-
-    #         for item in row_data:
-    #             if self._is_empty_cell(item):
-    #                 placed.append(self._celda_vacia(row_idx, col_idx))
-    #             elif item == "+":
-    #                 self._colspan(placed)
-    #             else:
-    #                 placed.append(self._widget_real(item, row_idx, col_idx))
-    #             col_idx += 1
-
-    #     return self
-    
     def draw(self, matrix):
         """
         • Recibe una matriz de widgets (todos hijos de level_1).
@@ -860,10 +877,32 @@ class Nivel_2:
                     m['span'] = new_span
                     break
 
+    # def _widget_real(self, item, row_idx, col_idx):
+    #     """ ■ Posiciona un widget real en el grid y registra el tracking."""
+    #     item.grid_forget()
+    #     item.grid(in_=self.level_1, row=row_idx, column=col_idx, sticky="we")
+
+    #     self._draw_map.append({
+    #         'fila': row_idx, 'columna': col_idx,
+    #         'widget': item, 'tipo': 'widget', 'span': 1
+    #     })
+    #     return {'type': 'widget', 'widget': item, 'col': col_idx, 'span': 1}
+
     def _widget_real(self, item, row_idx, col_idx):
-        """ ■ Posiciona un widget real en el grid y registra el tracking."""
+        """ ■ Posiciona un widget real en el grid, registra el tracking y automatiza pesos."""
         item.grid_forget()
-        item.grid(in_=self.level_1, row=row_idx, column=col_idx, sticky="we")
+        
+        comportamiento_sticky = "we"
+        
+        # Validación limpia usando isinstance 
+        if isinstance(item, (My_Tree, My_Listbox, tk.Listbox, ttk.Treeview, tk.Text, tk.Canvas)):
+            comportamiento_sticky = "nsew"
+            
+            # ■■ ¡LA MAGIA DE LA AUTOMATIZACIÓN! ■■
+            # Si el widget es expandible, le damos peso automáticamente a su fila
+            self.level_1.rowconfigure(row_idx, weight=1)
+
+        item.grid(in_=self.level_1, row=row_idx, column=col_idx, sticky=comportamiento_sticky)
 
         self._draw_map.append({
             'fila': row_idx, 'columna': col_idx,
@@ -871,6 +910,21 @@ class Nivel_2:
         })
         return {'type': 'widget', 'widget': item, 'col': col_idx, 'span': 1}
 
+    # def _widget_real(self, item, row_idx, col_idx):
+    #     """ ■ Posiciona un widget real en el grid y registra el tracking."""
+    #     item.grid_forget()        
+    #     comportamiento_sticky = "we"        
+
+    #     # Validación limpia usando isinstance 
+    #     if isinstance(item, (My_Tree, My_Listbox, tk.Listbox, ttk.Treeview, tk.Text, tk.Canvas)):
+    #         comportamiento_sticky = "nsew"
+
+    #     item.grid(in_=self.level_1, row=row_idx, column=col_idx, sticky=comportamiento_sticky)
+    #     self._draw_map.append({
+    #         'fila': row_idx, 'columna': col_idx,
+    #         'widget': item, 'tipo': 'widget', 'span': 1
+    #     })
+    #     return {'type': 'widget', 'widget': item, 'col': col_idx, 'span': 1}
 
     # ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■  
     # ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■ ■■■  

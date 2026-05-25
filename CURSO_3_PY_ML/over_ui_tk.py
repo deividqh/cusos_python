@@ -336,8 +336,6 @@ def mixto():
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     F2 = Nivel_2(TABS.get_p('split'), shape="5x6", padx=15, pady=7)    
     # ■ WIDGETS
-    lbl_split_01 = ttk.Label(F2.frame, text="■ Proporción del Split (Train/Test)", font=("Arial", 11, "bold"))
-    scl_split_01 = ttk.Scale(F2.frame, from_=0, to=10, orient="horizontal")
     # •
     estado_checkbox = tk.BooleanVar(value=False)
     checkbox = ttk.Checkbutton( F2.frame, text="Boton de Check:", variable = estado_checkbox, 
@@ -352,9 +350,9 @@ def mixto():
     matrix_F2 = [
         [] ,
         [checkbox, '+', '+'],                                             
+        [ '+', '+', '+', '+', '+', '+'] ,
         [l_slide, slide, '+', '+', '+', v_slide] ,
         [ '+', '+', '+', '+', '+', '+'] ,
-        [lbl_split_01, '+', scl_split_01, "+", "+", "+", "+" ],               
     ]
     # ■  DIBUJO
     F2.draw(matrix = matrix_F2)
@@ -363,17 +361,12 @@ def mixto():
     # FRAME PARA LA PESTAÑA ALGORITMOS
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     F3 = Nivel_2(TABS.get_p('alg'), shape="6x6", padx=15, pady=7)    
-    # split_lbl_02 = ttk.Label(F3.frame, text="■ Proporción del Split (Train/Test)", font=("Verdana", 10))
-    # var_split = tk.DoubleVar(value=5)
-    # split_lbl_result = tk.DoubleVar(value=5)
-    # split_scl_02 = ttk.Scale(F3.frame, from_=0, to=10, orient="horizontal", variable=split_lbl_result)    
-    # split_lbl = ttk.Label(F3.frame, text="■", font=("Verdana", 9))
-    
-    # ■ otra manera de meter el fileDialog, obteniendo el texto y el botón.
-    texto_fd, boton_fd = F3.my_fileDialog(entry_width=35, b_split=True)
+
+    # ■ manera de meter el fileDialog, obteniendo el texto y el botón.
+    fd_texto, fd_boton = F3.my_fileDialog(entry_width=35, b_split=True)
     matrix_F3 = [
         ['+', '+', '+', '+', '+', '_'] ,
-        [boton_fd, texto_fd],                                             
+        [fd_boton, fd_texto],                                             
         [] ,
     ]
     F3.draw(matrix = matrix_F3)
@@ -382,41 +375,41 @@ def mixto():
     # FRAME PARA LA PESTAÑA 'METRICAS'
     # ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ ■■ 
     F4 = Nivel_2(TABS.get_p('met'), shape="6x6", padx=15, pady=7)    
-    # Datos sinteticos para pruebas:
-    # cabeceras_db = ["ID", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Ciudad"]
-    # # ■ A0, B0 es el grid en la UI. 0, 3, 5 ...  son los indices de 'datos_sinteticos'
-    # dicc = {'A0': 0, 'B0': 1, 'C0': '_', 'D0': '' ,  
-    #         'A1': 2, 'B1': 3, 'C1': '+', 'D1': '' , 
-    #         'A2': 4, 'B2': 3, 'C2': '+', 'D2': '' , 
-    #        }
-
 
     # Los datos se pueden sacar de un archivo csv, json, base de datos...
     # ahora creo unos datos sinteticos para mostrar el control 
-    datos_sinteticos = [
+    datos_ok = [
         (1, "Ana", "García", "López", "555-1234", "Madrid"),
         (1, "Marcos", "Rojas", "Márquez", "3333-1234", "Vigo"),
         (1, "María", "Saturno", "Obradoiro", "353-1234", "Murcia"),
         (2, "Juan", "Pérez", "Gómez", "111-1234", "Las Palmas de Gran Canaria"),
     ]
     # En caso de que no se metan cabeceras, se escribiran igualmente los datos sinteticos
-    cab = ["ID", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Ciudad"]
-    # En caso de no introducir dicc se pondrán todos los textos al 100% secuencialmente uno debajod de otro.
-    dicc = {'A0': cab[0], 'B0': "Nombre",  'C0': '+',        'D0': '+' ,  
-            'A1': cab[2], 'B1': "+" , 	   'C1': cab[3],     'D1': '+' , 
-            'A2': "_",    'B2': "Ciudad",  'C2': cab[4], 'D2': cab[5] , 
+    cab = ["ID", "Nombre", "Apellido 1", "Apellido 2", "Teléfono", "Ciudad"]    
+    # posicion de los textos.
+    dicc = {'A0': cab[0], 'B0': "Nombre",  'C0': '+',       'D0': '+' ,  
+            'A1': cab[2], 'B1': "+" , 	   'C1': cab[3],    'D1': '+' , 
+            'A2': "_",    'B2': "Ciudad",  'C2': cab[4],    'D2': cab[5] , 
     } 
-    mi_tabla = F4.my_tree(titulo="■ Base de Datos de Clientes", 
-                        #   cabeceras=cab, 
-                          datos=datos_sinteticos, d_textos = dicc )
-    # mi_super_lista = F4.my_listbox(datos=datos_sinteticos, b_botones=True, b_registro=True)
-
+    titulo = "■ BDatos de Clientes"
+    mi_tabla = F4.my_tree(titulo=titulo, cabeceras=cab, datos=datos_ok, d_textos = dicc )    
+    arbol_not_features = F4.my_tree(titulo="■■",  datos=datos_ok, d_textos = dicc )    
+    arbol_vacio = F4.my_tree(titulo="•vacio•" )    
+    
+    btn_set_cab = tk.Button(F4.frame, text="Inyectar Cabeceras", 
+                            command=lambda: arbol_vacio.set_feature_names(["A", "B", "C"]))
     matrix_F4 = [
-        [] ,
-        [],                                             
-        [mi_tabla, '+', '+', '+', '+', '+'] ,
+        # [arbol_not_features] ,
+        [arbol_vacio, '+', '+', '+', '+', '+'],                                             
+        [btn_set_cab],                                             
+        # [mi_tabla, '+', '+', '+', '+', '+'] ,
     ]
+
     F4.draw(matrix = matrix_F4)
+
+    # Le damos a la fila 2 de F4 la capacidad de absorber el espacio sobrante en vertical
+    # F4.frame.rowconfigure(2, weight=1)
+    F4.frame.rowconfigure(0, weight=1)
 
     # btn_del.config(command=lambda: cmd.limpiar_textos(  ))
     # • • • — — — • • •
