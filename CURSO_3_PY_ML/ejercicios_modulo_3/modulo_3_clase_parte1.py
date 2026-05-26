@@ -9,7 +9,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 import os           #Para Limpiar la terminal con  os.system('cls') 
-import  menuDvd     #Funcion que crea un menu y devuelve un int(opcion)
+# import  menuDvd     #Funcion que crea un menu y devuelve un int(opcion)
+from XindeX import menuDvd          # Menu con diccionario de datos para mostrar en cada item
 
 
 def ejercicio_01():
@@ -125,19 +126,6 @@ def ejercicio_01():
         
         print(f"► Flor {i+1}: {Fore.CYAN}{nombre}{Style.RESET_ALL} "
             f"(Confianza: {porcentaje:.2f} %)")
-
-    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■          
-    print(f'\n {'■'*30}')
-    print("■ type Iris:", type(iris) )
-    print("■ keys:", iris.keys())
-    print("■ type X:", type(X))
-    print("■ type y:", type(y))
-    print(f'■ type x train: {type(X_train)} \n■ type y train: {type(y_train)}')
-    print("■ type fit:", type(fit))
-    print("■ type precision:", type(precision))
-    print("■ type modelo:", type(modelo_svm))
-    print(f'■ type Prediccion: {type(predicciones_nuevas)}')
-    print(f'■ type target_names: {type(iris.target_names)}')
 
     print(""" Justificación: El alumno demuestra capacidad de aplicación al integrar el flujo básico de Scikit-Learn (Carga,
     Split, Fit, Predict) en un problema de clasificación estándar. 
@@ -535,7 +523,7 @@ def main():
     menu={  
         "Ej_01. 🌷🌷 SVC ■ Ciclo Basico con algoritmo SVM(Categoriás) ■ GRAF: pairplot | displot:": ejercicio_01, 
         "Ej_02. 🌷🌷 Algoritmo Naive Bayes ■ Probabilidad": ejercicio_02 , 
-        "Ej_03. 🦀🦀 SVC ■ 'Porcentaje de Aciertos ": ejercicio_03,
+        "Ej_03. 🦀🦀 SVC ■ Porcentaje de Aciertos ": ejercicio_03,
         "Ej_04. 🌷🌷 EDA ■ Análisis Discriminante Lineal( LDA ) ■ GRAF: scatter": ejercicio_04,
         "Ej_05. 🦀🦀 EDA ■ Escalado de los Datos ": ejercicio_05,
         "Ej_06. 🦀🦀 SVC ■ Hiper-Parametros ■ Validación Cruzada": ejercicio_06,

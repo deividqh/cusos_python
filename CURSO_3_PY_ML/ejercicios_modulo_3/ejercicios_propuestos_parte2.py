@@ -7,8 +7,10 @@ import matplotlib.pyplot as plt
 from  colorama import Fore, Style
 import os           # Para Limpiar la terminal con  os.system('cls') 
 # ■■■■■■■■■ mias
-import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
-from modulos.datos import get_d_datos
+# import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
+from XindeX import menuDvd          # Menu con diccionario de datos para mostrar en cada item
+# from modulos.datos import get_d_datos
+from ejercicios_modulo_3.modulos.datos import get_d_datos
 
 def ejercicio_01():
     ENUNCIADO = """ El Misterio de los Kernels: 

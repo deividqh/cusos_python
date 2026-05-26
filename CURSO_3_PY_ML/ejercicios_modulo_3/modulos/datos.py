@@ -20,6 +20,7 @@ def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
         data_load = datasets.load_digits()
     else:
         return None
+        
     # ■■■■■■■■■ Si no me das la proporción de test, te doy el dataset.
     if test_porciento == None and dataset_name:
         return data_load

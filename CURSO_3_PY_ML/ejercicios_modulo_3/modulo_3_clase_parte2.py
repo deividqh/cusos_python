@@ -1,6 +1,8 @@
-import menuDvd
+# import menuDvd
+from XindeX import menuDvd          # Menu con diccionario de datos para mostrar en cada item
 from colorama import Fore, Style
-from modulos.datos import get_d_datos
+# from modulos.datos import get_d_datos
+from ejercicios_modulo_3.modulos.datos import get_d_datos
 
 
 def ejercicio_01():

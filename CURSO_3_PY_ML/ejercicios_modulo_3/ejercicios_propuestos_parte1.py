@@ -6,9 +6,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from  colorama import Fore, Style
 import os           # Para Limpiar la terminal con  os.system('cls') 
-import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
+# import  menuDvd     # Funcion que crea un menu y devuelve un int(opcion)
+from XindeX import menuDvd          # Menu con diccionario de datos para mostrar en cada item
+
 from sklearn import datasets
-from modulos.datos import get_d_datos
+# from modulos.datos import get_d_datos
+
+from ejercicios_modulo_3.modulos.datos import get_d_datos
 
 # def get_d_datos(dataset_name='iris', test_porciento=None, b_split=False):
 #     """ Cacho los datos del dataset que vayamos a usar y devuelvo un diccionario con todos los datos 

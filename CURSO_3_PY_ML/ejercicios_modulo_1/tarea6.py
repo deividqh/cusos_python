@@ -36,54 +36,61 @@ def prueba():
     # Número de habitaciones
     habitaciones = np.random.randint(1, 6, len(precios_finales))                        
 
-prueba()                                  
 
-df = pd.read_csv('viviendas.csv')  # Cargar el dataset desde un archivo CSV
-# Tendencia Central(media, mediana, moda)
-media_precio = df['precio'].mean()
-mediana_precio = df['precio'].median()
+def tarea6():
+    prueba()                                  
+    from pathlib import Path
+    # Obtiene la carpeta donde está este archivo .py actual
+    DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
+    # Construye la ruta absoluta hacia el archivo de estilo
+    RUTA_ESTILO = DIRECTORIO_ACTUAL / "viviendas.csv"
 
-# dispersion:
-varianza_precio = df['precio'].var()
-desviacion_estandar_precio = df['precio'].std()
+    df = pd.read_csv(RUTA_ESTILO)  # Cargar el dataset desde un archivo CSV
+    # Tendencia Central(media, mediana, moda)
+    media_precio = df['precio'].mean()
+    mediana_precio = df['precio'].median()
 
-# Interpretacion 
-limite_inferior = media_precio - desviacion_estandar_precio
-limite_superior = media_precio + desviacion_estandar_precio
+    # dispersion:
+    varianza_precio = df['precio'].var()
+    desviacion_estandar_precio = df['precio'].std()
 
-# Imprimir resultados
-print(f"Media del precio: {media_precio:,.2f}")
-print(f"Mediana del precio: {mediana_precio:,.2f}")
-print(f"Varianza del precio: {varianza_precio:,.2f}")
-print(f"Desviación estándar del precio: {desviacion_estandar_precio:,.2f}")
-print(f"Límite inferior: {limite_inferior:,.2f}")
-print(f"Límite superior: {limite_superior:,.2f}")
+    # Interpretacion 
+    limite_inferior = media_precio - desviacion_estandar_precio
+    limite_superior = media_precio + desviacion_estandar_precio
 
-# Mediana: Es el punto medio. Si ordenas los datos de menor a mayor, es el valor que deja al 50% por arriba.
-# No le afectan los valores externos.
+    # Imprimir resultados
+    print(f"Media del precio: {media_precio:,.2f}")
+    print(f"Mediana del precio: {mediana_precio:,.2f}")
+    print(f"Varianza del precio: {varianza_precio:,.2f}")
+    print(f"Desviación estándar del precio: {desviacion_estandar_precio:,.2f}")
+    print(f"Límite inferior: {limite_inferior:,.2f}")
+    print(f"Límite superior: {limite_superior:,.2f}")
 
-# Varianza: Es el promedio de los cuadrados de las distancias de cada datos respecto a la media. Nos dice qué tan dispersos están los datos. Si es alta, los datos están más dispersos; si es baja, están más agrupados..
-# Es dificil interpretar directamente la varianza, por eso se usa la desviación estándar.
+    # Mediana: Es el punto medio. Si ordenas los datos de menor a mayor, es el valor que deja al 50% por arriba.
+    # No le afectan los valores externos.
 
-# Desviación estándar: Es la raíz cuadrada de la varianza. Nos da una medida de dispersión 
-# en las mismas unidades que los datos originales. 
-# Si es alta, los datos están más dispersos; si es baja, están más agrupados.
+    # Varianza: Es el promedio de los cuadrados de las distancias de cada datos respecto a la media. Nos dice qué tan dispersos están los datos. Si es alta, los datos están más dispersos; si es baja, están más agrupados..
+    # Es dificil interpretar directamente la varianza, por eso se usa la desviación estándar.
 
-import matplotlib.pyplot as plt
-import seaborn as sns
+    # Desviación estándar: Es la raíz cuadrada de la varianza. Nos da una medida de dispersión 
+    # en las mismas unidades que los datos originales. 
+    # Si es alta, los datos están más dispersos; si es baja, están más agrupados.
 
-# Configuracion de la estetica del grafico
-sns.set_theme(style="whitegrid")
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-ax1.set_title("Distribución del Precio de las Viviendas")
-ax1.set_xlabel("Precio", fontsize=12)
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
-#boxplot de valores, de precio.
-sns.boxplot(x=df['precio'], ax=ax1, color='skyblue' , flierprops={'marker': 'o', 'markerfacecolor': 'red', 'markersize': 12})
-ax2.set_title("Analisis de Outliers en el Precio de las Viviendas", fontsize=14, fontweight='bold')
-ax2.set_xlabel("Precio", fontsize=12)
+    # Configuracion de la estetica del grafico
+    sns.set_theme(style="whitegrid")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+    ax1.set_title("Distribución del Precio de las Viviendas")
+    ax1.set_xlabel("Precio", fontsize=12)
 
-plt.tight_layout()
+    #boxplot de valores, de precio.
+    sns.boxplot(x=df['precio'], ax=ax1, color='skyblue' , flierprops={'marker': 'o', 'markerfacecolor': 'red', 'markersize': 12})
+    ax2.set_title("Analisis de Outliers en el Precio de las Viviendas", fontsize=14, fontweight='bold')
+    ax2.set_xlabel("Precio", fontsize=12)
 
-plt.show()
+    plt.tight_layout()
+
+    plt.show()
 

@@ -1,7 +1,8 @@
 import os           #Para Limpiar la terminal con  os.system('cls') 
-import  menuDvd     #Funcion que crea un menu y devuelve un int(opcion)
 from colorama import Fore, Back, Style, init
-
+# import  menuDvd     #Funcion que crea un menu y devuelve un int(opcion)
+# from .menuDvd import MenuDiccionario
+from XindeX import menuDvd          # Menu con diccionario de datos para mostrar en cada item
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -44,7 +45,14 @@ def ejercicio_01():
     """ + Style.RESET_ALL) 
     
     # ■ Asignacion del estilo del grafico a través de un archivo .mplstyle
-    with plt.style.context('./dark.mplstyle'):
+    
+    from pathlib import Path
+    # Obtiene la carpeta donde está este archivo .py actual
+    DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
+    # Construye la ruta absoluta hacia el archivo de estilo
+    RUTA_ESTILO = DIRECTORIO_ACTUAL / "dark.mplstyle"
+
+    with plt.style.context(str(RUTA_ESTILO)):
         # Creo el Grafico
         a = sns.histplot(data = df_leads,  x='leads')
         # print(type(a)) # <class 'matplotlib.axes._subplots.AxesSubplot'> ► Es un objeto de tipo 'AxesSubplot' que representa el área donde se dibuja el gráfico.
@@ -138,7 +146,7 @@ En una línea de producción de piezas metálicas, se mide el grosor de 150 unid
     }
     
     while (True):
-        i = menuDvd.MenuDiccionario(sub_menu, tituloMenu = TITULO_SUB_MENU ,
+        i = menuDvd.MenuDiccionario(sub_menu, tituloMenu = "Elije Tipo de Grafico", 
                                     num_char=60, char_1='', char_2='', char_3='_',
                                     texto_exit= '◀️  Atrás | - clear')
         if i == 0: 
@@ -207,8 +215,13 @@ def ejercicio_05():
     """+ Style.RESET_ALL ) 
 
     # sns.regplot(x='annos', y='salario', data=df)
+    from pathlib import Path
+    # Obtiene la carpeta donde está este archivo .py actual
+    DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
+    # Construye la ruta absoluta hacia el archivo de estilo
+    RUTA_ESTILO = DIRECTORIO_ACTUAL / "./test.mplstyle"
     
-    with plt.style.context('./test.mplstyle'):
+    with plt.style.context(str(RUTA_ESTILO)):
         sns.scatterplot(data=df, x='annos', y='salario', hue='salario')
         plt.show()
 
@@ -384,7 +397,7 @@ def ejercicio_08():
         "Opt. con data_frame.corr()": None , 
     }
     while (True):
-        i = menuDvd.MenuDiccionario(sub_menu, tituloMenu = TITULO_SUB_MENU ,
+        i = menuDvd.MenuDiccionario(sub_menu, tituloMenu = 'Elije Opcion Heatmap' ,
                                     num_char=60, char_1='', char_2='', char_3='_',
                                     texto_exit= '◀️  Atrás | - clear' )
         if i == 0: 
