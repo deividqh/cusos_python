@@ -167,6 +167,7 @@ def main():
                         ('Modulo 1. Introducción al Curso', m1), 
                         ('Modulo 2. Exploración del Conjunto de Datos(EDA)', m2), 
                         ('Modulo 3. Algoritmos de Machine Learning', m3), 
+                        ('Modulo 4. Redes Neuronales', None), 
                     ])
     # ■ LANZAR ■
     The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="CURSO MACHINE LEARNING - PYTHON", pad_x=5 )
