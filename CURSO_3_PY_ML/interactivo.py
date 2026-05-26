@@ -12,6 +12,7 @@ import comandos_ui_tk as cmd                    # (Opt) Acciones de los widgets 
 from XindeX import menuDvd          # Menu con diccionario de datos para mostrar en cada item
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# LIBRERÍAS DONDE ESTAN LOS EJERCICIOS - IMPORTO LAS FUNCIONES DE LOS EJERCICIOS PARA ASOCIARLAS A LOS ITEMS DEL MENU
 from ejercicios_modulo_1.tarea5 import calcula_pendiente as tarea5
 from ejercicios_modulo_1.conversorHTML import convertir_html
 from ejercicios_modulo_1.tarea6 import tarea6
@@ -23,9 +24,10 @@ def m1():
                                 ('convertir ipynb a html', convertir_html), 
                                 ('tarea6', tarea6), 
                     ])
-                        
+    # ■■ ■■ ■■ ■■ ■■ ■■                          
     xm1.mystyca( titulo='M1', head_datapush="Ejercicios del Módulo 1: Introducción al Curso", pad_x=30)
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# LIBRERÍAS DONDE ESTAN LOS EJERCICIOS - IMPORTO LAS FUNCIONES DE LOS EJERCICIOS PARA ASOCIARLAS A LOS ITEMS DEL MENU
 from ejercicios_modulo_2 import main as m2_main
 def m2():
     xm2 = Over_Main(tipo_index='1', b_mode_all=False, b_loop=True)
@@ -42,6 +44,7 @@ def m2():
                 ('Ej_9. Precios Inmobiliarios Sesgados ■ GRAF: boxplot ■ outliers', m2_main.ejercicio_09),
                 ('Ej_10. Dashboard de Ventas Regional: GRAF: barplot(Barras) - histplot(HIstograma)', m2_main.ejercicio_10),
         ])
+    # ■■ ■■ ■■ ■■ ■■ ■■  
     xm2.mystyca( titulo='M2', head_datapush="Ejercicios del Módulo 2: Exploración del Conjunto de Datos(EDA)", pad_x=10 )
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 # LIBRERÍAS DONDE ESTAN LOS EJERCICIOS - IMPORTO LAS FUNCIONES DE LOS EJERCICIOS PARA ASOCIARLAS A LOS ITEMS DEL MENU
@@ -50,8 +53,6 @@ from ejercicios_modulo_3 import ejercicios_propuestos_parte2 as prop2
 from ejercicios_modulo_3 import modulo_3_clase_parte1 as clp1
 from ejercicios_modulo_3 import modulo_3_clase_regresion as clr
 from ejercicios_modulo_3 import modulo_3_clase_parte2 as clp2
-
-# ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 def m3():
     xm3 = Over_Main(tipo_index='1', b_mode_all=False, b_loop=True)
     xm3.addX( titulo='M3', padre=None, ipadre=None, 
@@ -149,9 +150,18 @@ def m3():
                 ('Ejercicio_10. ', None),                                
             ])
 
-
     # ■■ ■■ ■■ ■■ ■■ ■■  
     xm3.mystyca( titulo='M3', head_datapush="Ejercicios del Módulo 3: Algoritmos de Machine Learning", pad_x=10 )
+
+def m4():
+    xm4 = Over_Main(tipo_index='1', b_mode_all=False, b_loop=True)
+    xm4.addX( titulo='M4', padre=None, ipadre=None, 
+            lst_items=[ 
+                ('ejemplo 1 para reemplazar', None), 
+                ('ejemplo 2 para reemplazar', None), 
+            ])
+    xm4.mystyca( titulo='M4', head_datapush="Ejercicios del Módulo 4: Redes Neuronales", pad_x=10 )
+
 
 # █■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■█
 # █ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ █
@@ -167,7 +177,7 @@ def main():
                         ('Modulo 1. Introducción al Curso', m1), 
                         ('Modulo 2. Exploración del Conjunto de Datos(EDA)', m2), 
                         ('Modulo 3. Algoritmos de Machine Learning', m3), 
-                        ('Modulo 4. Redes Neuronales', None), 
+                        ('Modulo 4. Redes Neuronales', m4), 
                     ])
     # ■ LANZAR ■
     The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="CURSO MACHINE LEARNING - PYTHON", pad_x=5 )
