@@ -169,7 +169,6 @@ def ejer_6():
     Enunciado del Reto: Un biólogo observa que la población de una bacteria crece de forma acelerada. Los
     modelos lineales subestiman el crecimiento. Utiliza PolynomialFeatures de grado 2 para ajustar mejor los
     datos. """
-    print (f"\n{Fore.BLUE}{JUSTIFICACION}{Style.RESET_ALL}")
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     import numpy as np 
     import matplotlib.pyplot as plt 

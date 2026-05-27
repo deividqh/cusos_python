@@ -293,7 +293,7 @@ def ejercicio_07():
         • Observa cómo cambia el Recall y el número de Falsos Negativos. """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")    
     from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-    from modulo_3_clase_parte1 import ejercicio_07 as ejerciciosiete
+    from clase_clasificacion_1 import ejercicio_07 as ejerciciosiete
 
     dd = get_d_datos('cancer', 30)    
     if not dd: return
