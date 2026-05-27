@@ -67,7 +67,7 @@ def m3():
 
     xm3.addX( titulo='CLASIFICACION (CLASE) - 1:', padre='M3', ipadre='CLASE - Clasificación - Supervisado - parte1', 
             lst_items=[ 
-                ('EJ_01. SVC ■ Ciclo Basico con algoritmo SVM(Categoriás) ■ GRAF: pairplot | displot:', clp1.ejercicio_01),  
+                ('EJ_01. SVC ■ Ciclo Basico  SVM(Categoriás) ■ GRAF: pairplot | displot:', clp1.ejercicio_01),  
                 ('EJ_02. (iris) ■ Algoritmo Naive Bayes ■ Probabilidad', clp1.ejercicio_02), 
                 ('Ej_03. (cancer) ■ SVC ■ Porcentaje de Aciertos', clp1.ejercicio_03), 
                 ('Ej_04. (iris) ■ EDA ■ Análisis Discriminante Lineal( LDA ) ■ GRAF: scatter', clp1.ejercicio_04),
@@ -75,7 +75,7 @@ def m3():
                 ('Ej_06. (cancer) ■ SVC ■ Hiper-Parametros ■ Validación Cruzada', clp1.ejercicio_06),
                 ('Ej_07. (cancer) ■ SVC ■ METRICAS ■ GRAF: Matriz de Confusión', clp1.ejercicio_07),
                 ('Ej_08. (iris) ■ Compara  LDA && Naive Bayes ■ METRICAS', clp1.ejercicio_08),
-                ('Ej_09. (cancer) ■ SVC ■ Hiperparámetros C y gamma ■ GridSearchCV (MultiParametros)', clp1.ejercicio_09),
+                ('Ej_09. (cancer) ■ SVC ■ Hiperparám C y gamma ■ GridSearchCV (MultiParam)', clp1.ejercicio_09),
                 ('Ej_10. (iris) ■ PipeLine (all in one)', clp1.ejercicio_10),                                
             ])
                         
@@ -114,10 +114,10 @@ def m3():
                 ('Ej_03. (cancer) ■ SVC ■ Matriz confusion ■ Accuracy', prop1.ejercicio_03), 
                 ('Ej_04. (iris) ■ EDA ■ Kneighbors(KNN) ■ Reducir Dimensiones ( LDA ) ■ GRAF: scatter', prop1.ejercicio_04),
                 ('Ej_05. (cancer) ■ EDA ■ Escalado de los Datos, MinScaler vs StandarScaler', prop1.ejercicio_05),
-                ('Ej_06. (cancer) ■ SVC ■ Validación Cruzada Estratificada(StratifiedKFold) && Desviación standar', prop1.ejercicio_06),
+                ('Ej_06. (cancer) ■ SVC ■ Cross Valid Estratified(StratifiedKFold) && Desv standard', prop1.ejercicio_06),
                 ('Ej_07. (cancer) ■ SVC ■ METRICAS ■ GRAF: Matriz de Confusión', prop1.ejercicio_07),
                 ('Ej_08. (iris) ■ Compara  LDA && Naive Bayes ■ METRICAS', prop1.ejercicio_08),
-                ('Ej_09. (cancer) ■ SVC ■ Hiperparámetros C y gamma ■ GridSearchCV (MultiParametros)', prop1.ejercicio_09),
+                ('Ej_09. (cancer) ■ SVC ■ Hiperparámetros C y gamma ■ GridSearchCV ', prop1.ejercicio_09),
                 ('Ej_10. (iris) ■  PipeLine (all in one)', prop1.ejercicio_10),                                
             ])
 
