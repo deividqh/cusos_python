@@ -20,7 +20,7 @@ def main():
                     lst_items=[ ('De Clase (Copy/Paste) ', None), 
                         ('Ejercicios Propuestos: ', None), ])
     
-    The_X_Men.addX( titulo='Ejercicios de Clase', padre="Menu_Principal", ipadre="De Clase (Copy/Paste) ", 
+    The_X_Men.addX( titulo='Ejercicios Resueltos', padre="Menu_Principal", ipadre="De Clase (Copy/Paste) ", 
                     lst_items=[ 
                         ('Ej 1 - Regresión Lineal Simple (Scikit-Learn)', clase_reg.ejer_1), 
                         ('Ej 2 - Regresión Lineal con Statsmodels', clase_reg.ejer_2), 
@@ -34,7 +34,7 @@ def main():
                         ('Ej 10 - Creación de un Pipeline de Regresión Completo', clase_reg.ejer_10), 
                     ])                        
     
-    The_X_Men.addX( titulo='Ejercicios Propuestos Para el Alumno', padre="Menu_Principal", ipadre="Ejercicios Propuestos: ", 
+    The_X_Men.addX( titulo='Ejercicios Propuestos', padre="Menu_Principal", ipadre="Ejercicios Propuestos: ", 
                     lst_items=[ 
                         ('Ej.01. Rendimiento Académico - Regresión Lineal Simple ', None), 
                         ('Ej.02. Satisfacción Laboral ■ Statsmodels ■ p-valor ', None), 
@@ -49,7 +49,7 @@ def main():
                     ])                        
     
     # ■ LANZAR ■
-    The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="CURSO MACHINE LEARNING - PYTHON", pad_x=3 )
+    The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="EJERCICOS ALGORITMOS DE REGRESIÓN", pad_x=3 )
     # ■ DESPEDIDA ■
     print('Bye Bye')
 

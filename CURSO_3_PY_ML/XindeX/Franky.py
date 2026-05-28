@@ -2789,21 +2789,21 @@ class F_r_a_n_k_y(Tablero):
     
     ESTILOS_FRANKY = {
         "default": {              # clasic
-            "char_head":    "+" , 
-            "up_body":      "-" ,
-            "down_body":    "-" ,
-            "char_pie":     "+" ,
-            'char_marco' :  '|' ,
+            "char_head":    "■" , 
+            "up_body":      "■" ,
+            "down_body":    "■" ,
+            "char_pie":     "■" ,
+            'char_marco' :  '█' ,
             'x_pad' :       2   ,
             'pad_x' :       5   ,
             'margen':       0
         },
         "unicode": {                # algo mas moderno que el clasic
-            "char_head":    "═" ,
+            "char_head":    "─" ,
             "up_body":      "─" ,
             "down_body":    "─" ,
-            "char_pie":     "═" ,         
-            'char_marco' :  '┼' ,
+            "char_pie":     "─" ,         
+            'char_marco' :  '|' ,
             'x_pad' :       2   ,
             'pad_x' :       5   ,
             'margen':       0
@@ -2839,11 +2839,11 @@ class F_r_a_n_k_y(Tablero):
             'margen':       10          # flotante
         }, 
         "elegante": {
-            "char_head":   "▀"  ,       # primer marco arriba del head.
-            "up_body":     "▄"  ,       # char marco de arriba del body.
-            "down_body":   "▀"  ,       # char marco de abajo del body.
-            "char_pie":   "▄"   ,       # char marco de abajo del pie.
-            'char_marco':   '▓' ,       # char marco de los laterales.
+            "char_head":   "┬"  ,       # primer marco arriba del head.
+            "up_body":     "—"  ,       # char marco de arriba del body.
+            "down_body":   "—"  ,       # char marco de abajo del body.
+            "char_pie":   "┴"   ,       # char marco de abajo del pie.
+            'char_marco':   '║' ,       # char marco de los laterales.
             'x_pad' :      3    ,       # pad izquierdo.
             'pad_x' :      10   ,       # pad derecho.
             'margen':      0            # flotante.

@@ -27,7 +27,7 @@ def main():
     # global The_X_Men
 
     # ■ ■ ■ ■ CREO LOS MENUS Y SUS FUNCIONES ASOCIADAS 
-    Menu1 = The_X_Men.addX(titulo='Menu1', padre=None , ipadre=None, 
+    The_X_Men.addX(titulo='UI_tk', padre=None , ipadre=None, 
                     lst_items = [ 
                     ("Familia" , main_familia),
                     ("Pestañas" , main_pestanas), 
@@ -37,18 +37,18 @@ def main():
                     ("Me pone un mixto?" , mixto), 
                     ])
     
-    # ■ ■ ■ ■ Lo dejo de ejemplo.... ipadre(Familia) = indice de donde cuelga este sub-menu en el padre(Menu1)
-    # The_X_Men.addX( titulo='fam', padre='Menu1'   , ipadre='Familia'    , 
+    # ■ ■ ■ ■ Lo dejo de ejemplo.... ipadre(Familia) = indice de donde cuelga este sub-menu en el padre(UI_tk)
+    # The_X_Men.addX( titulo='fam', padre='UI_tk'   , ipadre='Familia'    , 
     #                 lst_items = [ 
     #                 ("familia 1", None) , 
     #                 ("familia 2", None) , 
     #                 ])    
     
     # ■ ■ ■ ■  LLAMO A MYSTYCA PARA VISUALIZAR EL MENU 
-    retorno = The_X_Men.mystyca( titulo='Menu1', head_datapush  = " Formularios DVD " , pad_x=5 )
-
+    retorno = The_X_Men.mystyca( titulo='UI_tk', head_datapush  = " Formularios DVD " , pad_x=5 )
+    
     # ■■■■■ RETORNO DE MYSTYCA (Opcional)
-    print(f"::: T H E   E N D  en MAIN() ::: {retorno if retorno else 'no retorno'} ")
+    print(f"::: Elije Bien Tu Camino ::: {retorno if retorno else 'no retorno'} ")
 
 # █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 
 # █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ █ 

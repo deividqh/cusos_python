@@ -21,7 +21,7 @@ def main():
                     lst_items=[ ('De Clase (Copy/Paste) ', None), 
                         ('Ejercicios Propuestos: ', None), ])
     
-    The_X_Men.addX( titulo='Ejercicios de Clase', padre="Menu_Principal", ipadre="De Clase (Copy/Paste) ", 
+    The_X_Men.addX( titulo='Ejercicios Clase', padre="Menu_Principal", ipadre="De Clase (Copy/Paste) ", 
                     lst_items=[ 
                         ('EJ_01. SVC ■ Ciclo Basico  SVM(Categoriás) ■ pairplot | displot:', clase_clasif_1.ejercicio_01),  
                         ('EJ_02. (iris) ■ Algoritmo Naive Bayes ■ Probabilidad', clase_clasif_1.ejercicio_02), 
@@ -35,7 +35,7 @@ def main():
                         ('Ej_10. (iris) ■ PipeLine (all in one)', clase_clasif_1.ejercicio_10),                                
                     ])                        
     
-    The_X_Men.addX( titulo='Ejercicios Propuestos Para el Alumno', padre="Menu_Principal", ipadre="Ejercicios Propuestos: ", 
+    The_X_Men.addX( titulo='Ejercicios Propuestos', padre="Menu_Principal", ipadre="Ejercicios Propuestos: ", 
                     lst_items=[ 
                         ('Ej_01. (iris) ■ SVC ■ Cambio de Kernell ', prop_clasif_1.ejercicio_01), 
                         ('Ej_02. (iris) ■  Naive Bayes ■ Probabilidad certeza', prop_clasif_1.ejercicio_02), 
@@ -50,7 +50,7 @@ def main():
                     ])                        
     
     # ■ LANZAR ■
-    The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="CURSO MACHINE LEARNING - PYTHON", pad_x=3 )
+    The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="ALGORITMOS CLASIFICACION - SUPERVISADO 1ª PARTE", pad_x=3 )
     # ■ DESPEDIDA ■
     print('Bye Bye')
 

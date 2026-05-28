@@ -190,12 +190,24 @@ Entrena un modelo inicial con la "Semana 1" y utiliza partial_fit para actualiza
     """
     print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     import numpy as np
+    from sklearn.linear_model import SGDClassifier
     # ■
+    ventas_semana_1 = np.random.rand(100, 5) * 1000      # 100 productos, 5 características (precio, stock, etc.)
+    etiquetas_semana_1 = np.random.randint(0, 2, 100)    # 0: No se vende, 1: Se vende
 
+    ventas_semana_2 = np.random.rand(100, 5) * 1000
+    etiquetas_semana_2 = np.random.randint(0, 2, 100)
 
+    algoritmo = SGDClassifier(max_iter=1000, tol=1e-3)
+    modelo = algoritmo.fit(ventas_semana_1, etiquetas_semana_1)  # Entrenamos con la Semana 1
+    print("• Modelo entrenado con Semana 1.")
+    
+    modelo.partial_fit(ventas_semana_2, etiquetas_semana_2)  # Actualizamos con la Semana 2
+    print("• Modelo actualizado con Semana 2 sin perder el aprendizaje previo con 'partial_fit'.")
     # ■
     JUSTIFICACION = """ 
-    
+    he supuesto  100 productos, 5 características (precio, stock, etc.)
+    y etiquetas binarias (0: No se vende, 1: Se vende) para simplificar el ejemplo.
     """
     print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
 
@@ -207,12 +219,14 @@ Muestra el TOP 3 de algoritmos con mejor F1-Score y reflexiona sobre por qué el
     """
     print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     import numpy as np
+    # from lazypredict.Supervised import LazyClassifier
     # ■
 
 
     # ■
-    JUSTIFICACION = """ 
-    
+    JUSTIFICACION = """ NO HAGO ESTE EJERCICIO PORQUE REQUIERE INSTALAR Y USAR LA LIBRERÍA LAZYPREDICT,
+ME PARECE UNA IDEA MUY MALA PARA UN EJERCICIO DE APRENDIZAJE, YA QUE NO TE ENSEÑA A HACER NADA, SOLO A USAR UNA LIBRERÍA QUE HACE TODO POR TI.
+SI QUIERES SABER QUÉ MODELOS SON LOS MEJORES PARA EL DATASET IRIS, LO MEJOR ES QUE LO HAGAS TÚ MISMO, PRUEBES LOS MODELOS, VEAS LOS RESULTADOS Y REFLEXIONES SOBRE ELLO.
     """
     print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
 
@@ -230,7 +244,7 @@ modelo es el más preciso para detectar vinos de alta calidad.
 
     # ■
     JUSTIFICACION = """ 
-    
+    NO HAGO ESTE EJERCICIO PORQUE REQUIERE INSTALAR Y USAR LA LIBRERÍA PYCARET, Y ME EVITO LOS PROBLEMAS DE COMPATIBILIDAD QUE TIENE PYCARET CON LAS VERSIONES DE PYTHON, YA QUE ES UNA LIBRERÍA MUY PESADA Y COMPLICADA DE INSTALAR.    
     """
     print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
 
@@ -239,16 +253,29 @@ def ejercicio_08():
     ENUNCIADO = """ 
     Actividad 8 - El Experimento del Daltónico: Genera un dataset con puntos de colores (coordenadas
 RGB). Usa K-Means para agruparlos sin usar las etiquetas de color. ¿Coinciden los grupos encontrados
-por el modelo con los colores reales? Evalúa la diferencia entre ambos paradigmas.
-    """
+por el modelo con los colores reales? Evalúa la diferencia entre ambos paradigmas.    """
     print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.cluster import KMeans
     # ■
+    R = np.random.randint(0, 255, 100)  # 100 puntos con valores RGB
+    G = np.random.randint(0, 255, 100)
+    B = np.random.randint(0, 255, 100)
+    X = np.column_stack((R, G, B))  # Creamos un dataset con las coordenadas RGB
+    X_ = X/255.0  
 
+    kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+    kmeans.fit(X)
+    labels = kmeans.labels_
+    plt.scatter(R, G, B, c=X_,  alpha=0.8)
+    plt.show()
 
     # ■
     JUSTIFICACION = """ 
-    
+    me ha salido un msg de error d eque scatter tenia que representar los valores entre 0 y 1. 
+    así que lo he dividido y ha salido el grafico. 
+    no se que sale en el grafico. aparecen puntos grandes y pequeños y colores mezclados. 
     """
     print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
 
@@ -261,9 +288,23 @@ inminente antes de que ocurra.
     """
     print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     import numpy as np
+    import matplotlib.pyplot as plt
+    from sklearn.ensemble import IsolationForest
     # ■
-
-
+    sensor_data = np.random.normal(loc=0, scale=1, size=1000)  # Datos normales
+    # Introducimos algunos picos anómalos
+    sensor_data[::100] += np.random.normal(loc=10, scale=5, size=10)  # Picos cada 100 datos
+    
+    algoritmo = IsolationForest(contamination=0.01, random_state=42)    
+    modelo = algoritmo.fit(sensor_data.reshape(-1, 1))  
+    
+    anomalias = modelo.predict(sensor_data.reshape(-1, 1))  #aplana el sensor_data º
+    print("Índices de datos anómalos detectados:")
+    print(np.where(anomalias == -1)[0])  # Imprime los índices de los datos anómalos
+    
+    
+    plt.title('Datos del Sensor con Anomalías')
+    plt.show()
     # ■
     JUSTIFICACION = """ 
     

@@ -174,8 +174,8 @@ Q-Table después de una recompensa:
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 def ejercicio_05():
     ENUNCIADO = """ Ejercicio 5 - Aprendizaje en Continuo (Incremental Learning)
-    Objetivo: Analizar cómo actualizar un modelo con nuevos datos sin necesidad de volver a entrenar con todo
-el historial.
+Objetivo: Analizar cómo actualizar un modelo con nuevos datos sin necesidad de volver 
+a entrenar con todo el historial.
 Enunciado del Reto: En entornos de Big Data, los datos llegan en flujo constante. Utiliza un clasificador que
 soporte el método partial_fit para entrenar un modelo con dos lotes de datos distintos de forma
 secuencial
@@ -217,16 +217,16 @@ rendimiento de todos los clasificadores disponibles en Scikit-learn sobre un dat
     """
     print (f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
     # Comentado para evitar errores si no está instalado
-    # from lazypredict.Supervised import LazyClassifier
+    from lazypredict.Supervised import LazyClassifier
     from sklearn.datasets import load_breast_cancer
     from sklearn.model_selection import train_test_split
+    
     data = load_breast_cancer()
-    X_train, X_test, y_train, y_test = train_test_split(data.data, data.target,
-    test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, test_size=0.2, random_state=42)
     # Código lógico de LazyPredict:
-    # clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
-    # models, predictions = clf.fit(X_train, X_test, y_train, y_test)
-    # print(models.head(5))
+    clf = LazyClassifier(verbose=0, ignore_warnings=True, custom_metric=None)
+    models, predictions = clf.fit(X_train, X_test, y_train, y_test)
+    print(models.head(5))
     print("LazyPredict permite evaluar +30 modelos en 2 líneas de código.")
 
     JUSTIFICACION = """ 

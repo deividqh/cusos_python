@@ -1,6 +1,5 @@
 import os
 import re
-# from Franky import F_r_a_n_k_y
 from colorama import Fore, Style, init
 from .Franky import F_r_a_n_k_y
 # import pyfiglet                               # ■ LETRAS GRANDES.
@@ -70,11 +69,12 @@ class MenuDvd():
         # ■■■■■■■■■■■■■■■■■■■■■■■■■■
         # DICCIONARIO RESULTADO ████  
         #   ■ {'titulo_menu': list( 'item_1_menu' , func_item_1 )  }   ==> Se genera 1 por Menu. 
-        #   ■ Es de donde tiene que coger ■■► terminator_executor ◄■■ la informacion para ejecutar al funcion.
+        #   ■ Es de donde tiene que coger ■terminator_executor_■ la informacion para ejecutar al funcion.
         self.dicc_menu = dict(zip(self.lst_items, self.lst_funciones))
         
         # ■■ MENSAJE DE PEDIDA DE DATO AL USUARIO
-        self.entradilla_data_user = '\nIntro Opt (XindeX)..... '     
+        # self.entradilla_data_user = '\nIntro Opcion '     
+        self.entradilla_data_user = 'Intro Opcion '     
     
     def __str__(self):  
         """ ■ Cuando se imprime la clase """              
@@ -218,7 +218,7 @@ class XindeX(MenuDvd):
         # INFORMACION GENETICA ■■■■■■■■■■■■■■■■■■■■■■■■
         self.lst__men_itm_lev_ape_name_padr_ipadr_func=[]    # ██ Lista de lista de str. Invocada desde Mystica. Funcion Recursiva
         self.dicc_xgenx={}      # ■■ diccionario que mantiene la genealogía de los menus. ■ titulo:[master, index_en_master]  
-        self.matriz_opt_ok=[]   # ■■ Listado de Opciones Validas(a.1, b.2.3...). Se tiene que pasar a ■ xavier_get_dicc_respuesta()
+        self.matriz_opt_ok=[]   # ■■ Listado de Opciones Validas(a.1, b.2.3...). Se tiene que pasar a ■ xavier_get_dicc__respuesta()
         # LA MATRIZ A IMPRIMIR ■■■■■■■■■■■■■■■■■■■■■■■
         self.matriz_impresion_xindex=[]   # ■■ Lista de lista de str. llamada desde Mystica en ■ self.Mystica_Skin(). Funcion Recursiva        
         # TIPOS DE FORMATOS DE MENU ... se forman en ■ self.crear_xindicex() 
@@ -243,7 +243,7 @@ class XindeX(MenuDvd):
         # RESPUESTAS ■■■■■■■■■■■■■■■■■■■■■■■■■
 
         # ■ DIRECTAS ... Se evalua cada uno: 
-        self.lst_resp_ACCION = ['<' , '?' , '??' , 'help', '<<<']
+        self.RESP_ACCION_DIRECTA = ['<' , '?' , '??' , 'help', '<<<']
         
         # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
         # ■■ MENU PRINCIPAL(SE ESTABLECE EN MYSTYCA)
@@ -291,8 +291,8 @@ class XindeX(MenuDvd):
         [sp1]:int, espacio entre 
         [sp2]:int, espacio entre
         [sp3]:int, espacio entre
-        [franky](F_r_a_n_k_y) = Objeto Franky del xindex, 
-        [franky_def](F_r_a_n_k_y) = Objeto Franky de xindex con definicion.
+        [franky](F_r_a_n_k_y__) = Objeto Franky del xindex, 
+        [franky_def](F_r_a_n_k_y__) = Objeto Franky de xindex con definicion.
         """
         if tipo_index is not None:
             setattr(self, "tipo_index", tipo_index)
@@ -632,7 +632,7 @@ class XindeX(MenuDvd):
         [level](int): None,     No se toca ni se pasa, es para propositos recursivos.
         [retorno](list): None , No se toca ni se pasa, es para propositos recursivos.
         
-        ► CALLED: ►get_lst_definiciones() ► get_xindex() ► terminator_executor() ► terminator_executor() SOBRE-ESCRITO.
+        ► CALLED: ►get_lst_definiciones() ► get_xindex() ► terminator__executor() ► terminator__executor() SOBRE-ESCRITO.
         ■ EJEMPLO: 
             lst_padres  = self.get_list_padres_mystyca(menu_dvd = menu_dvd)
         ■ SALIDA: 
@@ -767,12 +767,12 @@ class XindeX(MenuDvd):
         # RETORNO
         return funcion_name
     
-    # ■■■ CUANDO PULSA   '?' ... Llamada desde terminator_executor
+    # ■■■ CUANDO PULSA   '?' ... Llamada desde terminator__executor
     def imprimir_mystyca_definiciones(self, menu_dvd, lista_m_i_l_a_n_p_i_f:list):
         """ ■■ CUANDO SE PULSA '?'  ► Imprime el Menú con los Items y las Funciones , definiciones y el modo de ejecución.
         [menu_dvd](MenuDvd) : Objeto MenuDvd que se va a imprimir. ► <classIndeX.classXindeX.MenuDvd object at 0x0000020E07AD23C0>
         [lista_m_i_l_a_n_p_i_f](list) : Lista de listas con la configuracion genetica de los menus. ►[('MenuPpal', 'F_RANK_Y', 0, '0.', 0, '-', '-', <function info_TABLERO at 0x0000020F388C9440>), ('SUB_CREAR', '\x1b[92mCOMO\x1b[39m \x1b[31mEMPEZAR\x1b[39m / \x1b[92mHOW\x1b[39m \x1b[31mBEGIN', 1, '0.1.', 0, 'MenuPpal', 0, <function info_begin at 0x0000020F388C93A0>), ('SUB_CREAR', '\x1b[33mCREAR FRANKY\x1b[0m... Crea un Tablero ', 1, '0.1.', 1, 'MenuPpal', 0, <function crear_tablero at 0x0000020F388C94E0>), ('SUB_CREAR', '\x1b[33mINICIALIZA\x1b[0m Tablero (default)', 1, '0.1.', 2, 'MenuPpal', 0, <function iniciar_tablero at 0x0000020F388C9580>), ('SUB_CREAR', '\x1b[92mMODE \x1b[31m(EXCEL)', 1, '0.1.', 3, 'MenuPpal', 0, <function mode_excel at 0x0000020F388C9620>), ('MenuPpal', 'IMPRIMIR', 0, '0.', 1, '-', '-', <function info_IMPRIMIR at 0x0000020F388C96C0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mMax', 1, '0.1.', 0, 'MenuPpal', 1, <function print_max at 0x0000020F388C9760>), ('SUB_IMPR', 'IMPRIMIR Modo Literal /  \x1b[33mMosaico\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 1, <function print_literal at 0x0000020F388C9800>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mFixed', 1, '0.1.', 2, 'MenuPpal', 1, <function print_fixed at 0x0000020F388C98A0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mLista', 1, '0.1.', 3, 'MenuPpal', 1, <function print_personal at 0x0000020F388C9940>), ('SUB_IMPR', 'IMPRIMIR \x1b[33mALL IN ONE\x1b[0m (FROM-TO)', 1, '0.1.', 4, 'MenuPpal', 1, <function print_from_to at 0x0000020F388C9A80>), ('MenuPpal', 'GET', 0, '0.', 2, '-', '-', <function info_GETTING at 0x0000020F388C9B20>), ('SUB_GET', 'GETTING \x1b[36mFila', 1, '0.1.', 0, 'MenuPpal', 2, <function get_fila at 0x0000020F388C9D00>), ('SUB_GET', 'GETTING \x1b[36mColumna', 1, '0.1.', 1, 'MenuPpal', 2, <function get_columna at 0x0000020F388C9DA0>), ('SUB_GET', 'GETTING Valor By \x1b[36mFila-Columna\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 2, <function get_fila_columna at 0x0000020F388C9C60>), ('SUB_GET', 'GETTING Valor By \x1b[36mCelda\x1b[0m(A:0)', 1, '0.1.', 3, 'MenuPpal', 2, <function get_celda at 0x0000020F388C9BC0>), ('SUB_GET', 'GETTING \x1b[36mMatriz Values', 1, '0.1.', 4, 'MenuPpal', 2, <function get_matriz_values at 0x0000020F388C9E40>), ('MenuPpal', 'PUSH', 0, '0.', 3, '-', '-', <function info_push at 0x0000020F388CA520>), ('SUB_PUSH', 'PUSH \x1b[32mMATRIZ', 1, '0.1.', 0, 'MenuPpal', 3, <function matriz_to_tablero at 0x0000020F388CA5C0>), ('SUB_PUSH', 'PUSH \x1b[32mLISTA', 1, '0.1.', 1, 'MenuPpal', 3, <function push_lista at 0x0000020F388CA8E0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mFila', 1, '0.1.', 2, 'MenuPpal', 3, <function push_valor_over_fila at 0x0000020F388CA7A0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mColumn', 1, '0.1.', 3, 'MenuPpal', 3, <function push_valor_over_columna at 0x0000020F388CA840>), ('SUB_PUSH', 'PUSH Valor \x1b[32mBy Celda (C:3)', 1, '0.1.', 4, 'MenuPpal', 3, <function push_celda at 0x0000020F388CA700>), ('SUB_PUSH', 'PUSH valor \x1b[32mBy fila / columna', 1, '0.1.', 5, 'MenuPpal', 3, <function push_fila_columna at 0x0000020F388CA660>), ('MenuPpal', 'DEL', 0, '0.', 4, '-', '-', <function info_DEL at 0x0000020F388C9EE0>), ('SUB_DEL', 'DEL \x1b[36mFila\x1b[0m Over F_RANK_Y', 1, '0.1.', 0, 'MenuPpal', 4, <function del_fila at 0x0000020F388CA020>), ('SUB_DEL', 'Del \x1b[36mColumn\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 4, <function del_columna at 0x0000020F388CA0C0>), ('SUB_DEL', 'Del \x1b[36mCelda\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 4, <function del_celda at 0x0000020F388C9F80>), ('MenuPpal', 'RANGOS', 0, '0.', 5, '-', '-', <function info_RANGO at 0x0000020F388CA160>), ('SUB_RANGOS', '\x1b[32mCREAR\x1b[0m Rango', 1, '0.1.', 0, 'MenuPpal', 5, <function crear_rango at 0x0000020F388CA200>), ('SUB_RANGOS', '\x1b[32mBUSCAR\x1b[0m Rango', 1, '0.1.', 1, 'MenuPpal', 5, <function buscar_rango at 0x0000020F388CA2A0>), ('SUB_RANGOS', '\x1b[32mELIMINAR\x1b[0m Rango', 1, '0.1.', 2, 'MenuPpal', 5, <function delete_rango at 0x0000020F388CA340>), ('SUB_RANGOS', '\x1b[32mIMPRIMIR x \x1b[33mNombre Rango', 1, '0.1.', 3, 'MenuPpal', 5, <function print_rango at 0x0000020F388C99E0>), ('SUB_RANGOS', '\x1b[32mVER\x1b[0m INFO Rangos Tablero', 1, '0.1.', 4, 'MenuPpal', 5, <function ver_info_rangos at 0x0000020F388CA3E0>), ('SUB_RANGOS', '\x1b[32mPULL TO\x1b[0m \x1b[33mRANGO', 1, '0.1.', 5, 'MenuPpal', 5, <function pull at 0x0000020F388CA480>), ('MenuPpal', 'MISCELANEA', 0, '0.', 6, '-', '-', None), ('SUB_MISC', '\x1b[33mPUSH \x1b[31mMASIVO', 1, '0.1.', 0, 'MenuPpal', 6, <function push_masivo at 0x0000020F388CA980>), ('SUB_MISC', 'Prueba \x1b[35mIMPRESION MASIVA', 1, '0.1.', 1, 'MenuPpal', 6, <function impresion_masiva at 0x0000020F388CAAC0>), ('SUB_MISC', 'Get \x1b[32m General Data \x1b[0m', 1, '0.1.', 2, 'MenuPpal', 6, <function get_datos_generales at 0x0000020F388CAA20>), ('SUB_MISC', 'Cambia \x1b[35mHEAD', 1, '0.1.', 3, 'MenuPpal', 6, <function cambia_cabecera at 0x0000020F388CAB60>), ('SUB_MISC', 'Cambia \x1b[35mPIE', 1, '0.1.', 4, 'MenuPpal', 6, <function cambia_pie at 0x0000020F388CAC00>), ('SUB_MISC', '\x1b[33mSet \x1b[35mColor\x1b[0m Marco', 1, '0.1.', 5, 'MenuPpal', 6, <function set_color_marco at 0x0000020F388CAD40>), ('SUB_MISC', 'Set  \x1b[35mTipo de Marco', 1, '0.1.', 6, 'MenuPpal', 6, <function set_estilo_marco at 0x0000020F388CACA0>), ('SUB_MISC', '\x1b[33mCambia \x1b[35mColor\x1b[0m MODE EXCEL', 1, '0.1.', 7, 'MenuPpal', 6, <function set_color_excel at 0x0000020F388CADE0>)]
-        ► CALLED: self.terminator_executor() y self.terminator_executor() sobre-escrito de Over-Main
+        ► CALLED: self.terminator__executor() y self.terminator__executor() sobre-escrito de Over-Main
         ■ EJEMPLO: 
             self.imprimir_mystyca_definiciones( menu_dvd = self.menu_dvd , lista_m_i_l_a_n_p_i_f = self.lst__men_itm_lev_ape_name_padr_ipadr_func )
         ■ SALIDA: 
@@ -905,7 +905,7 @@ class XindeX(MenuDvd):
         [item](str): item por el cual se busca el objeto MenuDvd.   ►'IMPRIMIR'
         [xindicex]                                                  ►5
         [lista_m_i_l_a_n_p_i_f]: Lista genetica del XindeX.         ►[('MenuPpal', 'F_RANK_Y', 0, '0.', 0, '-', '-', <function info_TABLERO at 0x0000020F388C9440>), ('SUB_CREAR', '\x1b[92mCOMO\x1b[39m \x1b[31mEMPEZAR\x1b[39m / \x1b[92mHOW\x1b[39m \x1b[31mBEGIN', 1, '0.1.', 0, 'MenuPpal', 0, <function info_begin at 0x0000020F388C93A0>), ('SUB_CREAR', '\x1b[33mCREAR FRANKY\x1b[0m... Crea un Tablero ', 1, '0.1.', 1, 'MenuPpal', 0, <function crear_tablero at 0x0000020F388C94E0>), ('SUB_CREAR', '\x1b[33mINICIALIZA\x1b[0m Tablero (default)', 1, '0.1.', 2, 'MenuPpal', 0, <function iniciar_tablero at 0x0000020F388C9580>), ('SUB_CREAR', '\x1b[92mMODE \x1b[31m(EXCEL)', 1, '0.1.', 3, 'MenuPpal', 0, <function mode_excel at 0x0000020F388C9620>), ('MenuPpal', 'IMPRIMIR', 0, '0.', 1, '-', '-', <function info_IMPRIMIR at 0x0000020F388C96C0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mMax', 1, '0.1.', 0, 'MenuPpal', 1, <function print_max at 0x0000020F388C9760>), ('SUB_IMPR', 'IMPRIMIR Modo Literal /  \x1b[33mMosaico\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 1, <function print_literal at 0x0000020F388C9800>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mFixed', 1, '0.1.', 2, 'MenuPpal', 1, <function print_fixed at 0x0000020F388C98A0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mLista', 1, '0.1.', 3, 'MenuPpal', 1, <function print_personal at 0x0000020F388C9940>), ('SUB_IMPR', 'IMPRIMIR \x1b[33mALL IN ONE\x1b[0m (FROM-TO)', 1, '0.1.', 4, 'MenuPpal', 1, <function print_from_to at 0x0000020F388C9A80>), ('MenuPpal', 'GET', 0, '0.', 2, '-', '-', <function info_GETTING at 0x0000020F388C9B20>), ('SUB_GET', 'GETTING \x1b[36mFila', 1, '0.1.', 0, 'MenuPpal', 2, <function get_fila at 0x0000020F388C9D00>), ('SUB_GET', 'GETTING \x1b[36mColumna', 1, '0.1.', 1, 'MenuPpal', 2, <function get_columna at 0x0000020F388C9DA0>), ('SUB_GET', 'GETTING Valor By \x1b[36mFila-Columna\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 2, <function get_fila_columna at 0x0000020F388C9C60>), ('SUB_GET', 'GETTING Valor By \x1b[36mCelda\x1b[0m(A:0)', 1, '0.1.', 3, 'MenuPpal', 2, <function get_celda at 0x0000020F388C9BC0>), ('SUB_GET', 'GETTING \x1b[36mMatriz Values', 1, '0.1.', 4, 'MenuPpal', 2, <function get_matriz_values at 0x0000020F388C9E40>), ('MenuPpal', 'PUSH', 0, '0.', 3, '-', '-', <function info_push at 0x0000020F388CA520>), ('SUB_PUSH', 'PUSH \x1b[32mMATRIZ', 1, '0.1.', 0, 'MenuPpal', 3, <function matriz_to_tablero at 0x0000020F388CA5C0>), ('SUB_PUSH', 'PUSH \x1b[32mLISTA', 1, '0.1.', 1, 'MenuPpal', 3, <function push_lista at 0x0000020F388CA8E0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mFila', 1, '0.1.', 2, 'MenuPpal', 3, <function push_valor_over_fila at 0x0000020F388CA7A0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mColumn', 1, '0.1.', 3, 'MenuPpal', 3, <function push_valor_over_columna at 0x0000020F388CA840>), ('SUB_PUSH', 'PUSH Valor \x1b[32mBy Celda (C:3)', 1, '0.1.', 4, 'MenuPpal', 3, <function push_celda at 0x0000020F388CA700>), ('SUB_PUSH', 'PUSH valor \x1b[32mBy fila / columna', 1, '0.1.', 5, 'MenuPpal', 3, <function push_fila_columna at 0x0000020F388CA660>), ('MenuPpal', 'DEL', 0, '0.', 4, '-', '-', <function info_DEL at 0x0000020F388C9EE0>), ('SUB_DEL', 'DEL \x1b[36mFila\x1b[0m Over F_RANK_Y', 1, '0.1.', 0, 'MenuPpal', 4, <function del_fila at 0x0000020F388CA020>), ('SUB_DEL', 'Del \x1b[36mColumn\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 4, <function del_columna at 0x0000020F388CA0C0>), ('SUB_DEL', 'Del \x1b[36mCelda\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 4, <function del_celda at 0x0000020F388C9F80>), ('MenuPpal', 'RANGOS', 0, '0.', 5, '-', '-', <function info_RANGO at 0x0000020F388CA160>), ('SUB_RANGOS', '\x1b[32mCREAR\x1b[0m Rango', 1, '0.1.', 0, 'MenuPpal', 5, <function crear_rango at 0x0000020F388CA200>), ('SUB_RANGOS', '\x1b[32mBUSCAR\x1b[0m Rango', 1, '0.1.', 1, 'MenuPpal', 5, <function buscar_rango at 0x0000020F388CA2A0>), ('SUB_RANGOS', '\x1b[32mELIMINAR\x1b[0m Rango', 1, '0.1.', 2, 'MenuPpal', 5, <function delete_rango at 0x0000020F388CA340>), ('SUB_RANGOS', '\x1b[32mIMPRIMIR x \x1b[33mNombre Rango', 1, '0.1.', 3, 'MenuPpal', 5, <function print_rango at 0x0000020F388C99E0>), ('SUB_RANGOS', '\x1b[32mVER\x1b[0m INFO Rangos Tablero', 1, '0.1.', 4, 'MenuPpal', 5, <function ver_info_rangos at 0x0000020F388CA3E0>), ('SUB_RANGOS', '\x1b[32mPULL TO\x1b[0m \x1b[33mRANGO', 1, '0.1.', 5, 'MenuPpal', 5, <function pull at 0x0000020F388CA480>), ('MenuPpal', 'MISCELANEA', 0, '0.', 6, '-', '-', None), ('SUB_MISC', '\x1b[33mPUSH \x1b[31mMASIVO', 1, '0.1.', 0, 'MenuPpal', 6, <function push_masivo at 0x0000020F388CA980>), ('SUB_MISC', 'Prueba \x1b[35mIMPRESION MASIVA', 1, '0.1.', 1, 'MenuPpal', 6, <function impresion_masiva at 0x0000020F388CAAC0>), ('SUB_MISC', 'Get \x1b[32m General Data \x1b[0m', 1, '0.1.', 2, 'MenuPpal', 6, <function get_datos_generales at 0x0000020F388CAA20>), ('SUB_MISC', 'Cambia \x1b[35mHEAD', 1, '0.1.', 3, 'MenuPpal', 6, <function cambia_cabecera at 0x0000020F388CAB60>), ('SUB_MISC', 'Cambia \x1b[35mPIE', 1, '0.1.', 4, 'MenuPpal', 6, <function cambia_pie at 0x0000020F388CAC00>), ('SUB_MISC', '\x1b[33mSet \x1b[35mColor\x1b[0m Marco', 1, '0.1.', 5, 'MenuPpal', 6, <function set_color_marco at 0x0000020F388CAD40>), ('SUB_MISC', 'Set  \x1b[35mTipo de Marco', 1, '0.1.', 6, 'MenuPpal', 6, <function set_estilo_marco at 0x0000020F388CACA0>), ('SUB_MISC', '\x1b[33mCambia \x1b[35mColor\x1b[0m MODE EXCEL', 1, '0.1.', 7, 'MenuPpal', 6, <function set_color_excel at 0x0000020F388CADE0>)]
-        ► CALLED: terminator_executor() de XindeX
+        ► CALLED: terminator_executor_() de XindeX
         ■ EJEMPLO:  
             titulo_menu = self.get_menudvd_from_item(item = 'IMPRIMIR', menu = 'MenuPpal' , xindicex = 5, lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f)
         ■ SALIDA: 
@@ -933,7 +933,7 @@ class XindeX(MenuDvd):
         [lista_m_i_l_a_n_p_i_f](list): lista genetica.  ►[('MenuPpal', 'F_RANK_Y', 0, '0.', 0, '-', '-', <function info_TABLERO at 0x0000020F388C9440>), ('SUB_CREAR', '\x1b[92mCOMO\x1b[39m \x1b[31mEMPEZAR\x1b[39m / \x1b[92mHOW\x1b[39m \x1b[31mBEGIN', 1, '0.1.', 0, 'MenuPpal', 0, <function info_begin at 0x0000020F388C93A0>), ('SUB_CREAR', '\x1b[33mCREAR FRANKY\x1b[0m... Crea un Tablero ', 1, '0.1.', 1, 'MenuPpal', 0, <function crear_tablero at 0x0000020F388C94E0>), ('SUB_CREAR', '\x1b[33mINICIALIZA\x1b[0m Tablero (default)', 1, '0.1.', 2, 'MenuPpal', 0, <function iniciar_tablero at 0x0000020F388C9580>), ('SUB_CREAR', '\x1b[92mMODE \x1b[31m(EXCEL)', 1, '0.1.', 3, 'MenuPpal', 0, <function mode_excel at 0x0000020F388C9620>), ('MenuPpal', 'IMPRIMIR', 0, '0.', 1, '-', '-', <function info_IMPRIMIR at 0x0000020F388C96C0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mMax', 1, '0.1.', 0, 'MenuPpal', 1, <function print_max at 0x0000020F388C9760>), ('SUB_IMPR', 'IMPRIMIR Modo Literal /  \x1b[33mMosaico\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 1, <function print_literal at 0x0000020F388C9800>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mFixed', 1, '0.1.', 2, 'MenuPpal', 1, <function print_fixed at 0x0000020F388C98A0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mLista', 1, '0.1.', 3, 'MenuPpal', 1, <function print_personal at 0x0000020F388C9940>), ('SUB_IMPR', 'IMPRIMIR \x1b[33mALL IN ONE\x1b[0m (FROM-TO)', 1, '0.1.', 4, 'MenuPpal', 1, <function print_from_to at 0x0000020F388C9A80>), ('MenuPpal', 'GET', 0, '0.', 2, '-', '-', <function info_GETTING at 0x0000020F388C9B20>), ('SUB_GET', 'GETTING \x1b[36mFila', 1, '0.1.', 0, 'MenuPpal', 2, <function get_fila at 0x0000020F388C9D00>), ('SUB_GET', 'GETTING \x1b[36mColumna', 1, '0.1.', 1, 'MenuPpal', 2, <function get_columna at 0x0000020F388C9DA0>), ('SUB_GET', 'GETTING Valor By \x1b[36mFila-Columna\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 2, <function get_fila_columna at 0x0000020F388C9C60>), ('SUB_GET', 'GETTING Valor By \x1b[36mCelda\x1b[0m(A:0)', 1, '0.1.', 3, 'MenuPpal', 2, <function get_celda at 0x0000020F388C9BC0>), ('SUB_GET', 'GETTING \x1b[36mMatriz Values', 1, '0.1.', 4, 'MenuPpal', 2, <function get_matriz_values at 0x0000020F388C9E40>), ('MenuPpal', 'PUSH', 0, '0.', 3, '-', '-', <function info_push at 0x0000020F388CA520>), ('SUB_PUSH', 'PUSH \x1b[32mMATRIZ', 1, '0.1.', 0, 'MenuPpal', 3, <function matriz_to_tablero at 0x0000020F388CA5C0>), ('SUB_PUSH', 'PUSH \x1b[32mLISTA', 1, '0.1.', 1, 'MenuPpal', 3, <function push_lista at 0x0000020F388CA8E0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mFila', 1, '0.1.', 2, 'MenuPpal', 3, <function push_valor_over_fila at 0x0000020F388CA7A0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mColumn', 1, '0.1.', 3, 'MenuPpal', 3, <function push_valor_over_columna at 0x0000020F388CA840>), ('SUB_PUSH', 'PUSH Valor \x1b[32mBy Celda (C:3)', 1, '0.1.', 4, 'MenuPpal', 3, <function push_celda at 0x0000020F388CA700>), ('SUB_PUSH', 'PUSH valor \x1b[32mBy fila / columna', 1, '0.1.', 5, 'MenuPpal', 3, <function push_fila_columna at 0x0000020F388CA660>), ('MenuPpal', 'DEL', 0, '0.', 4, '-', '-', <function info_DEL at 0x0000020F388C9EE0>), ('SUB_DEL', 'DEL \x1b[36mFila\x1b[0m Over F_RANK_Y', 1, '0.1.', 0, 'MenuPpal', 4, <function del_fila at 0x0000020F388CA020>), ('SUB_DEL', 'Del \x1b[36mColumn\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 4, <function del_columna at 0x0000020F388CA0C0>), ('SUB_DEL', 'Del \x1b[36mCelda\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 4, <function del_celda at 0x0000020F388C9F80>), ('MenuPpal', 'RANGOS', 0, '0.', 5, '-', '-', <function info_RANGO at 0x0000020F388CA160>), ('SUB_RANGOS', '\x1b[32mCREAR\x1b[0m Rango', 1, '0.1.', 0, 'MenuPpal', 5, <function crear_rango at 0x0000020F388CA200>), ('SUB_RANGOS', '\x1b[32mBUSCAR\x1b[0m Rango', 1, '0.1.', 1, 'MenuPpal', 5, <function buscar_rango at 0x0000020F388CA2A0>), ('SUB_RANGOS', '\x1b[32mELIMINAR\x1b[0m Rango', 1, '0.1.', 2, 'MenuPpal', 5, <function delete_rango at 0x0000020F388CA340>), ('SUB_RANGOS', '\x1b[32mIMPRIMIR x \x1b[33mNombre Rango', 1, '0.1.', 3, 'MenuPpal', 5, <function print_rango at 0x0000020F388C99E0>), ('SUB_RANGOS', '\x1b[32mVER\x1b[0m INFO Rangos Tablero', 1, '0.1.', 4, 'MenuPpal', 5, <function ver_info_rangos at 0x0000020F388CA3E0>), ('SUB_RANGOS', '\x1b[32mPULL TO\x1b[0m \x1b[33mRANGO', 1, '0.1.', 5, 'MenuPpal', 5, <function pull at 0x0000020F388CA480>), ('MenuPpal', 'MISCELANEA', 0, '0.', 6, '-', '-', None), ('SUB_MISC', '\x1b[33mPUSH \x1b[31mMASIVO', 1, '0.1.', 0, 'MenuPpal', 6, <function push_masivo at 0x0000020F388CA980>), ('SUB_MISC', 'Prueba \x1b[35mIMPRESION MASIVA', 1, '0.1.', 1, 'MenuPpal', 6, <function impresion_masiva at 0x0000020F388CAAC0>), ('SUB_MISC', 'Get \x1b[32m General Data \x1b[0m', 1, '0.1.', 2, 'MenuPpal', 6, <function get_datos_generales at 0x0000020F388CAA20>), ('SUB_MISC', 'Cambia \x1b[35mHEAD', 1, '0.1.', 3, 'MenuPpal', 6, <function cambia_cabecera at 0x0000020F388CAB60>), ('SUB_MISC', 'Cambia \x1b[35mPIE', 1, '0.1.', 4, 'MenuPpal', 6, <function cambia_pie at 0x0000020F388CAC00>), ('SUB_MISC', '\x1b[33mSet \x1b[35mColor\x1b[0m Marco', 1, '0.1.', 5, 'MenuPpal', 6, <function set_color_marco at 0x0000020F388CAD40>), ('SUB_MISC', 'Set  \x1b[35mTipo de Marco', 1, '0.1.', 6, 'MenuPpal', 6, <function set_estilo_marco at 0x0000020F388CACA0>), ('SUB_MISC', '\x1b[33mCambia \x1b[35mColor\x1b[0m MODE EXCEL', 1, '0.1.', 7, 'MenuPpal', 6, <function set_color_excel at 0x0000020F388CADE0>)]
         ► CALLED: ► self.mystyca()  en XindeX
         ■ EJEMPLO: 
-            dicc_xavier = self.xavier_get_dicc_respuesta(menu_dvd = menu_dvd , lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f )
+            dicc_xavier = self.xavier_get_dicc__respuesta(menu_dvd = menu_dvd , lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f )
         ■ SALIDA: 
                 1• {'pre': None, 'respuesta': 'a1', 'pos': None, 'xindex': 1} 
                 2• {'pre': None, 'respuesta': '?', 'pos': None, 'xindex': None}
@@ -958,8 +958,8 @@ class XindeX(MenuDvd):
             respuesta_user = input(f"{menu_dvd.entradilla_data_user}").strip()
 
             # ACCION DIRECTA
-            if respuesta_user in self.lst_resp_ACCION:
-                # ■■ SI HAY ALGUNA RESPUESTA DE ACCION DIRECTA NO HAY XINDEX, SOLO RESPUESTA.... para terminator_executor
+            if respuesta_user in self.RESP_ACCION_DIRECTA:
+                # ■■ SI HAY ALGUNA RESPUESTA DE ACCION DIRECTA NO HAY XINDEX, SOLO RESPUESTA.... para terminator_executor_
                 if respuesta_user == SALIR:
                     return None
                 else:
@@ -988,14 +988,14 @@ class XindeX(MenuDvd):
     def get_xindex(self, menu_dvd , dicc_respuesta:dict, lista_m_i_l_a_n_p_i_f:list):
         """ DEVUELVE EL INDICE DEL ITEM EN LA LISTA GENETICA O NONE  SI LA RESPUESTA ESTA EN EL XINDEX y COORDINA CON b_mode_all.
         
-        [dicc_respuesta]:(dict), diccionario dicc_xavier que se carga en self.xavier_get_dicc_respuesta()
+        [dicc_respuesta]:(dict), diccionario dicc_xavier que se carga en self.xavier_get_dicc__respuesta()
             Intro Opt (XindeX)..... a1    ► {'pre': None, 'respuesta': 'a1', 'pos': None, 'xindex': None}
         [lista_m_i_l_a_n_p_i_f](list): Lista de configuración genética.
             ► [('MenuPpal', 'F_RANK_Y', 0, '0.', 0, '-', '-', <function info_TABLERO at 0x0000020F388C9440>), ('SUB_CREAR', '\x1b[92mCOMO\x1b[39m \x1b[31mEMPEZAR\x1b[39m / \x1b[92mHOW\x1b[39m \x1b[31mBEGIN', 1, '0.1.', 0, 'MenuPpal', 0, <function info_begin at 0x0000020F388C93A0>), ('SUB_CREAR', '\x1b[33mCREAR FRANKY\x1b[0m... Crea un Tablero ', 1, '0.1.', 1, 'MenuPpal', 0, <function crear_tablero at 0x0000020F388C94E0>), ('SUB_CREAR', '\x1b[33mINICIALIZA\x1b[0m Tablero (default)', 1, '0.1.', 2, 'MenuPpal', 0, <function iniciar_tablero at 0x0000020F388C9580>), ('SUB_CREAR', '\x1b[92mMODE \x1b[31m(EXCEL)', 1, '0.1.', 3, 'MenuPpal', 0, <function mode_excel at 0x0000020F388C9620>), ('MenuPpal', 'IMPRIMIR', 0, '0.', 1, '-', '-', <function info_IMPRIMIR at 0x0000020F388C96C0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mMax', 1, '0.1.', 0, 'MenuPpal', 1, <function print_max at 0x0000020F388C9760>), ('SUB_IMPR', 'IMPRIMIR Modo Literal /  \x1b[33mMosaico\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 1, <function print_literal at 0x0000020F388C9800>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mFixed', 1, '0.1.', 2, 'MenuPpal', 1, <function print_fixed at 0x0000020F388C98A0>), ('SUB_IMPR', 'IMPRIMIR Modo  \x1b[33mLista', 1, '0.1.', 3, 'MenuPpal', 1, <function print_personal at 0x0000020F388C9940>), ('SUB_IMPR', 'IMPRIMIR \x1b[33mALL IN ONE\x1b[0m (FROM-TO)', 1, '0.1.', 4, 'MenuPpal', 1, <function print_from_to at 0x0000020F388C9A80>), ('MenuPpal', 'GET', 0, '0.', 2, '-', '-', <function info_GETTING at 0x0000020F388C9B20>), ('SUB_GET', 'GETTING \x1b[36mFila', 1, '0.1.', 0, 'MenuPpal', 2, <function get_fila at 0x0000020F388C9D00>), ('SUB_GET', 'GETTING \x1b[36mColumna', 1, '0.1.', 1, 'MenuPpal', 2, <function get_columna at 0x0000020F388C9DA0>), ('SUB_GET', 'GETTING Valor By \x1b[36mFila-Columna\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 2, <function get_fila_columna at 0x0000020F388C9C60>), ('SUB_GET', 'GETTING Valor By \x1b[36mCelda\x1b[0m(A:0)', 1, '0.1.', 3, 'MenuPpal', 2, <function get_celda at 0x0000020F388C9BC0>), ('SUB_GET', 'GETTING \x1b[36mMatriz Values', 1, '0.1.', 4, 'MenuPpal', 2, <function get_matriz_values at 0x0000020F388C9E40>), ('MenuPpal', 'PUSH', 0, '0.', 3, '-', '-', <function info_push at 0x0000020F388CA520>), ('SUB_PUSH', 'PUSH \x1b[32mMATRIZ', 1, '0.1.', 0, 'MenuPpal', 3, <function matriz_to_tablero at 0x0000020F388CA5C0>), ('SUB_PUSH', 'PUSH \x1b[32mLISTA', 1, '0.1.', 1, 'MenuPpal', 3, <function push_lista at 0x0000020F388CA8E0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mFila', 1, '0.1.', 2, 'MenuPpal', 3, <function push_valor_over_fila at 0x0000020F388CA7A0>), ('SUB_PUSH', 'PUSH OVER \x1b[32mColumn', 1, '0.1.', 3, 'MenuPpal', 3, <function push_valor_over_columna at 0x0000020F388CA840>), ('SUB_PUSH', 'PUSH Valor \x1b[32mBy Celda (C:3)', 1, '0.1.', 4, 'MenuPpal', 3, <function push_celda at 0x0000020F388CA700>), ('SUB_PUSH', 'PUSH valor \x1b[32mBy fila / columna', 1, '0.1.', 5, 'MenuPpal', 3, <function push_fila_columna at 0x0000020F388CA660>), ('MenuPpal', 'DEL', 0, '0.', 4, '-', '-', <function info_DEL at 0x0000020F388C9EE0>), ('SUB_DEL', 'DEL \x1b[36mFila\x1b[0m Over F_RANK_Y', 1, '0.1.', 0, 'MenuPpal', 4, <function del_fila at 0x0000020F388CA020>), ('SUB_DEL', 'Del \x1b[36mColumn\x1b[0m', 1, '0.1.', 1, 'MenuPpal', 4, <function del_columna at 0x0000020F388CA0C0>), ('SUB_DEL', 'Del \x1b[36mCelda\x1b[0m', 1, '0.1.', 2, 'MenuPpal', 4, <function del_celda at 0x0000020F388C9F80>), ('MenuPpal', 'RANGOS', 0, '0.', 5, '-', '-', <function info_RANGO at 0x0000020F388CA160>), ('SUB_RANGOS', '\x1b[32mCREAR\x1b[0m Rango', 1, '0.1.', 0, 'MenuPpal', 5, <function crear_rango at 0x0000020F388CA200>), ('SUB_RANGOS', '\x1b[32mBUSCAR\x1b[0m Rango', 1, '0.1.', 1, 'MenuPpal', 5, <function buscar_rango at 0x0000020F388CA2A0>), ('SUB_RANGOS', '\x1b[32mELIMINAR\x1b[0m Rango', 1, '0.1.', 2, 'MenuPpal', 5, <function delete_rango at 0x0000020F388CA340>), ('SUB_RANGOS', '\x1b[32mIMPRIMIR x \x1b[33mNombre Rango', 1, '0.1.', 3, 'MenuPpal', 5, <function print_rango at 0x0000020F388C99E0>), ('SUB_RANGOS', '\x1b[32mVER\x1b[0m INFO Rangos Tablero', 1, '0.1.', 4, 'MenuPpal', 5, <function ver_info_rangos at 0x0000020F388CA3E0>), ('SUB_RANGOS', '\x1b[32mPULL TO\x1b[0m \x1b[33mRANGO', 1, '0.1.', 5, 'MenuPpal', 5, <function pull at 0x0000020F388CA480>), ('MenuPpal', 'MISCELANEA', 0, '0.', 6, '-', '-', None), ('SUB_MISC', '\x1b[33mPUSH \x1b[31mMASIVO', 1, '0.1.', 0, 'MenuPpal', 6, <function push_masivo at 0x0000020F388CA980>), ('SUB_MISC', 'Prueba \x1b[35mIMPRESION MASIVA', 1, '0.1.', 1, 'MenuPpal', 6, <function impresion_masiva at 0x0000020F388CAAC0>), ('SUB_MISC', 'Get \x1b[32m General Data \x1b[0m', 1, '0.1.', 2, 'MenuPpal', 6, <function get_datos_generales at 0x0000020F388CAA20>), ('SUB_MISC', 'Cambia \x1b[35mHEAD', 1, '0.1.', 3, 'MenuPpal', 6, <function cambia_cabecera at 0x0000020F388CAB60>), ('SUB_MISC', 'Cambia \x1b[35mPIE', 1, '0.1.', 4, 'MenuPpal', 6, <function cambia_pie at 0x0000020F388CAC00>), ('SUB_MISC', '\x1b[33mSet \x1b[35mColor\x1b[0m Marco', 1, '0.1.', 5, 'MenuPpal', 6, <function set_color_marco at 0x0000020F388CAD40>), ('SUB_MISC', 'Set  \x1b[35mTipo de Marco', 1, '0.1.', 6, 'MenuPpal', 6, <function set_estilo_marco at 0x0000020F388CACA0>), ('SUB_MISC', '\x1b[33mCambia \x1b[35mColor\x1b[0m MODE EXCEL', 1, '0.1.', 7, 'MenuPpal', 6, <function set_color_excel at 0x0000020F388CADE0>)]
         [menu_dvd](MenuDvd): Instancia de un objeto MenuDvd.
             <classIndeX.classXindeX.MenuDvd object at 0x0000020E07AD23C0>
         ► CALLED: 
-            ►self.xavier_get_dicc_respuesta() ►self.mystyca()
+            ►self.xavier_get_dicc__respuesta() ►self.mystyca()
         ■ EJEMPLO: 
             xindex = self.get_xindex(menu_dvd = menu_dvd , dicc_respuesta = dicc_xavier, lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f)
         ■ SALIDA: 
@@ -1205,21 +1205,21 @@ class XindeX(MenuDvd):
     # ████████████ EJECUTADOR  ██████████████
     def terminator_executor(self, dicc_respuesta:dict, titulo_menu:str):
         """ ■ EJECUTA LA RESPUESTA INTRODUCIDA POR EL USUARIO.
-        [dicc_respuesta]:(dict): diccionario respuesta que se evalua en self.xavier_get_dicc_respuesta()
+        [dicc_respuesta]:(dict): diccionario respuesta que se evalua en self.xavier_get_dicc__respuesta()
             Intro Opt (XindeX)..... a1    ► {'pre': None, 'respuesta': 'a1', 'pos': None, 'xindex': None}
         [titulo_menu](str): Titulo del menú sobre el que se quiere ejecutar la respuesta.
             titulo_menu = 'SUB_IMPR'
         ► CALLED: self.mystyca() en Class XindeX. Si trabajas con la clase Over-Main esta función no se ejecuta.
         ■ EJEMPLO: 
-            self.terminator_executor(dicc_respuesta = dicc_xavier, titulo_menu = self.menu_dvd.titulo)
+            self.terminator__executor(dicc_respuesta = dicc_xavier, titulo_menu = self.menu_dvd.titulo)
         ■ SALIDA: 
             Ejecuta la funcion asignada al indice o Sale por <<<
         """        
         # VALIDACION
         if not isinstance(dicc_respuesta, dict): return None
-        mono_from = dicc_respuesta.get('pre', None)
+        _iniciador = dicc_respuesta.get('pre', None)
         respuesta = dicc_respuesta.get('respuesta', None)
-        mono_to = dicc_respuesta.get('pos', None)
+        _terminador = dicc_respuesta.get('pos', None)
         xindex = dicc_respuesta.get('xindex', None)
 
         COLUMNA_MENU = 0       
@@ -1234,7 +1234,7 @@ class XindeX(MenuDvd):
         lista_m_i_l_a_n_p_i_f = self.lst__men_itm_lev_ape_name_padr_ipadr_func
         
         # ■■■ ACCION DIRECCTA ? , < , <<< ■■■ 
-        if mono_from is None and mono_to is None and respuesta is not None and xindex is not None:      
+        if _iniciador is None and _terminador is None and respuesta is not None and xindex is not None:      
             
             # ■ INFO (FRANKY_DEF)
             if respuesta == '?':                                            
@@ -1251,7 +1251,7 @@ class XindeX(MenuDvd):
                 return False
         
         # ██ INTRODUCE INDICE 
-        elif mono_from is None and mono_to is None and respuesta is not None and xindex is not None:        # ■■■ XINDEX ■■■             
+        elif _iniciador is None and _terminador is None and respuesta is not None and xindex is not None:        # ■■■ XINDEX ■■■             
 
             # EN MODO DIRECTORIO NO PUEDO EJECUTAR SOBRE UN PADRE
             if self.b_mode_all == False and lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_ITEM] in lst_padres:
@@ -1424,7 +1424,7 @@ class XindeX(MenuDvd):
                                     lst_opts_ok = ['a', 'a.1', 'a.2', 'a.3', 'a.4', 'b', 'b.1', 'b.2', 'b.3', 'b.4', 'b.5', 'c', 'c.1', 'c.2', 'c.3', 'c.4', 'c.5', 'd', 'd.1', 'd.2', 'd.3', 'd.4', 'd.5', 'd.6', 'e', 'e.1', 'e.2', 'e.3', 'f', 'f.1', 'f.2', 'f.3', 'f.4', 'f.5', 'f.6', 'g', 'g.1', 'g.2', 'g.3', 'g.4', 'g.5', 'g.6', 'g.7', 'g.8'] )
         ■ SALIDA: 
             CREA E IMPRIME EL TABLERO FRANKY    ► self.F_RANK_Y.imprimir(sp_between = 2, ancho_columna = None )   # ■ Imprimir max-Columnas
-            CREA EL TABLERO FRANKY-DEF          ► self.F_RANK_Y_DEF = F_r_a_n_k_y( dimension = f'{filas}X{columnas}', head_datapush = self.head_datapush , pie_datapush=self.pie_datapush , pad_x = self.pad_x )
+            CREA EL TABLERO FRANKY-DEF          ► self.F_RANK_Y_DEF = F_r_a_n_k_y__( dimension = f'{filas}X{columnas}', head_datapush = self.head_datapush , pie_datapush=self.pie_datapush , pad_x = self.pad_x )
             None, si hay algún error en la carga de la matriz de impresión.
 
         """ 
@@ -1538,18 +1538,22 @@ class Over_Main(XindeX):
         # ■■ DICCIONARIO PARA EL CONTROL DE HILOS CON LAS EJECUCIONES =>b2 (INDEPENDIENTE)(DEMONIO) Y <<b2>> (DEPENDIETE)
         self.dicc_procesos = {}
 
-        # ■ DIRECTAS ... SOBRE ESCRITO DE INDEX PARA INCLUIR '►' (Alt+16, listar procesos) y '■' (Alt+254, parar procesos)
-        self.lst_resp_ACCION = ['<' , '?' , '??' , 'help', '<<<', '#' , '@']
-        # ■ PREFIJO + RESPUESTA ... Se evalua cada uno: 
-        self.lst_resp_BEGINERS = ['**', '=>', '=' ]
-        # ■ ENVUELTAS... Se evalua la lista como una unidad, (pre y pos)(envoltorio) : 
-        self.lst_resp_PACK_1 = ['[',']']        
-        # ■ PROCESOS... Se evalua la lista como: (p>)(respuesta) o (p>>) : 
-        # self.lst_resp_PROCESOS = ['P>>', 'p>>', 'P■', 'p■' ]
-        self.lst_resp_PROCESOS = ['►', '■' , '►►', '■ ']
+        self.RESP_ACCION_DIRECTA = ['<' , '?' , '??' , 'help', '<<<', '#' , '@', '$']
+        """ ■ DIRECTAS ... SOBRE ESCRITO DE INDEX PARA INCLUIR '►' (Alt+16, listar procesos) y '■' (Alt+254, parar procesos) """
+        
+        self.RESP_BEGINNERS = ['**', '=>', '=' ]
+        """ ■ PREFIJO + RESPUESTA ... Se evalua cada uno:  """
+        
+        self.RESP_BACKGROUND = ['[',']']        
+        """ ■ ENVUELTAS... Se evalua la lista como una unidad, (pre y pos)(envoltorio) :  """
+        
+        self.RESP_LIKE_STR = ['"','"']        
+        """ ■ ENVUELTAS... Se evalua la lista como una unidad, (pre y pos)(envoltorio):  """
 
-    # ███████████████████████████████████████████████████████████████████
-    # █████████████████████ SOBRE-ESCRIBE XAVIER   ██████████████████████
+        self.RESP_PROCESOS = ['►', '■' , '■ ', 'list', 'stop', 'stop ', 'kill', 'listar']
+        """ ■■ RESPUESTAS PARA CONTROL DE PROCESOS: '►' (Alt+16, listar procesos) y '■' (Alt+254, parar procesos) """
+
+    # ██ SOBRE-ESCRIBE XAVIER de XindeX 
     def xavier_get_dicc_respuesta(self, menu_dvd, lista_m_i_l_a_n_p_i_f:list=None):
         """ ► SOBRE-ESCRIBE el método en MenuDvd.
         ■■ Pide Un dato al Usuario y valida (self.get_xindex) que da una respuesta_user valida('b2' pejemp) con respecto a la geneticaX. 
@@ -1561,7 +1565,7 @@ class Over_Main(XindeX):
         
         ► CALLED: ►self.mystyca()
         ■ EJEMPLO: 
-            dicc_xavier = self.xavier_get_dicc_respuesta( menu_dvd = menu_dvd , lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f)
+            dicc_xavier = self.xavier_get_dicc__respuesta( menu_dvd = menu_dvd , lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f)
         ■ SALIDA:   1• {'pre': None, 'respuesta': 'a1', 'pos': None, 'xindex': 1} 
                     2• {'pre': '=>', 'respuesta': 'a1', 'pos': None, 'xindex': 1}
                     3• {'pre': '[', 'respuesta': 'a1', 'pos': ']', 'xindex': 1}
@@ -1584,14 +1588,15 @@ class Over_Main(XindeX):
             
             # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
             # ██ PIDE RESPUESTA AL USER ██
-            respuesta_user = input(f"{menu_dvd.entradilla_data_user}").strip()
+            # respuesta_user = input(f"\n• ({menu_dvd.titulo}) {menu_dvd.entradilla_data_user}.... ").strip()
+            respuesta_user = input(f"■ ({menu_dvd.titulo}) INTRO___ ").strip()
 
             # ██ ACCION VACIO
             if respuesta_user == '':
                 continue
 
-            # ██ SI HAY ALGUNA RESPUESTA DE ACCION DIRECTA NO HAY XINDEX, SOLO RESPUESTA.... para terminator_executor
-            elif respuesta_user in self.lst_resp_ACCION:
+            # ██ SI HAY ALGUNA RESPUESTA DE ACCION DIRECTA NO HAY XINDEX, SOLO RESPUESTA.... para terminator_executor_
+            elif respuesta_user in self.RESP_ACCION_DIRECTA:
                 if respuesta_user == SALIR:
                     return None
                 else:
@@ -1603,15 +1608,15 @@ class Over_Main(XindeX):
                     return dicc_xavier      # RETORNO LA ACCION ? , < , <<< PARA QUE LA EVALUE TERMINATOR.      
 
             # ██ BUSCA SI HAY ALGUNA RESPUESTA DEL USUARIO QUE EMPIECE POR UN BEGINER 
-            elif any(respuesta_user.startswith(monomio) for monomio in self.lst_resp_BEGINERS):
+            elif any(respuesta_user.startswith(monomio) for monomio in self.RESP_BEGINNERS):
                 
-                # ENCUENTA EL INDICE QUE CUMPLE LA CONDICION EN EL ITERADOR self.lst_resp_BEGINERS('**', '=>')
-                indice = next((i for i, monomio in enumerate(self.lst_resp_BEGINERS) if respuesta_user.startswith(monomio)), None)
+                # ENCUENTA EL INDICE QUE CUMPLE LA CONDICION EN EL ITERADOR self.RESP_BEGINNERS('**', '=>')
+                indice = next((i for i, monomio in enumerate(self.RESP_BEGINNERS) if respuesta_user.startswith(monomio)), None)
                 if indice is None: 
                     continue
                 
                 # CACHA EL MONOMIO 
-                monomio = self.lst_resp_BEGINERS[indice]                                
+                monomio = self.RESP_BEGINNERS[indice]                                
                 dicc_xavier['pre']       = monomio
                 
                 # A PARTIR DEL MONOMIO PUEDO CACHAR LA RESPUESTA. 
@@ -1626,14 +1631,14 @@ class Over_Main(XindeX):
 
                 continue    # ■ SI NO ENCUENTRA UN INDICE VALIDO VUELVO A PREGUNTAR... USUARIO CONFUSO ;)
             
-            elif any(respuesta_user.startswith(monomio) for monomio in self.lst_resp_PROCESOS):
-                # ENCUENTA EL INDICE QUE CUMPLE LA CONDICION EN EL ITERADOR self.lst_resp_PROCESOS('P>>', 'P>', 'p>')
-                indice = next((i for i, monomio in enumerate(self.lst_resp_PROCESOS) if respuesta_user.startswith(monomio)), None)
+            elif any(respuesta_user.startswith(monomio) for monomio in self.RESP_PROCESOS):
+                # ENCUENTA EL INDICE QUE CUMPLE LA CONDICION EN EL ITERADOR self.RESP_PROCESOS('P>>', 'P>', 'p>')
+                indice = next((i for i, monomio in enumerate(self.RESP_PROCESOS) if respuesta_user.startswith(monomio)), None)
                 if indice is None: 
                     continue
                 
                 # CACHA EL MONOMIO 
-                monomio = self.lst_resp_PROCESOS[indice]                                
+                monomio = self.RESP_PROCESOS[indice]                                
                 dicc_xavier['pre'] = monomio                
                 # A PARTIR DEL MONOMIO PUEDO CACHAR LA RESPUESTA. 
                 dicc_xavier['respuesta'] = respuesta_user[len(monomio):]
@@ -1644,9 +1649,9 @@ class Over_Main(XindeX):
                 return dicc_xavier
 
             # ██ LOS PACKS HAY QUE TRATARLOS INDIVIDUALMENTE, PERO CON ESTE PATRON SE PUEDE HACER COPY-PASTE
-            elif respuesta_user.startswith(self.lst_resp_PACK_1[MONO_FROM]) and respuesta_user.endswith(self.lst_resp_PACK_1[MONO_TO]):       
-                dicc_xavier['pre']       = respuesta_user[ :len(self.lst_resp_PACK_1[MONO_FROM]) ]                                    # Desde el inicio(0) hasta 1(2-1) <<
-                dicc_xavier['respuesta'] = respuesta_user[ len(dicc_xavier['pre']) : -len(self.lst_resp_PACK_1[MONO_TO]) ]
+            elif respuesta_user.startswith(self.RESP_BACKGROUND[MONO_FROM]) and respuesta_user.endswith(self.RESP_BACKGROUND[MONO_TO]):       
+                dicc_xavier['pre']       = respuesta_user[ :len(self.RESP_BACKGROUND[MONO_FROM]) ]                                    # Desde el inicio(0) hasta 1(2-1) <<
+                dicc_xavier['respuesta'] = respuesta_user[ len(dicc_xavier['pre']) : -len(self.RESP_BACKGROUND[MONO_TO]) ]
                 dicc_xavier['pos']       = respuesta_user[ len(dicc_xavier['pre'])+len(dicc_xavier['respuesta']): ]      # Desde 2 hasta final >>
                 
                 # ■ OBTIENE EL INDICE EN self.lst__men_itm_lev_ape_name_padr_ipadr_func
@@ -1655,6 +1660,18 @@ class Over_Main(XindeX):
                 if  xindex is not None:
                     dicc_xavier['xindex'] = xindex
                     return dicc_xavier
+                
+                continue
+            
+            elif respuesta_user.startswith(self.RESP_LIKE_STR[MONO_FROM]) and respuesta_user.endswith(self.RESP_LIKE_STR[MONO_TO]):       
+                dicc_xavier['pre']       = respuesta_user[ :len(self.RESP_LIKE_STR[MONO_FROM]) ]                                    # Desde el inicio(0) hasta 1(2-1) <<
+                dicc_xavier['respuesta'] = respuesta_user[ len(dicc_xavier['pre']) : -len(self.RESP_LIKE_STR[MONO_TO]) ]
+                dicc_xavier['pos']       = respuesta_user[ len(dicc_xavier['pre'])+len(dicc_xavier['respuesta']): ]      # Desde 2 hasta final >>
+                
+                # ■ En esta accion(buscar entre-comillas) No hay que buscar indices para ejecutar.
+                # xindex = self.get_xindex(menu_dvd = menu_dvd , dicc_respuesta = dicc_xavier, lista_m_i_l_a_n_p_i_f = lista_m_i_l_a_n_p_i_f)
+                # dicc_xavier['xindex'] = xindex
+                return dicc_xavier
                 
                 continue
             
@@ -1692,7 +1709,7 @@ class Over_Main(XindeX):
     def descomponer_cadena_guion(self, cadena):
         """  Separa una cadena por un guion('-'). No permite tener mas de un guión. con lo cual se optienen 3 partes:   a - b
         Lo que devuelve esta funcion es una tupla (a, b)
-        ► CALLED: xavier_get_dicc_respuesta() de la Clase Over-Main
+        ► CALLED: xavier_get_dicc__respuesta() de la Clase Over-Main
         ■ EJEMPLO: 
             tupla = self.descomponer_cadena_guion(cadena='5-8')
         ■ SALIDA: 
@@ -1713,20 +1730,19 @@ class Over_Main(XindeX):
             print(f'Error: {e}')
             return None
 
-    # ███████████████████████████████████████████████████████████████████
-    # ████████████ SOBRE-ESCRIBE  TERMINATOR - (EJECUTADOR) █████████████
+    # ████████████ SOBRE-ESCRIBE  TERMINATOR - (EJECUTADOR) 
     def terminator_executor(self, dicc_respuesta:dict, titulo_menu:str):
         """ 
         ■ EJECUTA LA FUNCION ASOCIADA AL XINDEX DEL ITEM RESPUESTA 
-        ■ ■ SOBRE-ESCRIBE terminator_executor DE XindeX para ampliar las opciones de ejecutar demonio, background, modo like, modo sub-menú, modo from-to, lista de procesos y matar proceso.
+        ■ ■ SOBRE-ESCRIBE terminator_executor_ DE XindeX para ampliar las opciones de ejecutar demonio, background, modo like, modo sub-menú, modo from-to, lista de procesos y matar proceso.
         
-        [dicc_respuesta]:(dict): diccionario respuesta que se evalua en self.xavier_get_dicc_respuesta()
+        [dicc_respuesta]:(dict): diccionario respuesta que se evalua en self.xavier_get_dicc__respuesta()
             Intro Opt (XindeX)..... a1                          ► {'pre': None, 'respuesta': 'a1', 'pos': None, 'xindex': None}
         [titulo_menu]:(str) : El titulo del menu. (obligatorio) ► 'MenuPpal' 
             
         ► CALLED: ►self.mystyca()
         ■ EJEMPLO: 
-            self.terminator_executor(dicc_respuesta = dicc_xavier, titulo_menu = self.menu_dvd.titulo)
+            self.terminator__executor(dicc_respuesta = dicc_xavier, titulo_menu = self.menu_dvd.titulo)
         ■ SALIDA: 
             None, Ejecuta la Función y vuelve a preguntar hasta salir por '<<<'
         """        
@@ -1740,9 +1756,9 @@ class Over_Main(XindeX):
         
         # VALIDACION
         if not isinstance(dicc_respuesta, dict): return None
-        mono_from = dicc_respuesta.get('pre', None)
+        _iniciador = dicc_respuesta.get('pre', None)
         respuesta = dicc_respuesta.get('respuesta', None)
-        mono_to = dicc_respuesta.get('pos', None)
+        _terminador = dicc_respuesta.get('pos', None)
         xindex = dicc_respuesta.get('xindex', None)
 
         lista_m_i_l_a_n_p_i_f = self.lst__men_itm_lev_ape_name_padr_ipadr_func
@@ -1759,10 +1775,10 @@ class Over_Main(XindeX):
         # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
         # █ █ █ █ █ █ ACCION DIRECCTA ? , < , <<< 
-        if (mono_from   is None     and  
-            mono_to     is None     and                  
+        if (_iniciador   is None     and  
+            _terminador  is None     and                  
             respuesta   is not None and 
-            respuesta   in self.lst_resp_ACCION):      
+            respuesta   in self.RESP_ACCION_DIRECTA):      
 
             if respuesta == '?':                                            # ■ Muestra el menu de funciones y definiciones.
                 os.system('cls')              
@@ -1790,12 +1806,22 @@ class Over_Main(XindeX):
                 self.F_RANK_Y_DEF.style(estilo=sdata['S'])
                 print(f'::: Estilo Marco cambiado a {sdata["S"]} ::: ')
 
+            elif respuesta == '$':
+                sdata = Sdata.get_data( key_dict='S', tipo=str, msg_entrada='Introduce color(■black ■red ■green ■yellow ■blue ■magenta ■cyan ■white ■lblack ■lred ■lgreen ■lyellow ■lblue ■lmagenta ■lcyan ■lwhite ■grey ■gray ■lgrey ■dgrey ■orange ■purple ■default ■reset ■none ■pink ■lime ■aqua)', permite_nulo=False)
+                # self.F_RANK_Y.style(color=sdata['S'])
+                # self.F_RANK_Y_DEF.style(color=sdata['S'])
+
+                self.F_RANK_Y.color_marco(color=sdata['S'])    
+                self.F_RANK_Y_DEF.color_marco(color=sdata['S'])    
+                self.F_RANK_Y.imprimir()
+                print(f'::: Color Marco cambiado a {sdata["S"]} ::: ')
+
             else:                                                           # NOT FOUND
                 return False
 
-        # █ █ █ █ █ █ RESPUESTA DE XINDEX 
-        elif (mono_from   is None     and 
-              mono_to     is None     and               
+        # █ █ █ █ █ █ RESPUESTA Directa 
+        elif (_iniciador   is None     and 
+              _terminador  is None     and               
               respuesta   is not None and   
               xindex      is not None):        
             
@@ -1808,14 +1834,13 @@ class Over_Main(XindeX):
             lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_FUNCION]() if lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_FUNCION] else None
         
         # █ █ █ █ █ █ BEGINNER'S 
-        # if (mono_from   is not None and 
-        elif (mono_from   is not None and 
-              mono_to     is None     and               
+        elif (_iniciador   is not None and 
+              _terminador     is None     and               
               xindex      is not None and 
-              mono_from in self.lst_resp_BEGINERS):         
+              _iniciador in self.RESP_BEGINNERS):         
             
             # ■ ■ ■ ■ ■ ■ ■  SUB-MENU INTERNO RECURSIVO
-            if mono_from == '**':                          
+            if _iniciador == '**':                          
                 # ■ SOLO PARA PADRES  
                 if self.b_mode_all == False and lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_ITEM] in lst_hijos:
                     return
@@ -1835,7 +1860,7 @@ class Over_Main(XindeX):
                 self.begin_asterisco(titulo_menu = titulo_menu)
             
             # ■ ■ ■ ■ ■ ■ ■ INDEPENDIENTE - LANZA UN PROCESO INDEPENDIENTE (TKINTER pejem.) ■■■
-            elif mono_from == '=>':                         
+            elif _iniciador == '=>':                         
                 # ■■■■ SOLO PARA HIJOS ■■■■
                 if self.b_mode_all == False and lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_ITEM] in lst_padres:
                     return
@@ -1843,9 +1868,9 @@ class Over_Main(XindeX):
                 funcion = lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_FUNCION]
                 if funcion is None: return
                 self.lanzar_proceso(proceso = funcion,  demonio=False)
-            
-            # ■ ■ ■ ■ ■ ■  LIKE  
-            elif mono_from == '=':  
+                # os.system('cls')
+            # ■ ■ ■ ■ ■ ■  LIKE =a1 
+            elif _iniciador == '=':  
 
                 if not self.matriz_impresion_xindex: return None      
                 # ■■ LISTA DE STRING PARA IMPRIMIR 
@@ -1863,37 +1888,37 @@ class Over_Main(XindeX):
                 self.F_RANK_Y_DEF.imprimir(sp_between = 2, ancho_columna = None , fila_from=desde, fila_to=hasta)                       
             
             # ■ ■ ■ ■ ■ ■ ESTYLE @moderno
-            elif mono_from == '@':  
-
+            elif _iniciador == '@':  
                 pass
 
             # ■■■ NOT FOUND ■■■ 
             else:                                        
-                print(f'{mono_from}- NOT FOUND :(')                     
+                print(f'{_iniciador} - NOT FOUND ❌')                     
 
         # █ █ █ █ █ █ FROM - TO 
-        elif (  mono_from   is not None and
-                mono_to     is not None and               
+        elif (  _iniciador   is not None and
+                _terminador     is not None and               
                 respuesta   == Over_Main.FROM_TO and 
                 xindex      is None):
             try:
-                mono_from = abs(int(mono_from))
-                mono_to = abs(int(mono_to))
-                if mono_from > mono_to:
-                    mono_from, mono_to = mono_to, mono_from
-                self.F_RANK_Y_DEF.imprimir(sp_between = 2, ancho_columna = None , fila_from=int(mono_from), fila_to=mono_to) 
+                _iniciador = abs(int(_iniciador))
+                _terminador = abs(int(_terminador))
+                if _iniciador > _terminador:
+                    _iniciador, _terminador = _terminador, _iniciador
+
+                self.F_RANK_Y_DEF.imprimir(sp_between = 2, ancho_columna = None , fila_from=int(_iniciador), fila_to=_terminador) 
             except Exception as e:
-                print(f'ERR: {e}') 
+                print(f'❌ ERR: {e}') 
                 return None
         
-        # █ █ █ █ █ █ PACK's 
-        elif  ( mono_from   is not None and 
-                mono_to     is not None and             
+        # █ █ █ █ █ █ PACK's TIPO [a1] 
+        elif  ( _iniciador   is not None and 
+                _terminador     is not None and             
                 xindex      is not None and 
                 respuesta   is not None):             
             
             # ■■■ DEPENDIENTE - PACK 1 - LANZA OVER-MAIN ■■■ SERVIDOR pjem.
-            if mono_from == '[' and mono_to == ']':       
+            if _iniciador == '[' and _terminador == ']':       
                 
                 # SOLO PARA HIJOS: MODO DIRECTORIO y PADRE
                 if self.b_mode_all == False and lista_m_i_l_a_n_p_i_f[xindex][COLUMNA_ITEM] in lst_padres:
@@ -1903,28 +1928,39 @@ class Over_Main(XindeX):
                 if funcion is None: return
                 print('EXEC DEMONIO - DEPENDIENTE')                
                 self.lanzar_proceso( proceso = funcion,  demonio=True)
-            
+                # os.system('cls')
             else:                                           # PACK NOT FOUND
-                print('PACK NOT FOUND :(')                
+                print('■ PACK NOT FOUND ❌')                
+
+        # █ █ █ █ █ █ PACK's TIPO "pimienta"  # ■■■ LIKE STRING
+        elif  ( _iniciador   is not None and 
+                _terminador     is not None and             
+                xindex      is None and 
+                respuesta   is not None):                         
+            
+            if _iniciador == '"' and _terminador == '"':       
+                self.api_buscar( respuesta )
         
         # █ █ █ █ █ █ PROCESO'S 
-        # if (mono_from   is not None and 
-        elif (mono_from   is not None and 
-              mono_to     is None     and               
+        elif (_iniciador   is not None and 
+              _terminador     is None     and               
               xindex      is None     and 
               respuesta   is not None and
-              mono_from in self.lst_resp_PROCESOS):         
+              _iniciador in self.RESP_PROCESOS):         
             
             # ■■■ SUB-MENU RECURSIVO ■■■
-            if str(mono_from).upper() == '►' or str(mono_from).upper() == '►►':
+            if str(_iniciador).upper() == '►' or str(_iniciador).lower() == 'list':
                 self.listar_procesos()
                 
-            elif str(mono_from).upper() == '■' or str(mono_from).upper() == '■ ':
+            elif (  str(_iniciador).upper() == '■' or 
+                    str(_iniciador).lower() == 'kill' or 
+                    str(_iniciador).lower() == 'stop'
+                 ):
                 print(f'... Intentando Parar el Proceso {respuesta}')                
                 self.detener_proceso(proceso = str(respuesta).strip())
 
         else:                                               # ■■■ NOT FOUND ■■■           
-            print('NOT FOUND :(')
+            print('■ NOT FOUND ❌')
             return False
 
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
@@ -1939,7 +1975,7 @@ class Over_Main(XindeX):
         [args](dict),   los argumentos que se le pasan al objeto callable. Son necesareos para llamar a multiprocessing.Process(target=proceso, daemon=demonio, args=args, kwargs=kwargs)
         [kwargs],       los argumentos que se le pasan al objeto callable. Son necesareos para llamar a multiprocessing.Process(target=proceso, daemon=demonio, args=args, kwargs=kwargs)
         
-        ► CALLED: ► terminator_executor() de la clase Over_Main
+        ► CALLED: ► terminator_executor_() de la clase Over_Main
         ■ EJEMPLO: 
             self.lanzar_proceso( proceso = funcion,  demonio = False)   ► Lanza un proceso en BackGround. Independiente del proceso que lo lanza.
             self.lanzar_proceso( proceso = funcion,  demonio = True)    ► Lanza un proceso dependiente del proceso que lo lanza.
@@ -1958,7 +1994,7 @@ class Over_Main(XindeX):
             p = multiprocessing.Process(target=proceso, daemon=demonio, args=args, kwargs=kwargs)
             p.start()
             self.dicc_procesos[nombre_proceso] = p
-            print(f"\nProceso '{nombre_proceso}' iniciado con PID... {p.pid}.")
+            print(f"\n✅ Proceso '{nombre_proceso}' iniciado con PID... {p.pid}.")
         except Exception as e:
             print(e)
             return None
@@ -1966,7 +2002,7 @@ class Over_Main(XindeX):
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     def listar_procesos(self):
         """ MUESTRA LOS PROCESOS QUE ESTAN EN EJECUCION LANZADOS CON:  =>a1  ó  [a1]
-        ► CALLED: self.terminator_executor()
+        ► CALLED: self.terminator__executor()
         ■ EJEMPLO: 
             print(self.listar_procesos())
         ■ SALIDA: 
@@ -1984,7 +2020,7 @@ class Over_Main(XindeX):
     def detener_proceso(self, proceso:str):
         """ DETIENE UN PROCESO Y LO ELIMINA DEL DICCIONARIO
         [proceso](str)(int), el nombre o el pid del proceso que se quiere detener.
-        ► CALLED: self.terminator_executor()
+        ► CALLED: self.terminator__executor()
         ■ EJEMPLO: 
             self.detener_proceso(proceso = 8860)
         ■ SALIDA: 
@@ -2023,10 +2059,7 @@ class Over_Main(XindeX):
             self.detener_proceso(proceso = proceso.pid)
             # print(f"Proceso  {Fore.BLUE}{nombre_proceso}{Fore.RESET} - {Fore.CYAN}{proceso.pid}{Fore.RESET} 🔴 Detenido.")
 
-    # ██████████████████████████████████████████████████████████████████████
-    # ███████████████████████ SUB-MENUS - BEGINNERS ████████████████████████ 
-    # ██████████████████████████████████████████████████████████████████████
-
+    # ███████████████████████ SUB-MENUS - BEGINNERS 
     def begin_asterisco(self, titulo_menu:str):
         """ 
         ■ FUNCION QUE SE EJECUTA CUANDO SE HACE '**b' . 
@@ -2034,7 +2067,7 @@ class Over_Main(XindeX):
             ■ ■ Se sale de este sub-Menu con <<< y vuelves al principal.
         
         [titulo_menu](str): titulo del menu Sobre el que se va a establecer el nuevo menu genetico.
-        ► CALLED: self.terminator_executor() de Over_Main
+        ► CALLED: self.terminator__executor() de Over_Main
         ■ EJEMPLO: 
             self.begin_asterisco(titulo_menu = titulo_menu)
         ■ SALIDA: 
@@ -2072,6 +2105,49 @@ class Over_Main(XindeX):
         # NOTA: NO CARGO EL MODULO RESPUESTAA PQ CUANDO SALGA DE ESTA FUNCION TERMINATOR ME ENVIARÁ AL MODULO RESPUESTA.
         pass
 
+    # ███████████████████████ 
+    def api_buscar(self, str_like: str):
+        """
+        Busca una frase en las keys y values del índice y muestra las líneas
+        en una lista plana en forma de columna (usando Franky) sin niveles de tabulación.
+        Finalmente solicita la opción usando el prompt dinámico con el nombre del menú.
+        """
+        # 1. Limpiamos comillas y pasamos a minúsculas para una búsqueda tolerante
+        busqueda = str_like.strip().strip('"').strip("'").lower()
+        resultados = []
+        
+        if not self.matriz_impresion_xindex: 
+            print(f"❌.....No hay menú cargado para buscar.")
+            return None      
+        # ■■ LISTA DE STRING PARA IMPRIMIR 
+        lst_mystyca_impresion = [''.join(mystyca_fila) for mystyca_fila in self.matriz_impresion_xindex]
+        lst_mystyca_impresion = [linea.strip() for linea in lst_mystyca_impresion]
+        
+        resultados = []
+        for i, str_fila in enumerate(lst_mystyca_impresion):
+            if busqueda in str_fila.lower():
+                resultados.append(str_fila.strip())
+        pass        
+        # self.F_RANK_Y_DEF.imprimir(sp_between = 2, ancho_columna = None , fila_from=desde, fila_to=hasta)
+        
+        # 3. Dibujamos los resultados encapsulados en el marco Franky
+        franky_busqueda = F_r_a_n_k_y(dimension = f'{len(resultados)}X{3}', 
+                                    head_datapush = f"Resultados de Búsqueda: '{busqueda}'",  
+                                    pie_datapush=self.pie_datapush , 
+                                    pad_x = self.pad_x )
+        # franky_busqueda.head.push(f"Resultados de Búsqueda para: '{busqueda}'")
+        
+        if resultados:
+            franky_busqueda.push(resultados, eje='Y')
+        else:
+            franky_busqueda.push([f"No se encontraron coincidencias para '{str_like}'"], eje='Y')
+            
+        franky_busqueda.imprimir(sp_between=1)
+        print(f"\n🔍 Búsqueda completada. {len(resultados)} resultado(s) encontrado(s).")
+
+        
+        
+
     # ██████████████████████████████████████████████████████████████████████
     # ██████████████████████████████ COLOR █████████████████████████████████ 
     # ██████████████████████████████████████████████████████████████████████
@@ -2099,48 +2175,64 @@ class Over_Main(XindeX):
         """  
         ■ SALIDA: 
         """
-        salida = f'{Fore.GREEN}<<<{Fore.RESET}'
-        definicion = f'{Fore.GREEN}?{Fore.RESET}'
-        repeat = f'{Fore.GREEN}?{Fore.RESET}'
-        info = f'{Fore.GREEN}?{Fore.RESET}'
-        help = f'{Fore.GREEN}?{Fore.RESET}'
-        mode = f'{Fore.GREEN}?{Fore.RESET}'
-        style = f'{Fore.GREEN}?{Fore.RESET}'
-        
-        like = f'{Fore.GREEN}?{Fore.RESET}'
-
+        d = {
+            '<<<' : f'{Fore.GREEN}<<<{Fore.RESET}',
+            '?' : f'{Fore.GREEN}?{Fore.RESET}',
+            '??' : f'{Fore.GREEN}??{Fore.RESET}',
+            'help' : f'{Fore.GREEN}help{Fore.RESET}',
+            '<' : f'{Fore.GREEN}<{Fore.RESET}', 
+            '@' : f'{Fore.GREEN}@{Fore.RESET}',
+            '$' : f'{Fore.GREEN}${Fore.RESET}',
+            '=' : f'{Fore.GREEN}={Fore.RESET}',
+            '#' : f'{Fore.GREEN}#{Fore.RESET}',
+            '**' : f'{Fore.GREEN}**{Fore.RESET}',
+            'GUION' : f'5{Fore.GREEN}-{Fore.RESET}12',
+            '=>' : f'{Fore.GREEN}=>{Fore.RESET}',
+            '[c12]' : f'{Fore.GREEN}[c12]{Fore.RESET}',
+            '[a]' : f'{Fore.GREEN}[{Fore.RESET}a{Fore.GREEN}]{Fore.RESET}',
+            'list' : f'{Fore.GREEN}list{Fore.RESET}',
+            'listar' : f'{Fore.GREEN}listar{Fore.RESET}',
+            'kill' : f'{Fore.GREEN}kill{Fore.RESET}',
+            'stop' : f'{Fore.GREEN}stop{Fore.RESET}',
+            'ERR' : f'{Fore.RED}ERROR :::: {Fore.RESET}',
+        }
         print(Sdata.big_text(texto=f'Ayuda   X i n d e X', color=Fore.CYAN))
         ENE = '\n'
         txt = ''
         txt += f'■ ■ ■ ■ ■ ■ ■ ■ Clase XindeX'
-        txt += ENE + f'{salida}\t SALIR'
-        txt += ENE + f'{Fore.GREEN}?{Fore.RESET}\t Muestra el MENU de DEFINICION(la Funcion que se Ejecuta en cada Item) '
+        txt += ENE + f'{d['<<<']}\t SALIR'
+        txt += ENE + f'{d['?']}\t Muestra el MENU de DEFINICION(la Funcion que se Ejecuta en cada Item) '
         txt += ENE + f'\t También muestra el modo de ejecución (En el Head):'
         txt += ENE + f'\t{' '*3}• Todos se ejecutan  (Exec All)'
         txt += ENE + f'\t{' '*3}• Solo se ejecutan los hijos (Mode Directory)'
-        txt += ENE + f'{Fore.GREEN}<{Fore.RESET}\t Limpia la terminal e imprime el Indice'
-        txt += ENE + f'{Fore.GREEN}??{Fore.RESET}\t Muestra la ayuda de las Acciones sobre el Indice(éste menu)'
-        txt += ENE + f'{Fore.GREEN}help{Fore.RESET}\t Muestra la ayuda sobre los parámetros para la clase XindeX / Over_Main.'
+        txt += ENE + f'{d['<']}\t Limpia la terminal e imprime el Indice'
+        txt += ENE + f'{d['??']}\t Muestra la ayuda de las Acciones sobre el Indice(éste menu)'
+        txt += ENE + f'{d['help']}\t Muestra la ayuda sobre los parámetros para la clase XindeX / Over_Main.'
         txt += ENE + f'\t la clase XindeX/Over_Main.'  
-        txt += ENE + f'{Fore.GREEN}#{Fore.RESET}\t Switch al modo de ejecución(padres + hijos ó sólo hijos)'  
-        txt += ENE + f'{Fore.GREEN}@{Fore.RESET}\t Cambia el estilo del Menu(default/franky/moderno/vacio/...)'  
+        txt += ENE + f'{d['#']}\t Switch al modo de ejecución(padres + hijos ó sólo hijos)'  
+        txt += ENE + f'{d['@']}\t Cambia el estilo del Menu(default/franky/moderno/vacio/...)'  
+        txt += ENE + f'{d['$']}\t Cambia el Color del Marco(red/lred/gray/cyan/yellow/...)'  
         txt += ENE + f'\n■ ■ ■ ■ ■ ■ ■ ■ Clase Over-Main'
-        txt += ENE + f'{Fore.GREEN}={Fore.RESET}a.1\t Modo LIKE , Muestra todo lo que empieza por a.1 !!'  
+        txt += ENE + f'{d['=']}a1\t Modo LIKE , Muestra todo lo que empieza por a.1 !!'  
         txt += ENE + f'\t ATENCION: Muestra el menu filtrado pero admite cualquier entrada al menu. '  
-        txt += ENE + f'{Fore.GREEN}={Fore.RESET}a1\t {Fore.RED}ERROR :::: {Fore.RESET}NO muestra nada  pq hay que Ponerlo en la forma con PTO (a.1)'  
-        txt += ENE + f'1{Fore.GREEN}-{Fore.RESET}5\t Muestra el Menu desde la fila 1 hasta la fila 5 (ambas incluidas)'  
-        txt += ENE + f'{Fore.GREEN}**{Fore.RESET}b\t Modo Sub-Menu . MUESTRA EL MENU SI b ES PADRE (DIRECTORY)'  
-        txt += ENE + f'{Fore.GREEN}**{Fore.RESET}b.1\t MUESTRA EL SUB-MENU b.1  • Se ejecuta SI b.1 es PADRE (DIRECTORY)'  
-        txt += ENE + f'{Fore.GREEN}**{Fore.RESET}a.1\t {Fore.RED}ERROR :::: {Fore.RESET}No está permitido SI  a.1 es HIJO. '  
-        txt += ENE + f'{Fore.GREEN}=>{Fore.RESET}a.1\t LANZA Un PROCESO En Modo INDEPENDIENTE del Proceso PPAL. Si el P'  
-        txt += ENE + f'{Fore.GREEN}=>{Fore.RESET}a\t{Fore.RED}ERROR :::: {Fore.RESET}No Se ejecuta pq [a] es PADRE (DIRECTORY) si b_mode_all=False'  
-        txt += ENE + f'\t Sin embargo si b_mode_all=True, y tiene asignada una funcion, se ejecuta como Background.'  
-        txt += ENE + f'{Fore.GREEN}[{Fore.RESET}a1{Fore.GREEN}]{Fore.RESET}\t LANZA Un PROCESO En {Fore.CYAN}Modo DEPENDIENTE{Fore.RESET} (DEMONIO) DEL PROGRAMA PPAL.'  
+        txt += ENE + f'{d['=']}a.1\t {d['ERR']}NO muestra nada  pq hay que Ponerlo SIN PUNTO (a1)'  
+        txt += ENE + f'\n{d['GUION']}\t Muestra el Menu desde la fila 1 hasta la fila 5 (ambas incluidas)'  
+        txt += ENE + f'\n{d['**']}b\t Modo Sub-Menu . MUESTRA EL MENU SI b ES PADRE (DIRECTORY)'  
+        txt += ENE + f'\t ATENCION: Genera otro nuevo menu y re-ordena los indices. Se sale con {d['<<<']} '
+        txt += ENE + f'{d['**']}a1\t {d['ERR']}No está permitido SI  a.1 es HIJO. '  
+        txt += ENE + f'\n{d['=>']}b11\t LANZA Un PROCESO En Modo INDEPENDIENTE del Proceso PPAL. Si el P'  
+        txt += ENE + f'{d['=>']}a\t {d['ERR']}No Se ejecuta pq [a] es PADRE (DIRECTORY) si b_mode_all=False'  
+        txt += ENE + f'\t Sin Sin embargo si b_mode_all=True, y tiene asignada una funcion, se ejecuta como Background.'  
+        txt += ENE + f'\n{d['[c12]']}\t LANZA Un PROCESO En {Fore.CYAN}Modo DEPENDIENTE{Fore.RESET} (DEMONIO) DEL PROGRAMA PPAL.'  
         txt += ENE + f'\t Cuando el PPal Acaba, el demonio acaba abruptamente tb.'  
-        txt += ENE + f'{Fore.GREEN}[{Fore.RESET}a{Fore.GREEN}]{Fore.RESET}\t {Fore.RED}ERROR :::: {Fore.RESET}No Se ejecuta pq [a] es PADRE (DIRECTORY) SI b_mode_all=False. '  
+        txt += ENE + f'{d['[a]']}\t {d['ERR']}No Se ejecuta pq [a] es PADRE (DIRECTORY) SI b_mode_all=False. '  
         txt += ENE + f'\t Sin embargo si b_mode_all=True, y tiene asignada una funcion, se ejecuta como {Fore.CYAN}Demonio{Fore.RESET}.'  
-        txt += ENE + f'{Fore.GREEN}►{Fore.RESET}\t (Alt+16) IMPRIME LA {Fore.CYAN}LISTA DE PROCESOS{Fore.RESET} (con PID)'  
-        txt += ENE + f'{Fore.GREEN}■ 886{Fore.RESET}\t (Alt+254) {Fore.CYAN}Detiene el Proceso{Fore.RESET} ( ■ 886 ) Si Existe'  
+        # txt += ENE + f'{Fore.GREEN}►{Fore.RESET}\t (Alt+16) IMPRIME LA {Fore.CYAN}LISTA DE PROCESOS{Fore.RESET} (con PID)'  
+        txt += ENE + f'\n{d['list']}\t Imprime la LISTA DE PROCESOS (con PID)'  
+        txt += ENE + f'{d['listar']}\t Imprime la LISTA DE PROCESOS (con PID)'  
+        # txt += ENE + f'{Fore.GREEN}■ 886{Fore.RESET}\t (Alt+254) {Fore.CYAN}Detiene el Proceso{Fore.RESET} ( ■ 886 ) Si Existe'  
+        txt += ENE + f'{d['kill']} 886\tDetiene el Proceso ( ■ 886 ) Si Existe'  
+        txt += ENE + f'{d['stop']} 886\tDetiene el Proceso ( ■ 886 ) Si Existe'  
 
         print(f'{txt}')
     

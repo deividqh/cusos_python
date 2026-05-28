@@ -16,7 +16,7 @@ def main():
     # ■ CREAR ■
     The_X_Men = Over_Main(tipo_index='1', b_mode_all=False, b_loop=True)
     # ■ CONFIGURAR MENUS ■
-    TIT_PPAL = "Algoritmos de Clasificacion"
+    TIT_PPAL = "Algoritmos Clasificacion"
     SUB1 = "De Clase (Copy/Paste)"
     SUB2 = "Ejercicios Propuestos:"
 
@@ -39,7 +39,7 @@ def main():
 
                     ])                        
     
-    The_X_Men.addX( titulo='Ejercicios Propuestos Para el Alumno', padre=TIT_PPAL, ipadre=SUB2, 
+    The_X_Men.addX( titulo='Ejercicios Propuestos', padre=TIT_PPAL, ipadre=SUB2, 
                     lst_items=[ 
                         ('Ej. (circles) ■ El Misterio de los Kernels', prop_clasif_2.ejercicio_01), 
                         ('Ej. (custom) ■ Clasificador de Spam (Naive Bayes)', prop_clasif_2.ejercicio_02), 

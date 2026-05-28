@@ -215,7 +215,7 @@ def main():
                         ('Modulo 4. Redes Neuronales', m4), 
                     ])
     # ■ LANZAR ■
-    The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="CURSO MACHINE LEARNING - PYTHON", pad_x=25 )
+    The_X_Men.mystyca( titulo='Menu_Principal', head_datapush="CURSO MACHINE-LEARNING & DEEP-LEARNING - PYTHON", pad_x=3 )
     # ■ DESPEDIDA ■
     print('Bye Bye')
 
