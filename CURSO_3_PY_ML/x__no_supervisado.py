@@ -7,6 +7,9 @@ import multiprocessing
 from ejercicios_modulo_3 import clase_no_supervisado as clase_no_sup
 from ejercicios_modulo_3 import prop_no_supervisado as prop_no_sup
 
+# import subprocess   # para ejecutar streamlit
+# import sys # Importante para ejecutar streamlit
+
 # █■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■█
 # █ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ █
 # █ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■    MENU PRINCIPAL   ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ █
@@ -45,7 +48,7 @@ def main():
                 ('Ej. 07. Auditoría de Calidad con PyCaret(NO)', prop_no_sup.ejercicio_07),
                 ('Ej. 08. El Experimento del Daltónico ■ K-Means', prop_no_sup.ejercicio_08),
                 ('Ej. 09. Mantenimiento Predictivo ■ Isolation Forest', prop_no_sup.ejercicio_09),
-                ('Ej. 10. Mini-AutoML ■ RegresionL, Árbol de Decisión, SVR', None),                                
+                ('Ej. 10. Mini-AutoML ■ RegresionL, Árbol de Decisión, SVR', prop_no_sup.ejercicio_10),                                
                     ])                        
     
     # ■ LANZAR ■

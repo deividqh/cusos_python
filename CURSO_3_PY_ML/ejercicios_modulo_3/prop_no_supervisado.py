@@ -280,51 +280,78 @@ por el modelo con los colores reales? Evalúa la diferencia entre ambos paradigm
     print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
 
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+# def ejercicio_09():
+#     ENUNCIADO = """ 
+#     Actividad 9 - Mantenimiento Predictivo: En una fábrica, los sensores de una máquina suelen dar
+# valores estables. Usa Isolation Forest para detectar picos extraños que podrían indicar una avería
+# inminente antes de que ocurra.
+#     """
+#     print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
+#     import numpy as np
+#     import matplotlib.pyplot as plt
+#     from sklearn.ensemble import IsolationForest
+#     # ■
+#     sensor_data = np.random.normal(loc=0, scale=1, size=1000)  # Datos normales
+#     # Introducimos algunos picos anómalos
+#     sensor_data[::100] += np.random.normal(loc=10, scale=5, size=10)  # Picos cada 100 datos
+    
+#     algoritmo = IsolationForest(contamination=0.01, random_state=42)    
+#     modelo = algoritmo.fit(sensor_data.reshape(-1, 1))  
+    
+#     anomalias = modelo.predict(sensor_data.reshape(-1, 1))  #aplana el sensor_data º
+#     print("Índices de datos anómalos detectados:")
+#     print(np.where(anomalias == -1)[0])  # Imprime los índices de los datos anómalos
+    
+    
+#     plt.title('Datos del Sensor con Anomalías')
+#     plt.show()
+#     # ■
+#     JUSTIFICACION = """ 
+    
+#     """
+#     print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
+
+import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
 def ejercicio_09():
-    ENUNCIADO = """ 
-    Actividad 9 - Mantenimiento Predictivo: En una fábrica, los sensores de una máquina suelen dar
-valores estables. Usa Isolation Forest para detectar picos extraños que podrían indicar una avería
-inminente antes de que ocurra.
-    """
-    print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from sklearn.ensemble import IsolationForest
-    # ■
-    sensor_data = np.random.normal(loc=0, scale=1, size=1000)  # Datos normales
-    # Introducimos algunos picos anómalos
-    sensor_data[::100] += np.random.normal(loc=10, scale=5, size=10)  # Picos cada 100 datos
     
-    algoritmo = IsolationForest(contamination=0.01, random_state=42)    
-    modelo = algoritmo.fit(sensor_data.reshape(-1, 1))  
-    
-    anomalias = modelo.predict(sensor_data.reshape(-1, 1))  #aplana el sensor_data º
-    print("Índices de datos anómalos detectados:")
-    print(np.where(anomalias == -1)[0])  # Imprime los índices de los datos anómalos
-    
-    
-    plt.title('Datos del Sensor con Anomalías')
-    plt.show()
-    # ■
-    JUSTIFICACION = """ 
-    
-    """
-    print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
+    # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+    import subprocess   # para ejecutar streamlit
+    import sys # Importante para ejecutar streamlit
+    from pathlib import Path
+    # Obtiene la carpeta donde está este archivo .py actual
+    DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
+    # RUTA = DIRECTORIO_ACTUAL / "ejercicios_modulo_3/streamlit_ejercicio_9.py"
+    RUTA = DIRECTORIO_ACTUAL / "streamlit_ejercicio_9.py"
+    try:
+        print(f"Ejecutando Streamlit para el ejercicio 09...")
+        result = subprocess.run([sys.executable, "-m", "streamlit", "run", str(RUTA)], check=True)
+        if result.returncode == 0:
+            print("Streamlit se ejecutó correctamente.")
+        else:
+            print(f"Streamlit terminó con código de error: {result.returncode}")
+    except Exception as e:
+        print(f"Error al ejecutar Streamlit: {e}")
 # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 def ejercicio_10():
-    ENUNCIADO = """ 
-    Actividad 10 - Mini-AutoML para Regresión: Diseña un script similar al del Ejercicio 10, pero para un
-problema de regresión. El script debe probar automáticamente una Regresión Lineal, un Árbol de
-Decisión y un SVR, informando cuál tiene el menor MAE.
-    """
-    print(f"\n{Fore.BLUE}{ENUNCIADO}{Style.RESET_ALL}")
-    import numpy as np
-    # ■
-
-
-    # ■
-    JUSTIFICACION = """ 
-    
-    """
-    print(f"\n{Fore.CYAN}{JUSTIFICACION}{Style.RESET_ALL}")
+    # ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ ■ 
+    import subprocess   # para ejecutar streamlit
+    import sys # Importante para ejecutar streamlit
+    from pathlib import Path
+    # Obtiene la carpeta donde está este archivo .py actual
+    DIRECTORIO_ACTUAL = Path(__file__).resolve().parent
+    # RUTA = DIRECTORIO_ACTUAL / "ejercicios_modulo_3/streamlit_ejercicio_9.py"
+    RUTA = DIRECTORIO_ACTUAL / "streamlit_ejercicio_10.py"
+    try:
+        print(f"Ejecutando Streamlit para el ejercicio 09...")
+        result = subprocess.run([sys.executable, "-m", "streamlit", "run", str(RUTA)], check=True)
+        if result.returncode == 0:
+            print("Streamlit se ejecutó correctamente.")
+        else:
+            print(f"Streamlit terminó con código de error: {result.returncode}")
+    except Exception as e:
+        print(f"Error al ejecutar Streamlit: {e}")

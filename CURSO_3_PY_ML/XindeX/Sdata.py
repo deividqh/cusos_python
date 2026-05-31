@@ -374,7 +374,7 @@ class Sdata():
             return big_color
 
     @staticmethod
-    def obtener_tamaño_terminal():
+    def obtener_tamano_terminal():
         """ ■ IA. 
         A traves de la librería shutil obtenemos las filas y columnas del terminal.
         """ 

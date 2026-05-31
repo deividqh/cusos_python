@@ -18,7 +18,7 @@ def main():
     # ■ CONFIGURAR MENUS ■
     The_X_Men.addX( titulo='Menu_Principal', padre=None, ipadre=None, 
                     lst_items=[ ('De Clase (Copy/Paste) ', None), 
-                        ('Ejercicios Propuestos: ', None), ])
+                        ('Ejercicios Propuestos: ', prop_reg.regresion_all), ])
     
     The_X_Men.addX( titulo='Ejercicios Resueltos', padre="Menu_Principal", ipadre="De Clase (Copy/Paste) ", 
                     lst_items=[ 
@@ -36,16 +36,16 @@ def main():
     
     The_X_Men.addX( titulo='Ejercicios Propuestos', padre="Menu_Principal", ipadre="Ejercicios Propuestos: ", 
                     lst_items=[ 
-                        ('Ej.01. Rendimiento Académico - Regresión Lineal Simple ', None), 
-                        ('Ej.02. Satisfacción Laboral ■ Statsmodels ■ p-valor ', None), 
-                        ('Ej.03. El Algoritmo desde Cero ', None), 
-                        ('Ej.04. Tasación de Vehículos ■  Regresión Múltiple ', None),
-                        ('Ej.05. Eficiencia Energética con Categorías ■ One-Hot Encoding ', None),
-                        ('Ej.06. Trayectoria de Mercado ■ Regresión Polinomial ', None),
-                        ('Ej.07. Prevención del Overfitting ■ Regresión Polinomial ', None),
-                        ('Ej.08. Diagnóstico Médico ■ Regresión Logística ', None),
-                        ('Ej.09. Auditoría Fraude ■ Matriz de Confusión ■ reporte declasificación ', None),
-                        ('Ej.10. (PROYECTO FINAL) Desarrolla un Pipeline Completo', None),
+                        ('Ej.01. Rendimiento Académico - Regresión Lineal Simple ', prop_reg.ejercicio_01), 
+                        ('Ej.02. Satisfacción Laboral ■ Statsmodels ■ p-valor ', prop_reg.ejercicio_02), 
+                        ('Ej.03. El Algoritmo desde Cero ', prop_reg.ejercicio_03), 
+                        ('Ej.04. Tasación de Vehículos ■  Regresión Múltiple ', prop_reg.ejercicio_04),
+                        ('Ej.05. Eficiencia Energética con Categorías ■ One-Hot Encoding ', prop_reg.ejercicio_05),
+                        ('Ej.06. Trayectoria de Mercado ■ Regresión Polinomial ', prop_reg.ejercicio_06),
+                        ('Ej.07. Prevención del Overfitting ■ Regresión Polinomial ', prop_reg.ejercicio_07),
+                        ('Ej.08. Diagnóstico Médico ■ Regresión Logística ', prop_reg.ejercicio_08),
+                        ('Ej.09. Auditoría Fraude ■ Matriz de Confusión ■ reporte declasificación ', prop_reg.ejercicio_09),
+                        ('Ej.10. (PROYECTO FINAL) Desarrolla un Pipeline Completo', prop_reg.ejercicio_10),
                     ])                        
     
     # ■ LANZAR ■
