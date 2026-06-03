@@ -78,7 +78,7 @@ with st.container(border=True):
     with c4:
         st.write("") 
         st.write("") 
-        iniciar_entrenamiento = st.button("🚀 Iniciar Entrenamiento", type="primary", use_container_width=True)
+        iniciar_entrenamiento = st.button("🚀 Iniciar Entrenamiento", type="primary", width='stretch')
 
 # ■■■■■ 4. PROCESAMIENTO Y ENTRENAMIENTO ■■■■■
 if iniciar_entrenamiento:
@@ -89,6 +89,8 @@ if iniciar_entrenamiento:
     class MyModel(Model):
         def __init__(self, filtros, neuronas):
             super().__init__()
+            self.filtros = filtros     
+            self.neuronas = neuronas   
             self.conv1 = Conv2D(filtros, 3, activation='relu')
             self.flatten = Flatten()
             self.d1 = Dense(neuronas, activation='relu')
@@ -99,6 +101,15 @@ if iniciar_entrenamiento:
             x = self.flatten(x)
             x = self.d1(x)
             return self.d2(x)
+
+        # 2. Implementamos get_config para permitir la serialización al guardar
+        def get_config(self):
+            config = super().get_config()
+            config.update({
+                "filtros": self.filtros,
+                "neuronas": self.neuronas,
+            })
+            return config
 
     model = MyModel(filtros=FILTROS_CNN, neuronas=NEURONAS)
     loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -164,13 +175,13 @@ if iniciar_entrenamiento:
         fig_loss.add_trace(go.Scatter(x=hist_epochs, y=hist_train_loss, mode='lines+markers', name='Train Loss', line=dict(color='#1f77b4', width=3, shape='spline')))
         fig_loss.add_trace(go.Scatter(x=hist_epochs, y=hist_val_loss, mode='lines+markers', name='Val Loss', line=dict(color='#ff7f0e', width=3, shape='spline')))
         fig_loss.update_layout(title='Evolución de la Pérdida', xaxis_title='Época', yaxis_title='Loss', template='plotly_white', margin=dict(t=40, b=0))
-        grafico_perdida.plotly_chart(fig_loss, use_container_width=True)
+        grafico_perdida.plotly_chart(fig_loss, width='stretch')
 
         fig_acc = go.Figure()
         fig_acc.add_trace(go.Scatter(x=hist_epochs, y=hist_train_acc, mode='lines+markers', name='Train Accuracy', line=dict(color='#2ca02c', width=3, shape='spline')))
         fig_acc.add_trace(go.Scatter(x=hist_epochs, y=hist_val_acc, mode='lines+markers', name='Val Accuracy', line=dict(color='#d62728', width=3, shape='spline')))
         fig_acc.update_layout(title='Evolución de la Exactitud (%)', xaxis_title='Época', yaxis_title='Precisión (%)', template='plotly_white', margin=dict(t=40, b=0))
-        grafico_precision.plotly_chart(fig_acc, use_container_width=True)
+        grafico_precision.plotly_chart(fig_acc, width='stretch')
 
         barra_progreso.progress((epoch + 1) / EPOCHS)
 
@@ -207,8 +218,8 @@ if st.session_state.modelo_entrenado is not None:
     # Aunque el objeto fig_loss sea el mismo que el que se usó durante el entrenamiento, Streamlit 
     # ahora lo trata como un elemento nuevo y diferente gracias a su "llave" única, 
     # evitando el conflicto de duplicidad.
-    col_g1.plotly_chart(st.session_state.fig_loss, use_container_width=True, key="loss_final")
-    col_g2.plotly_chart(st.session_state.fig_acc, use_container_width=True, key="acc_final")
+    col_g1.plotly_chart(st.session_state.fig_loss, width='stretch', key="loss_final")
+    col_g2.plotly_chart(st.session_state.fig_acc, width='stretch', key="acc_final")
 
     st.markdown("---")
     st.markdown("### 📊 Métricas Finales de Rendimiento")
@@ -266,7 +277,7 @@ if st.session_state.modelo_entrenado is not None:
             template="plotly_white", 
             margin=dict(t=40, b=0, l=0, r=0)
         )
-        st.plotly_chart(fig_probs, use_container_width=True)
+        st.plotly_chart(fig_probs, width='stretch')
 
     # ■■■■■ 6. EXPORTAR INFORME ■■■■■
     st.markdown("---")
@@ -288,13 +299,7 @@ Resultados Finales:
 - Pérdida (Val Loss): {mf['fin_val_loss']:.4f}
 ========================================"""
 
-    st.download_button(
-        label="📄 Descargar Informe (.txt)",
-        data=informe,
-        file_name="informe_entrenamiento_mnist.txt",
-        mime="text/plain",
-        type="primary"
-    )
+   
 
 # ■■■■■ 6. EXPORTAR INFORME Y MODELO ■■■■■
     st.markdown("---")
@@ -363,13 +368,7 @@ Resultados Finales:
 #     return config
 
 # • ¿Por qué esto soluciona el problema?
-#   Cuando llamas a .save(), Keras recorre el objeto para "serializarlo" (convertirlo en un archivo). Al no encontrar la configuración, se bloquea. Con get_config, le estás dando un "mapa" de instrucciones que dice: "Para volver a crear este modelo, usa estos dos valores: filtros y neuronas".
+#   Cuando llamas a .save(), Keras recorre el objeto para "serializarlo" (convertirlo en un archivo). 
+# Al no encontrar la configuración, se bloquea. Con get_config, le estás dando un "mapa" de instrucciones 
+# que dice: "Para volver a crear este modelo, usa estos dos valores: filtros y neuronas".
 
-# ■ Un pequeño consejo "pro" (Opcional):
-# • Si esto te sigue dando problemas en versiones muy recientes de TensorFlow/Keras, otra solución aún más KISS para evitar este error al guardar es no guardar el objeto modelo entero, sino solo sus pesos.
-# Si solo quieres guardar el aprendizaje para reutilizarlo después:
-# En lugar de model.save("modelo.keras"), usa:
-# model.save_weights("pesos_modelo.weights.h5")
-
-# Para recuperarlo en otro momento, primero creas el modelo igual y luego haces:
-# model.load_weights("pesos_modelo.weights.h5")
