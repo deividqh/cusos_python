@@ -37,15 +37,15 @@ if 'modelo_entrenado' not in st.session_state:
 ENUNCIADO = """En esta actividad vamos a entrenar una Red Neuronal Convolucional (CNN) sencilla para clasificar imágenes de dígitos escritos a mano (del 0 al 9) usando el famoso dataset MNIST.
 
 A través del panel de control inferior, puedes modificar los **hiperparámetros** del algoritmo para ver cómo afectan al aprendizaje:
-* **Épocas (Epochs):** Cuántas veces verá la red neuronal el dataset completo.
+* **EPOCHs (Epochs):** Cuántas veces verá la red neuronal el dataset completo.
 * **Tamaño del Batch:** Cuántas imágenes procesa a la vez antes de actualizar sus pesos.
 * **Mezcla (Shuffle):** El tamaño de la muestra que mezcla los datos para evitar sesgos.
 * **Tasa de Aprendizaje (LR):** El tamaño de los "pasos" que da el modelo al corregir sus errores.
-* **Filtros Convolucionales:** Son las "gafas" de la red. Extraen bordes y formas.
-* **Neuronas Ocultas (Dense):** Es el "cerebro" o capacidad de razonamiento final.
+* **Filtros Convolucionales:**  (también llamado kernel) En el contexto de una Red Neuronal Convolucional, ReLU y Adam son las herramientas que deciden qué información pasa y cómo aprende el filtro convolucional.Mientras el filtro convolucional extrae las características, ReLU activa los patrones más importantes y Adam ajusta los números del filtro para que la red no cometa errores.. Es el componente principal de las Redes Neuronales Convolucionales (CNN).
+* **Neuronas Ocultas (Dense):** Las neuronas ocultas en una capa densa (también conocida como capa Fully Connected o completamente conectada) son las unidades de procesamiento que se encuentran entre la entrada de la red y la salida final.
 """
 
-with st.expander("📖 Ver el Enunciado y Exploración de los Datos", expanded=False):
+with st.expander("Ver el Enunciado y Exploración de los Datos", expanded=False):
     st.write(ENUNCIADO)
     st.markdown("---")
     st.markdown("#### 📂 Exploración del Dataset MNIST")
@@ -63,11 +63,11 @@ with st.expander("📖 Ver el Enunciado y Exploración de los Datos", expanded=F
         st.image(imagen_mostrar, width=120, caption=f"Etiqueta real: {y_pred[idx_visor]}")
 
 # ■■■■■ 3. PANEL DE CONTROLES ■■■■■
-st.markdown("### 🎛️ Panel de Simulación y Control de Hiperparámetros")
+st.markdown("###  Panel de Simulación y Control de Hiperparámetros")
 with st.container(border=True):
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        EPOCHS = st.slider("Número de Épocas:", min_value=1, max_value=30, value=5)
+        EPOCHS = st.slider("Número de EPOCHs:", min_value=1, max_value=30, value=5)
         LEARNING_RATE = st.number_input("Tasa de Aprendizaje (LR):", min_value=0.00001, max_value=1.0, value=0.001, step=0.001, format="%.5f")
     with c2:
         BATCH_SIZE = st.selectbox("Tamaño del Batch:", [16, 32, 64, 128, 256], index=1)
@@ -78,7 +78,7 @@ with st.container(border=True):
     with c4:
         st.write("") 
         st.write("") 
-        iniciar_entrenamiento = st.button("🚀 Iniciar Entrenamiento", type="primary", width='stretch')
+        iniciar_entrenamiento = st.button("Iniciar Entrenamiento", type="primary", width='stretch')
 
 # ■■■■■ 4. PROCESAMIENTO Y ENTRENAMIENTO ■■■■■
 if iniciar_entrenamiento:
@@ -142,7 +142,7 @@ if iniciar_entrenamiento:
     # Contenedores temporales para la animación (se borrarán al acabar)
     zona_animacion = st.empty()
     with zona_animacion.container():
-        st.markdown("### ⏳ Entrenamiento Dinámico del Modelo")
+        st.markdown("### Entrenamiento del Modelo")
         txt_estado = st.empty()
         barra_progreso = st.progress(0.0)
         col_grafico1, col_grafico2 = st.columns(2)
@@ -153,7 +153,7 @@ if iniciar_entrenamiento:
 
     for epoch in range(EPOCHS):
         porcentaje_actual = int(((epoch + 1) / EPOCHS) * 100)
-        txt_estado.info(f"**Procesando Época {epoch + 1} de {EPOCHS} ({porcentaje_actual}%)...**")
+        txt_estado.info(f"**Procesando EPOCH {epoch + 1} de {EPOCHS} ({porcentaje_actual}%)...**")
         
         train_loss.reset_state()
         train_accuracy.reset_state()
@@ -174,13 +174,13 @@ if iniciar_entrenamiento:
         fig_loss = go.Figure()
         fig_loss.add_trace(go.Scatter(x=hist_epochs, y=hist_train_loss, mode='lines+markers', name='Train Loss', line=dict(color='#1f77b4', width=3, shape='spline')))
         fig_loss.add_trace(go.Scatter(x=hist_epochs, y=hist_val_loss, mode='lines+markers', name='Val Loss', line=dict(color='#ff7f0e', width=3, shape='spline')))
-        fig_loss.update_layout(title='Evolución de la Pérdida', xaxis_title='Época', yaxis_title='Loss', template='plotly_white', margin=dict(t=40, b=0))
+        fig_loss.update_layout(title='Evolución de la Pérdida', xaxis_title='EPOCH', yaxis_title='Loss', template='plotly_white', margin=dict(t=40, b=0))
         grafico_perdida.plotly_chart(fig_loss, width='stretch')
 
         fig_acc = go.Figure()
         fig_acc.add_trace(go.Scatter(x=hist_epochs, y=hist_train_acc, mode='lines+markers', name='Train Accuracy', line=dict(color='#2ca02c', width=3, shape='spline')))
         fig_acc.add_trace(go.Scatter(x=hist_epochs, y=hist_val_acc, mode='lines+markers', name='Val Accuracy', line=dict(color='#d62728', width=3, shape='spline')))
-        fig_acc.update_layout(title='Evolución de la Exactitud (%)', xaxis_title='Época', yaxis_title='Precisión (%)', template='plotly_white', margin=dict(t=40, b=0))
+        fig_acc.update_layout(title='Evolución de la Exactitud (%)', xaxis_title='EPOCH', yaxis_title='Precisión (%)', template='plotly_white', margin=dict(t=40, b=0))
         grafico_precision.plotly_chart(fig_acc, width='stretch')
 
         barra_progreso.progress((epoch + 1) / EPOCHS)
@@ -199,7 +199,6 @@ if iniciar_entrenamiento:
         'fin_train_loss': hist_train_loss[-1],
         'fin_val_loss': hist_val_loss[-1]
     }
-
 
 # ■■■■■ 5. PANEL INFERIOR (RESULTADOS PERSISTENTES) ■■■■■
 # Esta parte siempre se dibujará si hay un modelo guardado, aunque toques el predictor
@@ -271,13 +270,20 @@ if st.session_state.modelo_entrenado is not None:
             marker_color=['#2ca02c' if i == clase_predicha else '#1f77b4' for i in range(10)]
         )])
         fig_probs.update_layout(
-            title="Distribución de Probabilidades (Softmax)", 
+            title="Distribución de Probabilidades", 
             xaxis_title="Dígitos Posibles", 
             yaxis_title="Probabilidad", 
             template="plotly_white", 
             margin=dict(t=40, b=0, l=0, r=0)
         )
         st.plotly_chart(fig_probs, width='stretch')
+    
+    st.markdown("---")
+    # proba = np.round(probabilidades * 100, 6)
+    proba = (probabilidades * 100)
+    st.markdown(f"Probabilidades de la Prediccion: {proba}")
+
+
 
     # ■■■■■ 6. EXPORTAR INFORME ■■■■■
     st.markdown("---")
@@ -285,7 +291,7 @@ if st.session_state.modelo_entrenado is not None:
 INFORME DE ENTRENAMIENTO: RED NEURONAL MNIST
 ========================================
 Configuración del Algoritmo:
-- Épocas: {EPOCHS}
+- EPOCHs: {EPOCHS}
 - Tamaño del Batch: {BATCH_SIZE}
 - Tasa de Aprendizaje (LR): {LEARNING_RATE}
 - Filtros Convolucionales: {FILTROS_CNN}
